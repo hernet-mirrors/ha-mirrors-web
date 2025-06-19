@@ -1,0 +1,37 @@
+---
+permalink: /fancy-index/before.html
+title: Index of {{url}}
+jsEntry: fancyIndex
+---
+<!DOCTYPE html>
+<html>
+{% capture metaDesc %}Index of {% raw %}{{url}}{% endraw %}{% endcapture %}
+	{% include head.html metaDesc=metaDesc notArticle=true %}
+	<body>
+		{% include nav.html %}
+
+		<div id="mirrors">
+			<div class="spacing hidden-xs"></div>
+
+			<div class="container">
+				<div class="row">
+					{% raw %}
+					<div class="col-12 table-responsive">
+						<div class="row">
+							<div class="col-lg-8 col-12">
+								<h3><i class="fas fa-folder-open"></i> Index of <span id="path">{{url}}</span></h3>
+								<nav aria-label="breadcrumb">
+									<ol class="breadcrumb bg-light" id="breadcrumb-nav">
+										<!-- Breadcrumb will be populated by JavaScript -->
+									</ol>
+								</nav>
+							</div><!--
+							--><div class="col-lg-4 col-12 d-flex align-items-end justify-content-start justify-content-lg-end">
+								<div id="now-browsing-mirror"></div>
+							</div>
+						</div>
+					{% endraw %}
+					<h1 style="display: none;">
+<!--
+	vim: ts=2 sts=2 sw=2 noexpandtab
+-->

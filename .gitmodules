@@ -1,0 +1,7 @@
+[submodule "geninfo/genisolist"]
+	path = geninfo/genisolist
+	url = https://github.com/mirrorz-org/genisolist.git
+[submodule "help/_posts/mirrorz-help-ha-transpiled"]
+	path = help/_posts/mirrorz-help-ha-transpiled
+	url = https://github.com/hernet-mirrors/mirrorz-help-ha.git
+	branch = transpiled

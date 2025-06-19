@@ -1,0 +1,849 @@
+---
+layout: default
+title: 同步状态
+description: 查看各镜像的实时同步状态和统计信息
+---
+
+<div class="row">
+    <div class="col-lg-9 col-12">
+        <!-- 状态说明 -->
+        <div class="card shadow-sm mb-4" style="border: 1px solid #dee2e6;">
+            <div class="card-header" style="background-color: #0A77FF; color: white;">
+                <h1 class="h3 mb-0"><i class="fas fa-chart-line"></i> 同步状态</h1>
+                <small class="text-white-50">查看各镜像的实时同步状态和统计信息</small>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>状态说明：</strong>页面每3秒自动刷新一次。绿色表示正常，黄色表示同步中，红色表示失败。
+                </div>
+                
+                <!-- 控制按钮 -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="auto-refresh" checked>
+                        <label class="form-check-label" for="auto-refresh">
+                            <i class="fas fa-sync-alt"></i> 自动刷新
+                        </label>
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-primary btn-sm" id="refresh-status">
+                            <i class="fas fa-sync-alt"></i> 手动刷新
+                        </button>
+                        <small class="text-muted ms-2">
+                            最后更新: <span id="last-refresh-time">--</span>
+                        </small>
+                    </div>
+                </div>
+
+                <!-- 整体统计 -->
+                <div class="row mb-4">
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="card bg-success text-white h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-check-circle fa-2x mb-2"></i>
+                                <h3 class="mb-0" id="success-count">--</h3>
+                                <small>正常同步</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="card bg-warning text-white h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-sync-alt fa-2x mb-2"></i>
+                                <h3 class="mb-0" id="syncing-count">--</h3>
+                                <small>同步中</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="card bg-danger text-white h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-times-circle fa-2x mb-2"></i>
+                                <h3 class="mb-0" id="failed-count">--</h3>
+                                <small>同步失败</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 col-sm-6 mb-3">
+                        <div class="card bg-info text-white h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-server fa-2x mb-2"></i>
+                                <h3 class="mb-0" id="total-count">--</h3>
+                                <small>总计镜像</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 状态列表 -->
+                <div class="card shadow-sm" style="border: 1px solid #dee2e6;">
+                    <div class="card-header" style="background-color: #f8f9fa;">
+                        <h5 class="mb-0">
+                            <i class="fas fa-list"></i> 详细状态
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="25%">镜像名称</th>
+                                        <th width="12%">状态</th>
+                                        <th width="18%">上次同步成功</th>
+                                        <th width="18%">下次计划同步</th>
+                                        <th width="15%">同步开始时间</th>
+                                        <th width="12%">大小</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="status-table-body">
+                                    <!-- 状态数据将通过JavaScript动态加载 -->
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">加载中...</span>
+                                            </div>
+                                            <p class="mt-2 mb-0 text-muted">正在加载同步状态...</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 右侧边栏 -->
+    <div class="col-lg-3 col-12">
+        <div class="sidebar-container">
+            <div class="sidebar-content">
+                <!-- 快速统计 -->
+                <div class="card shadow-sm mb-4" style="border: 1px solid #dee2e6;">
+                    <div class="card-header" style="background-color: #0A77FF; color: white;">
+                        <h5 class="mb-0"><i class="fas fa-tachometer-alt"></i> 快速统计</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <div class="stat-item">
+                                    <div class="stat-number text-success" id="sidebar-success">--</div>
+                                    <div class="stat-label small text-muted">正常</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-item">
+                                    <div class="stat-number text-warning" id="sidebar-syncing">--</div>
+                                    <div class="stat-label small text-muted">同步中</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-center mt-3">
+                            <div class="col-6">
+                                <div class="stat-item">
+                                    <div class="stat-number text-danger" id="sidebar-failed">--</div>
+                                    <div class="stat-label small text-muted">失败</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-item">
+                                    <div class="stat-number text-info" id="sidebar-total">--</div>
+                                    <div class="stat-label small text-muted">总计</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="progress mt-3" style="height: 8px;">
+                            <div class="progress-bar bg-success" role="progressbar" id="success-progress" style="width: 0%"></div>
+                            <div class="progress-bar bg-warning" role="progressbar" id="syncing-progress" style="width: 0%"></div>
+                            <div class="progress-bar bg-danger" role="progressbar" id="failed-progress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 同步状态说明 -->
+                <div class="card shadow-sm mb-4" style="border: 1px solid #dee2e6;">
+                    <div class="card-header" style="background-color: #0A77FF; color: white;">
+                        <h5 class="mb-0"><i class="fas fa-question-circle"></i> 状态说明</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="status-legend">
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="badge bg-success me-2"><i class="fas fa-check"></i></span>
+                                <span class="small">正常 - 镜像同步正常</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="badge bg-warning me-2"><i class="fas fa-sync-alt fa-spin"></i></span>
+                                <span class="small">同步中 - 正在进行同步</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="badge bg-danger me-2"><i class="fas fa-times"></i></span>
+                                <span class="small">失败 - 同步出现错误</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 磁盘占用 -->
+                <div class="card shadow-sm mb-4" style="border: 1px solid #dee2e6;">
+                    <div class="card-header" style="background-color: #0A77FF; color: white;">
+                        <h5 class="mb-0"><i class="fas fa-hdd"></i> 磁盘占用</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="disk-info">
+                            <div class="text-center py-3">
+                                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                    <span class="visually-hidden">加载中...</span>
+                                </div>
+                                <p class="mt-2 mb-0 small text-muted">加载磁盘信息...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 自定义样式 -->
+<style>
+.stat-item {
+    padding: 0.5rem 0;
+}
+
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.stat-label {
+    margin-top: 0.25rem;
+}
+
+.status-legend .badge {
+    width: 60px;
+    text-align: center;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.mirror-name {
+    font-weight: 500;
+    color: #0A77FF;
+}
+
+.mirror-size {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+/* 防止时间列换行 */
+.table td.small {
+    white-space: nowrap;
+    font-size: 0.8rem;
+}
+
+@media (max-width: 991px) {
+    .sidebar-container {
+        margin-top: 2rem;
+    }
+}
+
+/* 侧边栏响应式滚动 */
+.sidebar-container {
+    position: relative;
+}
+
+.sidebar-content {
+    position: sticky;
+    top: 20px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #0A77FF #f1f1f1;
+    width: 100%;
+    margin: 0;
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+.sidebar-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb {
+    background: #0A77FF;
+    border-radius: 3px;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb:hover {
+    background: #0056b3;
+}
+
+/* 移动设备上取消固定定位，允许自然滚动 */
+@media (max-width: 991px) {
+    .sidebar-content {
+        position: static;
+        max-height: none;
+        overflow-y: visible;
+        transform: none;
+        will-change: auto;
+    }
+}
+
+.container {
+    max-width: 100%;
+}
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.col-lg-3 {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+</style>
+
+<script>
+// 状态数据
+let statusData = [];
+let diskData = [];
+let mirrorDescriptions = {};
+let newMirrors = [];
+let unlistedMirrors = [];
+let forceRedirectHelpMirrors = [];
+let labelMap = {};
+let autoRefreshInterval;
+
+// 加载镜像描述数据
+async function loadMirrorDescriptions() {
+    try {
+        const response = await fetch('/static/mirror-desc.json?_=' + Date.now());
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        
+        // 将数组转换为对象，便于快速查找
+        if (data.mirror_desc && Array.isArray(data.mirror_desc)) {
+            data.mirror_desc.forEach(item => {
+                mirrorDescriptions[item.name] = item.desc;
+            });
+            console.log('状态页面加载到镜像描述:', Object.keys(mirrorDescriptions).length, '个');
+        }
+        
+        // 加载新镜像列表
+        if (data.new_mirrors && Array.isArray(data.new_mirrors)) {
+            newMirrors = data.new_mirrors;
+            console.log('状态页面加载到新镜像:', newMirrors.length, '个');
+        }
+        
+        // 加载未列出的镜像
+        if (data.unlisted_mirrors && Array.isArray(data.unlisted_mirrors)) {
+            unlistedMirrors = data.unlisted_mirrors;
+            console.log('状态页面加载到额外镜像:', unlistedMirrors.length, '个');
+        }
+        
+        // 加载强制重定向到帮助的镜像
+        if (data.force_redirect_help_mirrors && Array.isArray(data.force_redirect_help_mirrors)) {
+            forceRedirectHelpMirrors = data.force_redirect_help_mirrors;
+            console.log('状态页面加载到强制重定向镜像:', forceRedirectHelpMirrors.length, '个');
+        }
+        
+        // 加载标签映射
+        if (data.label_map && typeof data.label_map === 'object') {
+            labelMap = data.label_map;
+            console.log('状态页面加载到标签映射:', Object.keys(labelMap).length, '个');
+        }
+        
+    } catch (error) {
+        console.error('状态页面加载镜像描述失败:', error);
+        mirrorDescriptions = {};
+        newMirrors = [];
+        unlistedMirrors = [];
+        forceRedirectHelpMirrors = [];
+        labelMap = {};
+    }
+}
+
+// 获取镜像描述
+function getMirrorDescription(mirrorName) {
+    return mirrorDescriptions[mirrorName] || `${mirrorName} 开源软件镜像`;
+}
+
+// 检查是否为新镜像
+function isNewMirror(mirrorName) {
+    return newMirrors.includes(mirrorName);
+}
+
+// 获取新镜像标签
+function getNewMirrorBadge(mirrorName) {
+    if (isNewMirror(mirrorName)) {
+        return '<span class="badge bg-warning text-dark ms-2"><i class="fas fa-star me-1"></i>新镜像</span>';
+    }
+    return '';
+}
+
+// 检查是否有帮助页面
+function hasHelpPage(mirrorName) {
+    // 这里可以根据实际情况检查是否存在对应的帮助页面
+    // 目前简单地认为所有镜像都可能有帮助页面
+    return true;
+}
+
+// 获取镜像帮助页面URL
+function getMirrorHelpUrl(mirrorName) {
+    return `/help/${mirrorName}/`;
+}
+
+// 自定义排序函数：大写字母优先(A-Z)，然后小写字母(a-z)
+function sortMirrorsByName(a, b) {
+    const nameA = a.name;
+    const nameB = b.name;
+    
+    // 自定义排序：大写字母优先，然后小写字母
+    for (let i = 0; i < Math.min(nameA.length, nameB.length); i++) {
+        const charA = nameA[i];
+        const charB = nameB[i];
+        
+        // 如果两个字符都是字母
+        if (/[a-zA-Z]/.test(charA) && /[a-zA-Z]/.test(charB)) {
+            const isUpperA = /[A-Z]/.test(charA);
+            const isUpperB = /[A-Z]/.test(charB);
+            
+            // 如果一个是大写一个是小写，大写优先
+            if (isUpperA && !isUpperB) {
+                return -1;
+            }
+            if (!isUpperA && isUpperB) {
+                return 1;
+            }
+            
+            // 如果都是大写或都是小写，按字母顺序比较
+            if (charA.toLowerCase() !== charB.toLowerCase()) {
+                return charA.toLowerCase().localeCompare(charB.toLowerCase());
+            }
+            if (charA !== charB) {
+                return charA.localeCompare(charB);
+            }
+        } else {
+            // 如果不是字母，直接比较
+            if (charA !== charB) {
+                return charA.localeCompare(charB);
+            }
+        }
+    }
+    
+    // 如果前缀相同，按长度排序
+    return nameA.length - nameB.length;
+}
+
+// 智能格式化存储容量
+function formatStorageSize(kb) {
+    const bytes = kb * 1024;
+    const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+    let size = bytes;
+    let unitIndex = 0;
+    
+    while (size >= 1024 && unitIndex < units.length - 1) {
+        size /= 1024;
+        unitIndex++;
+    }
+    
+    // 统一保留两位小数
+    return size.toFixed(2) + ' ' + units[unitIndex];
+}
+
+// 拉取磁盘信息
+async function fetchDiskData() {
+    try {
+        const res = await fetch('/static/disk.json?_=' + Date.now());
+        if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+        const data = await res.json();
+        
+        if (Array.isArray(data)) {
+            diskData = data;
+            console.log('加载到磁盘数据:', diskData.length, '个磁盘');
+            renderDiskInfo();
+        } else {
+            console.error('disk.json格式不正确:', data);
+            diskData = [];
+            renderDiskError();
+        }
+    } catch (e) {
+        console.error('加载磁盘信息失败:', e);
+        renderDiskError();
+    }
+}
+
+// 渲染磁盘信息
+function renderDiskInfo() {
+    const diskContainer = document.getElementById('disk-info');
+    if (!diskData.length) {
+        diskContainer.innerHTML = '<div class="text-center small text-muted">暂无磁盘数据</div>';
+        return;
+    }
+    
+    let html = '';
+    let totalDiskTotal = 0;
+    let totalDiskUsed = 0;
+    
+    diskData.forEach((disk, index) => {
+        const totalFormatted = formatStorageSize(disk.total_kb);
+        const usedFormatted = formatStorageSize(disk.used_kb);
+        const usagePercent = ((disk.used_kb / disk.total_kb) * 100).toFixed(1);
+        const freeFormatted = formatStorageSize(disk.total_kb - disk.used_kb);
+        
+        totalDiskTotal += disk.total_kb;
+        totalDiskUsed += disk.used_kb;
+        
+        let progressBarClass = 'bg-success';
+        if (usagePercent > 90) progressBarClass = 'bg-danger';
+        else if (usagePercent > 80) progressBarClass = 'bg-warning';
+        
+        html += `
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="small"><strong>磁盘 ${index + 1}</strong></span>
+                    <span class="small text-muted">${usagePercent}%</span>
+                </div>
+                <div class="progress mb-2" style="height: 8px;">
+                    <div class="progress-bar ${progressBarClass}" role="progressbar" 
+                         style="width: ${usagePercent}%" aria-valuenow="${usagePercent}" 
+                         aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="small text-muted">
+                    <div>已用: ${usedFormatted}</div>
+                    <div>总计: ${totalFormatted}</div>
+                    <div>可用: ${freeFormatted}</div>
+                </div>
+            </div>
+        `;
+    });
+    
+    // 添加总计信息
+    if (diskData.length > 1) {
+        const totalFormatted = formatStorageSize(totalDiskTotal);
+        const usedFormatted = formatStorageSize(totalDiskUsed);
+        const usagePercent = ((totalDiskUsed / totalDiskTotal) * 100).toFixed(1);
+        const freeFormatted = formatStorageSize(totalDiskTotal - totalDiskUsed);
+        
+        let progressBarClass = 'bg-success';
+        if (usagePercent > 90) progressBarClass = 'bg-danger';
+        else if (usagePercent > 80) progressBarClass = 'bg-warning';
+        
+        html += `
+            <hr class="my-3">
+            <div class="mb-2">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="small"><strong>总计</strong></span>
+                    <span class="small text-muted">${usagePercent}%</span>
+                </div>
+                <div class="progress mb-2" style="height: 10px;">
+                    <div class="progress-bar ${progressBarClass}" role="progressbar" 
+                         style="width: ${usagePercent}%" aria-valuenow="${usagePercent}" 
+                         aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="small text-muted">
+                    <div>已用: ${usedFormatted}</div>
+                    <div>总计: ${totalFormatted}</div>
+                    <div>可用: ${freeFormatted}</div>
+                </div>
+            </div>
+        `;
+    }
+    
+    diskContainer.innerHTML = html;
+}
+
+function renderDiskError() {
+    const diskContainer = document.getElementById('disk-info');
+    diskContainer.innerHTML = `
+        <div class="text-center small text-danger">
+            <i class="fas fa-exclamation-triangle"></i> 磁盘信息加载失败
+        </div>
+    `;
+}
+
+// 拉取tunasync.json
+async function fetchStatusData() {
+    try {
+        // 如果还没有加载镜像描述，先加载
+        if (Object.keys(mirrorDescriptions).length === 0) {
+            await loadMirrorDescriptions();
+        }
+        
+        const res = await fetch('/static/tunasync.json?_=' + Date.now());
+        if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+        const data = await res.json();
+        
+        // 检查数据格式并直接使用数组
+        if (Array.isArray(data)) {
+            statusData = data;
+            // 按镜像名称排序：大写字母优先(A-Z)，然后小写字母(a-z)
+            statusData.sort(sortMirrorsByName);
+        } else {
+            console.error('tunasync.json格式不正确:', data);
+            statusData = [];
+        }
+        
+        // 添加 unlisted_mirrors 到状态列表中
+        unlistedMirrors.forEach(unlistedMirror => {
+            // 检查是否已存在同名镜像
+            const existingMirror = statusData.find(m => m.name === unlistedMirror.name);
+            if (!existingMirror) {
+                // 查找对应的 link_to 镜像来继承同步信息
+                const linkToMirror = statusData.find(m => m.name === unlistedMirror.link_to);
+                
+                // 创建虚拟镜像条目，继承 link_to 镜像的同步信息
+                const virtualMirror = {
+                    name: unlistedMirror.name,
+                    url: unlistedMirror.url,
+                    link_to: unlistedMirror.link_to
+                };
+                
+                if (linkToMirror) {
+                    // 继承主镜像的同步信息
+                    virtualMirror.size = linkToMirror.size || '未知';
+                    virtualMirror.status = linkToMirror.status || 'unknown';
+                    virtualMirror.last_update_ts = linkToMirror.last_update_ts || 0;
+                    virtualMirror.next_schedule_ts = linkToMirror.next_schedule_ts || 0;
+                    virtualMirror.last_started_ts = linkToMirror.last_started_ts || 0;
+                    virtualMirror.upstream = linkToMirror.upstream || '';
+                    console.log(`状态页面：镜像 ${unlistedMirror.name} 继承了 ${unlistedMirror.link_to} 的同步信息`);
+                } else {
+                    // 如果找不到对应的主镜像，使用默认值
+                    virtualMirror.size = '未知';
+                    virtualMirror.status = 'unknown';
+                    virtualMirror.last_update_ts = 0;
+                    virtualMirror.next_schedule_ts = 0;
+                    virtualMirror.last_started_ts = 0;
+                    virtualMirror.upstream = '';
+                    console.warn(`状态页面：未找到 ${unlistedMirror.name} 对应的主镜像 ${unlistedMirror.link_to}`);
+                }
+                
+                statusData.push(virtualMirror);
+            }
+        });
+        
+        // 重新排序，包括新添加的镜像：大写字母优先(A-Z)，然后小写字母(a-z)
+        statusData.sort(sortMirrorsByName);
+        
+        console.log('加载到镜像数据:', statusData.length, '个项目（包含额外镜像）');
+        renderStatusTable();
+        updateStatistics();
+        updateSidebarStats();
+        updateRefreshTime();
+    } catch (e) {
+        console.error('加载同步状态失败:', e);
+        renderStatusError();
+    }
+}
+
+// 渲染状态表格 (数据已按镜像名称A-Z排序)
+function renderStatusTable() {
+    const tbody = document.getElementById('status-table-body');
+    if (!statusData.length) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4">暂无数据</td></tr>`;
+        return;
+    }
+    
+    let html = '';
+    statusData.forEach(item => {
+        const statusInfo = getStatusInfo(item.status);
+        html += `
+            <tr>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-database fa-lg me-3 text-primary"></i>
+                        <div>
+                            <div class="mirror-name" title="${getMirrorDescription(item.name)}" 
+                                 data-bs-toggle="tooltip" data-bs-placement="top">${item.name || '未知'}${getNewMirrorBadge(item.name)}</div>
+                            ${item.upstream ? `<small class="text-muted">${item.upstream}</small>` : ''}
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <span class="badge ${statusInfo.class}">
+                        <i class="${statusInfo.icon}"></i> ${statusInfo.text}
+                    </span>
+                </td>
+                <td class="small">${formatTime(item.last_update_ts)}</td>
+                <td class="small">${formatTime(item.next_schedule_ts)}</td>
+                <td class="small">${formatTime(item.last_started_ts)}</td>
+                <td class="small mirror-size">${item.size || '-'}</td>
+            </tr>
+        `;
+    });
+    tbody.innerHTML = html;
+    
+    // 初始化 Bootstrap tooltips
+    initializeTooltips();
+}
+
+// 初始化 tooltips
+function initializeTooltips() {
+    // 销毁现有的tooltips
+    const existingTooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    existingTooltips.forEach(el => {
+        const tooltip = bootstrap.Tooltip.getInstance(el);
+        if (tooltip) {
+            tooltip.dispose();
+        }
+    });
+    
+    // 重新初始化tooltips
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    }
+}
+
+function renderStatusError() {
+    const tbody = document.getElementById('status-table-body');
+    tbody.innerHTML = `
+        <tr>
+            <td colspan="6" class="text-center py-4 text-danger">
+                <i class="fas fa-exclamation-triangle fa-2x mb-2"></i><br>
+                同步状态加载失败，请稍后重试
+            </td>
+        </tr>
+    `;
+}
+
+function getStatusInfo(status) {
+    // 使用 label_map 来映射状态样式
+    const labelClass = labelMap[status] || 'label-default';
+    const bootstrapClass = labelClass.replace('label-', 'bg-');
+    
+    const statusMap = {
+        'success': { class: 'bg-success', icon: 'fas fa-check', text: '正常' },
+        'syncing': { class: 'bg-warning', icon: 'fas fa-sync-alt fa-spin', text: '同步中' },
+        'failed': { class: 'bg-danger', icon: 'fas fa-times', text: '失败' },
+        'fail': { class: 'bg-danger', icon: 'fas fa-times', text: '失败' },
+        'warning': { class: 'bg-warning', icon: 'fas fa-sync-alt fa-spin', text: '同步中' },
+        'error': { class: 'bg-danger', icon: 'fas fa-times', text: '失败' },
+        'paused': { class: 'bg-warning', icon: 'fas fa-pause', text: '暂停' },
+        'unknown': { class: 'bg-secondary', icon: 'fas fa-question', text: '未知' }
+    };
+    
+    const defaultInfo = statusMap[status] || statusMap['unknown'];
+    
+    // 如果有自定义的样式映射，使用自定义的class
+    if (Object.keys(labelMap).length > 0 && labelMap[status]) {
+        defaultInfo.class = bootstrapClass;
+    }
+    
+    return defaultInfo;
+}
+
+function updateStatistics() {
+    const successCount = statusData.filter(item => item.status === 'success').length;
+    const syncingCount = statusData.filter(item => 
+        item.status === 'syncing' || item.status === 'warning'
+    ).length;
+    const failedCount = statusData.filter(item => 
+        item.status === 'failed' || item.status === 'error'
+    ).length;
+    const totalCount = statusData.length;
+    
+    // 更新主要统计卡片
+    document.getElementById('success-count').textContent = successCount;
+    document.getElementById('syncing-count').textContent = syncingCount;
+    document.getElementById('failed-count').textContent = failedCount;
+    document.getElementById('total-count').textContent = totalCount;
+}
+
+function updateSidebarStats() {
+    const successCount = statusData.filter(item => item.status === 'success').length;
+    const syncingCount = statusData.filter(item => 
+        item.status === 'syncing' || item.status === 'warning'
+    ).length;
+    const failedCount = statusData.filter(item => 
+        item.status === 'failed' || item.status === 'error'
+    ).length;
+    const totalCount = statusData.length;
+    
+    // 更新侧边栏统计
+    document.getElementById('sidebar-success').textContent = successCount;
+    document.getElementById('sidebar-syncing').textContent = syncingCount;
+    document.getElementById('sidebar-failed').textContent = failedCount;
+    document.getElementById('sidebar-total').textContent = totalCount;
+    
+    // 更新进度条
+    if (totalCount > 0) {
+        const successPercent = (successCount / totalCount) * 100;
+        const syncingPercent = (syncingCount / totalCount) * 100;
+        const failedPercent = (failedCount / totalCount) * 100;
+        
+        document.getElementById('success-progress').style.width = successPercent + '%';
+        document.getElementById('syncing-progress').style.width = syncingPercent + '%';
+        document.getElementById('failed-progress').style.width = failedPercent + '%';
+    }
+}
+
+function updateRefreshTime() {
+    const now = new Date();
+    document.getElementById('last-refresh-time').textContent = now.toLocaleString('zh-CN');
+}
+
+function formatTime(ts) {
+    if (!ts || ts <= 0) return '未知';
+    
+    // 处理tunasync中的负时间戳（表示无计划同步）
+    if (ts < 0) return '无计划';
+    
+    try {
+        const date = new Date(ts * 1000);
+        // 使用更紧凑的格式：年-月-日 时:分
+        return date.getFullYear() + '-' + 
+               String(date.getMonth() + 1).padStart(2, '0') + '-' + 
+               String(date.getDate()).padStart(2, '0') + ' ' + 
+               String(date.getHours()).padStart(2, '0') + ':' + 
+               String(date.getMinutes()).padStart(2, '0');
+    } catch (e) {
+        return '未知';
+    }
+}
+
+function refreshStatus() {
+    fetchStatusData();
+    fetchDiskData();
+}
+
+function setupAutoRefresh() {
+    const checkbox = document.getElementById('auto-refresh');
+    if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+    if (checkbox.checked) {
+        autoRefreshInterval = setInterval(() => {
+            fetchStatusData();
+            fetchDiskData();
+        }, 3000); // 每3秒刷新
+    }
+}
+
+// 初始化
+document.addEventListener('DOMContentLoaded', function() {
+    fetchStatusData();
+    fetchDiskData();
+    document.getElementById('refresh-status').addEventListener('click', refreshStatus);
+    document.getElementById('auto-refresh').addEventListener('change', setupAutoRefresh);
+    setupAutoRefresh();
+});
+</script>

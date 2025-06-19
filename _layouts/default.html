@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+	{% include head.html notArticle=true %}
+	<body style="background-color: #f8f9fa;">
+		{% include header.html %}
+		<main class="py-4">
+			<div class="container">
+				{{ content }}
+			</div>
+		</main>
+		{% include footer.html %}
+		<!-- Main JavaScript -->
+		<script src="{{ '/static/js/main.js' | relative_url }}"></script>
+	</body>
+</html>

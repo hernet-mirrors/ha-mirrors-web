@@ -1,0 +1,101 @@
+---
+layout: default
+---
+
+{% if page.legacy %}
+<!-- Legacy mode for older browsers -->
+<div class="legacy-wrapper">
+  {% include legacy_notes.html %}
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="page-title">开源软件镜像站</h1>
+        <p class="page-description">为开源软件提供稳定、快速的镜像服务</p>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-12">
+        {{ content }}
+      </div>
+    </div>
+  </div>
+</div>
+{% else %}
+<!-- Modern mode -->
+<div class="mirrors-container">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="card shadow-sm" style="border: 1px solid #dee2e6;">
+          <div class="card-body">
+            {{ content }}
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-4 sidebar-container">
+        <div class="sidebar-content">
+        <!-- 公告通知卡片 -->
+        <div class="card shadow-sm mb-4" style="border: 1px solid #dee2e6;">
+          <div class="card-header" style="background-color: #0A77FF; color: white;">
+            <h5 class="mb-0"><i class="fas fa-bullhorn"></i> 公告通知</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-unstyled mb-0">
+              {% for news in site.categories.news limit: 3 %}
+              <li class="mb-2">
+                <a href="{{ news.url }}" class="text-decoration-none" style="color: #333;">
+                  <small class="text-muted">{{ news.date | date: "%Y-%m-%d" }}</small><br>
+                  <span style="color: #0A77FF;">{{ news.title }}</span>
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+            <div class="text-end mt-3">
+              <a href="/news/" class="text-decoration-none" style="color: #0A77FF;">更多 <i class="fas fa-angle-double-right"></i></a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 联系我们卡片 -->
+        <div class="card shadow-sm mb-4" style="border: 1px solid #dee2e6;">
+          <div class="card-header" style="background-color: #0A77FF; color: white;">
+            <h5 class="mb-0"><i class="far fa-envelope"></i> 联系我们</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-unstyled mb-0">
+              <li class="mb-2">
+                <strong>意见反馈</strong><br>
+                <a href="https://github.com/ha-mirrors/issues" class="text-decoration-none" style="color: #0A77FF;">GitHub Issues</a>
+              </li>
+              <li>
+                <strong>发送邮件</strong><br>
+                <a href="mailto:{{ site.email }}" class="text-decoration-none" style="color: #0A77FF;">{{ site.email }}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- 友情链接卡片 -->
+        <div class="card shadow-sm" style="border: 1px solid #dee2e6;">
+          <div class="card-header" style="background-color: #0A77FF; color: white;">
+            <h5 class="mb-0"><i class="fas fa-external-link-alt"></i> 友情链接</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-unstyled mb-0">
+              <li class="mb-1"><a href="/status/" class="text-decoration-none" style="color: #0A77FF;"><i class="fas fa-chart-line me-1"></i>同步状态</a></li>
+              <li class="mb-1"><a href="/help/" class="text-decoration-none" style="color: #0A77FF;"><i class="fas fa-question-circle me-1"></i>使用帮助</a></li>
+              <li class="mb-1"><a href="https://www.ha.edu.cn" class="text-decoration-none" style="color: #0A77FF;">{{ site.school }}</a></li>
+              <li class="mb-1"><a href="https://mirrors.cernet.edu.cn" class="text-decoration-none" style="color: #0A77FF;">教育网联合镜像站</a></li>
+              <li class="mb-1"><a href="https://mirror.nyist.edu.cn" class="text-decoration-none" style="color: #0A77FF;">南阳理工学院开源镜像站</a></li>
+            </ul>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}

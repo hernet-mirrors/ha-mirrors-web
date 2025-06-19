@@ -1,0 +1,37 @@
+---
+---
+{
+  "mirrors": {
+    {% for item in site.data.options.mirror_desc %}
+    "{{ item.name | downcase }}": {
+      "name": "{{ item.name }}",
+      "description": "{{ item.desc | escape }}",
+      "is_new": {% if site.data.options.new_mirrors contains item.name %}true{% else %}false{% endif %}
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  },
+  "new_mirrors": [
+    {% for mirror in site.data.options.new_mirrors %}
+    "{{ mirror }}"{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ],
+  "unlisted_mirrors": [
+    {% for item in site.data.options.unlisted_mirrors %}
+    {
+      "link_to": "{{ item.link_to }}",
+      "name": "{{ item.name }}",
+      "url": "{{ item.url }}"
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ],
+  "force_redirect_help_mirrors": [
+    {% for mirror in site.data.options.force_redirect_help_mirrors %}
+    "{{ mirror }}"{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ],
+  "label_map": {
+    {% for item in site.data.options.label_map %}
+    "{{ item[0] }}": "{{ item[1] }}"{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  }
+}

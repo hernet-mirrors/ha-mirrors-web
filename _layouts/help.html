@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+{% capture metaDesc %}{{ page.mirrorid }} 使用帮助{% endcapture %}
+	{% include head.html cattitle="镜像站使用帮助" metaDesc=metaDesc %}
+<body style="background-color: #f8f9fa;">
+	{% include header.html %}
+
+{% if page.redirect_help_id %}
+{% assign redirect_to_page = site.categories["help"] | where_exp:"p", "p.mirrorid == page.redirect_help_id" %}
+<script>
+	var redirect_to = window.location.protocol + "//" + window.location.host + "{{redirect_to_page[0].url}}";
+	window.location = redirect_to;
+</script>
+{% endif %}
+
+{% assign help_pages = site.categories["help"] | sort: 'mirrorid' %}
+<div id="help-page">
+	<div class="container">
+	  <div class="row">
+		  <div class="d-none d-md-block col-md-3">
+				<ul class="nav nav-pills flex-column" id="help-nav">
+					{% for h in help_pages %}
+					<li class="nav-item" id="toc-{{h.mirrorid}}">
+						<a href="{{h.url}}" class="nav-link{% if h.mirrorid == page.mirrorid or h.redirect_help_id == page.mirrorid %} active{%endif%}">
+							{{h.mirrorid}}
+						</a>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+			<div class="col-md-9">
+				<div class="d-block d-md-none">
+					<form class="form-inline">
+						<div class="form-group">
+							<label>选择帮助条目: </label>
+							<select class="form-control" id="help-select">
+								{% for h in help_pages %}
+								<option data-help-url="{{h.url}}"{% if h.mirrorid == page.mirrorid%} selected{%endif%} id="toc-{{h.mirrorid}}">{{h.mirrorid}}</option>
+								{% endfor %}
+							</select>
+						</div>
+					</form>
+				</div>
+				<div id="help-content">
+					{{ content }}
+				</div>
+			</div>
+	  </div>
+	</div>
+</div>
+
+{% include footer.html %}
+
+<!-- 自定义JS -->
+<script src="{{ '/static/js/main.js' | relative_url }}"></script>
+</body>
+<script type="text/x-ha-help-mirrorid">
+	{{page.mirrorid | jsonify}}
+</script>
+</html>

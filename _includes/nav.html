@@ -1,0 +1,58 @@
+<!-- 导航栏 -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <i class="fas fa-server"></i>
+            {{ site.brand }} 镜像站
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">
+                        <i class="fas fa-home"></i> 首页
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mirrors.html">
+                        <i class="fas fa-list"></i> 镜像列表
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/help/">
+                        <i class="fas fa-question-circle"></i> 使用帮助
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/status/">
+                        <i class="fas fa-chart-line"></i> 同步状态
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/news/">
+                        <i class="fas fa-newspaper"></i> 新闻公告
+                    </a>
+                </li>
+            </ul>
+            
+            <ul class="navbar-nav">
+                {% unless site.hide_mirrorz %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ site.mirrorz_link }}" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> {{ site.mirrorz_desc }}
+                    </a>
+                </li>
+                {% endunless %}
+                <li class="nav-item">
+                    <a class="nav-link" href="https://www.ha.edu.cn" target="_blank">
+                        <i class="fas fa-university"></i> {{ site.school }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
