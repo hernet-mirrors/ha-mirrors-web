@@ -1,20 +1,18 @@
-# Jekyll配置文件 - 基于TUNA mirror-web架构
 title: "河南省教育科研网开源软件镜像站"
 desc: "河南省教育科研网(HERNET)开源软件镜像站，为河南省高校和科研院所提供开源软件镜像服务"
 url: "https://mirrors.ha.edu.cn"
+urlv4: "https://mirrors4.ha.edu.cn"
+urlv6: "https://mirrors6.ha.edu.cn"
 hostname: "mirrors.ha.edu.cn"
 baseurl: ""
 
-# 站点信息
 school: "河南省教育科研网"
 brand: "HERNET"
 author: "河南省教育科研网镜像站"
 email: "mirrors@ha.edu.cn"
 
-# 主站链接
 homelink: "https://www.ha.edu.cn"
 
-# 构建设置
 markdown: kramdown
 highlighter: rouge
 kramdown:
@@ -23,7 +21,6 @@ kramdown:
   syntax_highlighter_opts:
     css_class: 'codehilite'
 
-# 插件
 plugins:
   - jekyll-feed
   - jekyll-sitemap
@@ -31,17 +28,14 @@ plugins:
   - jekyll-relative-links
   - jekyll-titles-from-headings
 
-# 分页配置
 paginate: 10
 paginate_path: "/news/page:num/"
 
-# 集合配置
 collections:
   posts:
     output: true
     permalink: /:categories/:year/:month/:day/:title/
 
-# 排除文件
 exclude:
   - Gemfile
   - Gemfile.lock
@@ -57,11 +51,15 @@ exclude:
   - _src
   - Dockerfile.build
   - geninfo
+  - .github
+  - .gitignore
+  - .git
+  - .DS_Store
+  - Dockerfile.build
+  - nginx-*.conf
 
-# 静态文件
 static_files:
-  - tunasync.json
-  - status
+  - static
 
 # 默认值
 defaults:
@@ -78,12 +76,10 @@ defaults:
       layout: "news"
       category: "news"
 
-# 其他配置
 timezone: Asia/Shanghai
 safe: false
 incremental: false
 
-# 镜像站信息
 mirror_info:
   name: "河南省教育科研网镜像站"
   description: "为河南省高校和科研院所提供开源软件镜像服务"

@@ -50,6 +50,16 @@ description: "河南省教育科研网开源软件镜像站，为河南省高校
 	</div>
 </div>
 
+<!-- ISO 镜像下载区 -->
+<div class="iso-download-container my-5">
+	<h3 style="color: #0A77FF; font-weight: 700;"><i class="fas fa-download"></i> ISO 镜像下载区</h3>
+	<button id="show-iso-list" class="btn btn-primary mb-3">获取下载链接</button>
+	
+	<div id="iso-list" class="iso-list" style="display: none;">
+		<!-- ISO 镜像卡片将通过 JavaScript 动态生成 -->
+	</div>
+</div>
+
 <script src="/static/js/mirror-help.js"></script>
 <script>
 // 全局变量
@@ -132,9 +142,8 @@ function getNewMirrorBadge(mirrorName) {
 
 // 检查是否有帮助页面
 function hasHelpPage(mirrorName) {
-	// 这里可以根据实际情况检查是否存在对应的帮助页面
-	// 目前简单地认为所有镜像都可能有帮助页面
-	return true;
+	// 直接返回 false，帮助按钮由 checkAllHelpPages 检测后动态显示
+	return false;
 }
 
 // 获取镜像帮助页面URL
@@ -258,9 +267,7 @@ function getStatusBadge(status) {
 function renderMirrorTable(mirrors) {
 	const tbody = document.getElementById('mirror-table-body');
 	if (!tbody) return;
-	
 	tbody.innerHTML = '';
-	
 	mirrors.forEach(mirror => {
 		const row = document.createElement('tr');
 		row.className = 'mirror-row';
@@ -280,21 +287,14 @@ function renderMirrorTable(mirrors) {
 			mirrorUrl = `/${mirror.name}/`;
 		}
 		
-		// 检查是否有帮助页面
-		const hasHelp = hasHelpPage(mirror.name);
-		const helpIcon = hasHelp
-			? `<a href="${getMirrorHelpUrl(mirror.name)}" class="ms-2 text-primary mirror-help-link" title="使用帮助"><i class="fas fa-question-circle"></i></a>`
-			: '';
-		
-		// 获取新镜像标签
-		const newMirrorBadge = getNewMirrorBadge(mirror.name);
-		
+		// 帮助按钮初始不显示，鼠标悬停时检测
+		const helpIconId = `help-icon-${mirror.name}`;
 		row.innerHTML = `
 			<td data-label="镜像名称">
 				<strong><a href="${mirrorUrl}" class="text-decoration-none mirror-link" style="color: #0A77FF;" 
 					title="${getMirrorDescription(mirror.name)}" data-bs-toggle="tooltip" data-bs-placement="top">${mirror.name}</a></strong>
 				${newMirrorBadge}
-				${helpIcon}
+				<span id="${helpIconId}"></span>
 			</td>
 			<td data-label="大小"><small class="text-muted">${formatSize(mirror.size)}</small></td>
 			<td data-label="同步状态">${getStatusBadge(mirror.status)}</td>
@@ -302,9 +302,9 @@ function renderMirrorTable(mirrors) {
 		`;
 		tbody.appendChild(row);
 	});
-	
-	// 初始化 Bootstrap tooltips
 	initializeTooltips();
+	// 渲染后直接检测所有帮助页面
+	checkAllHelpPages();
 }
 
 // 初始化 tooltips
@@ -442,6 +442,74 @@ function enableMirrorSearch() {
 			searchInput.focus();
 		}
 	});
+}
+
+// 渲染完成后，异步检测所有帮助页面的可用性
+async function checkAllHelpPages() {
+	for (const mirror of mirrorsData) {
+		const mirrorName = mirror.name;
+		const helpIconId = `help-icon-${mirrorName}`;
+		const helpIconSpan = document.getElementById(helpIconId);
+		if (!helpIconSpan) continue;
+		try {
+			const resp = await fetch(`/help/${mirrorName}/`, { method: 'HEAD' });
+			if (resp.ok) {
+				helpIconSpan.innerHTML = `<a href="${getMirrorHelpUrl(mirrorName)}" class="ms-2 text-primary mirror-help-link" title="使用帮助"><i class="fas fa-question-circle"></i></a>`;
+			}
+		} catch (e) {
+			// 请求失败，保持帮助图标隐藏
+		}
+	}
+}
+
+// ISO 镜像下载区逻辑
+async function loadIsoInfo() {
+  try {
+    const res = await fetch('/static/isoinfo.json?_=' + Date.now());
+    if (!res.ok) throw new Error('ISO 镜像信息加载失败');
+    const data = await res.json();
+    renderIsoCards(data);
+  } catch (e) {
+    document.getElementById('iso-list').innerHTML = '<div class="alert alert-warning">ISO 镜像信息加载失败</div>';
+  }
+}
+
+function renderIsoCards(data) {
+  const container = document.getElementById('iso-list');
+  if (!container) return;
+  container.innerHTML = '';
+  data.forEach(distro => {
+    const card = document.createElement('div');
+    card.className = 'card mb-2';
+    card.innerHTML = `
+      <div class="card-body py-2">
+        <div class="fw-bold mb-1">${distro.distro} <span class="badge bg-secondary">${distro.category}</span></div>
+        <ul class="list-group list-group-flush">
+          ${distro.urls.map(item => `
+            <li class="list-group-item py-1 px-2">
+              <a href="${item.url}" target="_blank">${item.name}</a>
+            </li>
+          `).join('')}
+        </ul>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+const showIsoBtn = document.getElementById('show-iso-list');
+if (showIsoBtn) {
+  showIsoBtn.addEventListener('click', function() {
+    const isoList = document.getElementById('iso-list');
+    if (isoList.style.display === 'none' || isoList.style.display === '') {
+      loadIsoInfo();
+      isoList.style.display = 'block';
+      showIsoBtn.textContent = '收起下载链接';
+    } else {
+      isoList.style.display = 'none';
+      showIsoBtn.textContent = '获取下载链接';
+    }
+  });
 }
 
 // 页面加载时初始化

@@ -1,9 +1,9 @@
-/* 河南省教育科研网镜像站 - 全局样式 */
+/* 河南省教育科研网镜像站全局样式 */
 
-/* CSS变量定义 */
+/* 主题变量定义 */
 :root {
-    /* 主题色彩系统 */
-    --primary-color: #0A77FF;  /* 河南省教育科研网主题蓝色 */
+    /* 主题色 */
+    --primary-color: #0A77FF;
     --secondary-color: #6c757d;
     --success-color: #198754;
     --info-color: #0dcaf0;
@@ -12,37 +12,25 @@
     --light-color: #f8f9fa;
     --dark-color: #212529;
     --border-primary: #0A77FF;
-    
-    /* 页脚和导航专用色彩 */
     --footer-bg: #2c3e50;
     --nav-dropdown-bg: #2c3e50;
-    
-    /* 文字色彩 */
     --text-primary: #333333;
     --text-secondary: #666666;
     --text-light: #999999;
     --text-white: #ffffff;
-    
-    /* 间距系统 */
     --spacing-xs: 4px;
     --spacing-sm: 8px;
     --spacing-md: 16px;
     --spacing-lg: 24px;
     --spacing-xl: 32px;
     --spacing-xxl: 48px;
-    
-    /* 边框系统 */
     --border-radius: 4px;
     --border-radius-lg: 8px;
     --border-color: #e5e5e5;
     --border-color-light: #f0f0f0;
-    
-    /* 阴影系统 */
     --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
     --shadow-md: 0 2px 8px rgba(0,0,0,0.1);
     --shadow-lg: 0 4px 16px rgba(0,0,0,0.15);
-    
-    /* 字体系统 */
     --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
     --font-size-xs: 12px;
     --font-size-sm: 14px;
@@ -54,15 +42,11 @@
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
-    
-    /* 响应式断点 */
     --breakpoint-xs: 576px;
     --breakpoint-sm: 768px;
     --breakpoint-md: 992px;
     --breakpoint-lg: 1200px;
     --breakpoint-xl: 1400px;
-    
-    /* 动画系统 */
     --transition-base: all 0.3s ease;
     --transition-fast: all 0.15s ease;
     --transition-slow: all 0.5s ease;
@@ -98,7 +82,7 @@ body {
     font-weight: var(--font-weight-normal);
     line-height: 1.6;
     color: var(--text-primary);
-    background-color: #ffffff;
+    background-color: #fff;
     margin: 0;
     padding: 0;
     -webkit-text-size-adjust: 100%;
@@ -749,8 +733,6 @@ body {
     background: rgba(10,119,255,0.1);
     border-bottom: 2px solid var(--primary-color);
 }
-
-/* 其余优化略... */
 
 /* 确保所有列表项没有小圆点 */
 .nav-list,
