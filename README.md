@@ -29,13 +29,6 @@ git pull --recurse-submodules
 git submodule update --init --recursive --remote
 ```
 
-> **从旧版本升级**：老仓库里 `help/_posts/mirrorz-help-ha-transpiled` 子模块已删除。
-> 若本地还有残留，运行：
-> ```bash
-> git submodule deinit -f help/_posts/mirrorz-help-ha-transpiled 2>/dev/null || true
-> rm -rf help .git/modules/help
-> ```
-
 ## 三、本地构建
 
 ```bash
@@ -44,15 +37,6 @@ bundle install
 
 # 安装 Node 依赖（_helpz/generate.mjs 需要）
 npm install
-
-# 可选：复制 Hogan.js / hljs 的浏览器运行时到 static/js/
-node scripts/fetch-runtime.mjs
-# 下载 highlight.js 浏览器 bundle（必需）：
-curl -o static/js/highlight.min.js \
-  https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js
-# 可选：覆盖默认 hljs 主题
-curl -o static/css/hljs.css \
-  https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css
 
 # 启动本地预览
 bundle exec jekyll serve
@@ -63,20 +47,14 @@ bundle exec jekyll serve
 ## 四、Docker 构建
 
 ```bash
-# 先拉取最新 Dockerfile.build（修复了 bundler --frozen 报错）
 git pull --ff-only
 git submodule update --init --recursive
 
-# --no-cache 强制忽略可能残留的旧层
-docker build --no-cache -f Dockerfile.build -t ha-mirrors-web:build .
-docker run --rm -v "$(pwd)/_site":/data/_site ha-mirrors-web:build
+docker build -f Dockerfile.build -t ha-mirrors-web:build .
+docker run --rm -v "$(pwd)":/data ha-mirrors-web:build
 ```
 
 构建完成后静态文件在 `_site/`。
-
-> **若仍然报 `bundle install --frozen` 相关的 "list of sources changed"**：
-> 说明当前目录里的 `Dockerfile.build` 还是老版本（commit `bd0d44f` 之前）。
-> 执行 `git log -1 Dockerfile.build` 确认 Hash 应该是 `bd0d44f` 或之后。
 
 ## 五、目录结构
 

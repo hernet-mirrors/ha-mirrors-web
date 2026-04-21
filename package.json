@@ -6,9 +6,6 @@
   "engines": {
     "node": ">=18"
   },
-  "scripts": {
-    "fetch-runtime": "node scripts/fetch-runtime.mjs"
-  },
   "dependencies": {
     "hogan.js": "^3.0.2",
     "highlight.js": "^11.9.0",

@@ -10,7 +10,6 @@ vendor/
 # Node (for _helpz generate.mjs)
 node_modules/
 npm-debug.log*
-package-lock.json
 
 # Ruby
 *.gem
