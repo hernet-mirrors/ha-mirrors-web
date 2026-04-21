@@ -1,0 +1,12 @@
+/* Styles for the navigation list in the header */
+.nav-list > li > a,
+.nav-list > li > a.current-page,
+.nav-list > li > a:active,
+.nav-list > li > a:focus {
+  border-bottom: none !important;
+  box-shadow: none !important;
+  background: none !important;
+  outline: none !important;
+}
+
+/* Dark mode intentionally disabled — match www.ha.edu.cn (light-only). */

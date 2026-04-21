@@ -2,10 +2,12 @@
 layout: default
 ---
 
+<link rel="stylesheet" href="{{ '/static/css/page.css' | relative_url }}">
+
 <div class="row">
     <div class="col-md-12">
-        <div class="card shadow-sm" style="border: 1px solid #dee2e6;">
-            <div class="card-header" style="background-color: #0A77FF; color: white;">
+        <div class="card shadow-sm page-card">
+            <div class="card-header page-card-header">
                 <h1 class="h3 mb-0">{{ page.title }}</h1>
                 {% if page.description %}
                 <small class="text-white-50">{{ page.description }}</small>

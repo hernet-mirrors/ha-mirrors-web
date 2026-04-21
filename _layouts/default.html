@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
 	{% include head.html notArticle=true %}
-	<body style="background-color: #f8f9fa;">
+	<body>
+		{% if site.maintenance.enabled and page.url != '/maintenance/' %}
+		<script>
+			window.location.replace('{{ "/maintenance/" | relative_url }}');
+		</script>
+		{% else %}
 		{% include header.html %}
 		<main class="py-4">
 			<div class="container">
@@ -9,7 +14,22 @@
 			</div>
 		</main>
 		{% include footer.html %}
-		<!-- Main JavaScript -->
-		<script src="{{ '/static/js/main.js' | relative_url }}"></script>
+
+		<div class="modal fade" id="isoModal" tabindex="-1" aria-labelledby="isoModalLabel">
+		  <div class="modal-dialog modal-xl">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h5 class="modal-title" id="isoModalLabel">ISO 镜像下载</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			  </div>
+			  <div class="modal-body" id="iso-modal-body"></div>
+			</div>
+		  </div>
+		</div>
+		{% endif %}
+
+		<script src="{{ '/static/js/bootstrap.bundle.min.js' | relative_url }}" defer></script>
+		<script src="{{ '/static/js/main.js' | relative_url }}" defer></script>
+		<script src="{{ '/static/js/header.js' | relative_url }}" defer></script>
 	</body>
 </html>

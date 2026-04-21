@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'https://mirror.nyist.edu.cn/rubygems/'
 
 gem 'jekyll', '~> 4.3', '>= 4.3.3'
 
@@ -19,7 +19,7 @@ group :jekyll_plugins do
     gem 'jekyll-titles-from-headings', '~> 0.5.3'
     gem 'jekyll-redirect-from', '~> 0.16'
     
-    gem 'jekyll-minifier', '~> 0.1.10'
+    gem 'terser'
 end
 
 platforms :mingw, :x64_mingw, :mswin, :jruby do

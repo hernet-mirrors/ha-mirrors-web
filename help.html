@@ -1,12 +1,29 @@
 ---
 permalink: /help/
-layout: none
+layout: default
+title: 使用帮助
 ---
-{% assign first_help = site.categories["help"] | sort: 'mirrorid' | first %}
-<!DOCTYPE html>
-<html>
-<script>
-var redirect_to = window.location.protocol + "//" + window.location.host + "{{first_help.url}}";
-window.location = redirect_to;
-</script>
-</html>
+
+<link rel="stylesheet" href="{{ '/static/css/help.css' | relative_url }}">
+
+{% assign help_list = site.help | sort: 'zconf.name' %}
+{% if help_list and help_list.size > 0 %}
+  {% assign first_help = help_list | first %}
+  <meta http-equiv="refresh" content="0; url={{ first_help.url | relative_url }}">
+  <script>
+    window.location.replace("{{ first_help.url | relative_url }}");
+  </script>
+  <p class="text-center py-5">
+    正在跳转到 <a href="{{ first_help.url | relative_url }}">{{ first_help.zconf.name }} 使用帮助</a>…
+  </p>
+{% else %}
+  <div class="help-container">
+    <div class="card shadow-sm p-4 text-center help-card">
+      <h2 class="mb-3 help-title"><i class="fas fa-question-circle me-2"></i>暂无帮助文档</h2>
+      <p class="text-muted mb-0">如有疑问请联系管理员：<a href="mailto:{{ site.email }}">{{ site.email }}</a>。</p>
+      <div class="mt-4">
+        <a href="{{ '/' | relative_url }}" class="btn btn-primary">返回首页</a>
+      </div>
+    </div>
+  </div>
+{% endif %}

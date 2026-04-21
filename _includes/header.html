@@ -4,8 +4,8 @@
         <div class="header-wrapper">
             <nav id="navbar" class="navbar-fixed" role="navigation" aria-label="主导航">
                 <div class="header-left">
-                    <a href="/" aria-label="返回首页">
-                        <img src="/static/img/logomainb.svg" class="CompanyLogo" id="logo" alt="河南省教育科研网开源软件镜像站">
+                    <a href="{{ site.homelink | default: 'https://www.ha.edu.cn' }}" aria-label="前往河南省教育科研网主站" target="_blank" rel="noopener">
+                        <img src="{{ '/static/img/logomainb.svg' | relative_url }}" class="CompanyLogo" id="logo" alt="河南省教育科研网开源软件镜像站">
                     </a>
                 </div>
 

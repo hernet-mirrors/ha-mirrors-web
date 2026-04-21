@@ -1,0 +1,572 @@
+// Handles all logic for the mirror status page.
+// Wrapped in an IIFE so `let` declarations stay local and don't collide
+// with main.js's global `var mirrorDescriptions` etc. (which would raise
+// "Identifier already declared" at parse time).
+(function () {
+"use strict";
+
+let statusData = [];
+let diskData = [];
+let mirrorDescriptions = {};
+let newMirrors = [];
+let unlistedMirrors = [];
+let forceRedirectHelpMirrors = [];
+let labelMap = {};
+let autoRefreshInterval;
+let diskInfoRendered = false;
+
+// Load mirror description data from JSON file
+async function loadMirrorDescriptions() {
+  try {
+    const response = await fetch("/static/mirror-desc.json?_=" + Date.now());
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    // Convert array to object for quick lookup
+    if (data.mirror_desc && Array.isArray(data.mirror_desc)) {
+      data.mirror_desc.forEach((item) => {
+        mirrorDescriptions[item.name] = item.desc;
+      });
+      console.log(
+        "Status page: Loaded mirror descriptions:",
+        Object.keys(mirrorDescriptions).length
+      );
+    }
+
+    // Load new mirrors list
+    if (data.new_mirrors && Array.isArray(data.new_mirrors)) {
+      newMirrors = data.new_mirrors;
+      console.log("Status page: Loaded new mirrors:", newMirrors.length);
+    }
+
+    // Load unlisted mirrors
+    if (data.unlisted_mirrors && Array.isArray(data.unlisted_mirrors)) {
+      unlistedMirrors = data.unlisted_mirrors;
+      console.log("Status page: Loaded extra mirrors:", unlistedMirrors.length);
+    }
+
+    // Load mirrors that force redirect to help page
+    if (
+      data.force_redirect_help_mirrors &&
+      Array.isArray(data.force_redirect_help_mirrors)
+    ) {
+      forceRedirectHelpMirrors = data.force_redirect_help_mirrors;
+      console.log(
+        "Status page: Loaded force redirect mirrors:",
+        forceRedirectHelpMirrors.length
+      );
+    }
+
+    // Load label map
+    if (data.label_map && typeof data.label_map === "object") {
+      labelMap = data.label_map;
+      console.log(
+        "Status page: Loaded label map:",
+        Object.keys(labelMap).length
+      );
+    }
+  } catch (error) {
+    console.error("Status page: Failed to load mirror descriptions:", error);
+    mirrorDescriptions = {};
+    newMirrors = [];
+    unlistedMirrors = [];
+    forceRedirectHelpMirrors = [];
+    labelMap = {};
+  }
+}
+
+// Get mirror description
+function getMirrorDescription(mirrorName) {
+  return (
+    mirrorDescriptions[mirrorName] ||
+    `${mirrorName} open source software mirror`
+  );
+}
+
+// Check if a mirror is new
+function isNewMirror(mirrorName) {
+  return newMirrors.includes(mirrorName);
+}
+
+// Get the badge for a new mirror
+function getNewMirrorBadge(mirrorName) {
+  if (isNewMirror(mirrorName)) {
+    return '<span class="badge bg-warning text-dark ms-2"><i class="fas fa-star me-1"></i>New Mirror</span>';
+  }
+  return "";
+}
+
+// Check if a mirror has a help page
+function hasHelpPage(mirrorName) {
+  // This can be expanded to check for the actual existence of a help page
+  return true;
+}
+
+// Get the URL for a mirror's help page
+function getMirrorHelpUrl(mirrorName) {
+  return `/help/${mirrorName}/`;
+}
+
+// Custom sort function for mirrors: uppercase first (A-Z), then lowercase (a-z)
+function sortMirrorsByName(a, b) {
+  const nameA = a.name;
+  const nameB = b.name;
+
+  for (let i = 0; i < Math.min(nameA.length, nameB.length); i++) {
+    const charA = nameA[i];
+    const charB = nameB[i];
+
+    if (/[a-zA-Z]/.test(charA) && /[a-zA-Z]/.test(charB)) {
+      const isUpperA = /[A-Z]/.test(charA);
+      const isUpperB = /[A-Z]/.test(charB);
+
+      if (isUpperA && !isUpperB) return -1;
+      if (!isUpperA && isUpperB) return 1;
+
+      if (charA.toLowerCase() !== charB.toLowerCase()) {
+        return charA.toLowerCase().localeCompare(charB.toLowerCase());
+      }
+      if (charA !== charB) {
+        return charA.localeCompare(charB);
+      }
+    } else {
+      if (charA !== charB) {
+        return charA.localeCompare(charB);
+      }
+    }
+  }
+
+  return nameA.length - nameB.length;
+}
+
+// Smartly format storage size
+function formatStorageSize(kb) {
+  const bytes = kb * 1024;
+  const units = ["B", "KB", "MB", "GB", "TB", "PB"];
+  let size = bytes;
+  let unitIndex = 0;
+
+  while (size >= 1024 && unitIndex < units.length - 1) {
+    size /= 1024;
+    unitIndex++;
+  }
+
+  return size.toFixed(2) + " " + units[unitIndex];
+}
+
+// Fetch disk information
+async function fetchDiskData() {
+  if (diskInfoRendered) return;
+  diskInfoRendered = true;
+  try {
+    const res = await fetch("/static/disk.json?_=" + Date.now());
+    if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    const data = await res.json();
+
+    if (Array.isArray(data)) {
+      diskData = data;
+      console.log("Loaded disk data:", diskData.length, "disks");
+      renderDiskInfo();
+    } else {
+      console.error("disk.json format is incorrect:", data);
+      diskData = [];
+      renderDiskError();
+    }
+  } catch (e) {
+    console.error("Failed to load disk info:", e);
+    renderDiskError();
+  }
+}
+
+// Render disk information
+function renderDiskInfo() {
+  const diskContainer = document.getElementById("disk-info");
+  if (!diskData.length) {
+    diskContainer.innerHTML =
+      '<div class="text-center small text-muted">No disk data available</div>';
+    return;
+  }
+
+  let html = "";
+  let totalDiskTotal = 0;
+  let totalDiskUsed = 0;
+
+  diskData.forEach((disk, index) => {
+    const totalFormatted = formatStorageSize(disk.total_kb);
+    const usedFormatted = formatStorageSize(disk.used_kb);
+    const usagePercent = ((disk.used_kb / disk.total_kb) * 100).toFixed(1);
+    const freeFormatted = formatStorageSize(disk.total_kb - disk.used_kb);
+
+    totalDiskTotal += disk.total_kb;
+    totalDiskUsed += disk.used_kb;
+
+    let progressBarClass = "bg-success";
+    if (usagePercent > 90) {
+      progressBarClass = "bg-danger";
+    } else if (usagePercent >= 75) {
+      progressBarClass = "bg-warning";
+    }
+
+    html += `
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="small"><strong>Disk ${
+                      index + 1
+                    }</strong></span>
+                    <span class="small text-muted">${usagePercent}%</span>
+                </div>
+                <div class="progress mb-2" style="height: 8px;">
+                    <div class="progress-bar ${progressBarClass}" role="progressbar" 
+                         style="width: ${usagePercent}%; transition: none; animation: none;" aria-valuenow="${usagePercent}" 
+                         aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="small text-muted">
+                    <div>Used: ${usedFormatted}</div>
+                    <div>Total: ${totalFormatted}</div>
+                    <div>Free: ${freeFormatted}</div>
+                </div>
+            </div>
+        `;
+  });
+
+  if (diskData.length > 1) {
+    const totalFormatted = formatStorageSize(totalDiskTotal);
+    const usedFormatted = formatStorageSize(totalDiskUsed);
+    const usagePercent = ((totalDiskUsed / totalDiskTotal) * 100).toFixed(1);
+    const freeFormatted = formatStorageSize(totalDiskTotal - totalDiskUsed);
+
+    let progressBarClass = "bg-success";
+    if (usagePercent > 90) {
+      progressBarClass = "bg-danger";
+    } else if (usagePercent >= 75) {
+      progressBarClass = "bg-warning";
+    }
+
+    html += `
+            <hr class="my-3">
+            <div class="mb-2">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="small"><strong>Total</strong></span>
+                    <span class="small text-muted">${usagePercent}%</span>
+                </div>
+                <div class="progress mb-2" style="height: 10px;">
+                    <div class="progress-bar ${progressBarClass}" role="progressbar" 
+                         style="width: ${usagePercent}%; transition: none; animation: none;" aria-valuenow="${usagePercent}" 
+                         aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="small text-muted">
+                    <div>Used: ${usedFormatted}</div>
+                    <div>Total: ${totalFormatted}</div>
+                    <div>Free: ${freeFormatted}</div>
+                </div>
+            </div>
+        `;
+  }
+
+  diskContainer.innerHTML = html;
+}
+
+function renderDiskError() {
+  const diskContainer = document.getElementById("disk-info");
+  diskContainer.innerHTML = `
+        <div class="text-center small text-danger">
+            <i class="fas fa-exclamation-triangle"></i> Failed to load disk info
+        </div>
+    `;
+}
+
+// Fetch tunasync.json
+async function fetchStatusData() {
+  try {
+    const res = await fetch("/static/tunasync.json?_=" + Date.now());
+    if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    const data = await res.json();
+
+    if (Array.isArray(data)) {
+      statusData = data;
+      statusData.sort(sortMirrorsByName);
+    } else {
+      console.error("tunasync.json format is incorrect:", data);
+      statusData = [];
+    }
+
+    unlistedMirrors.forEach((unlistedMirror) => {
+      const existingMirror = statusData.find(
+        (m) => m.name === unlistedMirror.name
+      );
+      if (!existingMirror) {
+        const linkToMirror = statusData.find(
+          (m) => m.name === unlistedMirror.link_to
+        );
+
+        const virtualMirror = {
+          name: unlistedMirror.name,
+          url: unlistedMirror.url,
+          link_to: unlistedMirror.link_to,
+        };
+
+        if (linkToMirror) {
+          virtualMirror.size = linkToMirror.size || "Unknown";
+          virtualMirror.status = linkToMirror.status || "unknown";
+          virtualMirror.last_update_ts = linkToMirror.last_update_ts || 0;
+          virtualMirror.next_schedule_ts = linkToMirror.next_schedule_ts || 0;
+          virtualMirror.last_started_ts = linkToMirror.last_started_ts || 0;
+          virtualMirror.upstream = linkToMirror.upstream || "";
+          console.log(
+            `Status page: Mirror ${unlistedMirror.name} inherited sync info from ${unlistedMirror.link_to}`
+          );
+        } else {
+          virtualMirror.size = "Unknown";
+          virtualMirror.status = "unknown";
+          virtualMirror.last_update_ts = 0;
+          virtualMirror.next_schedule_ts = 0;
+          virtualMirror.last_started_ts = 0;
+          virtualMirror.upstream = "";
+          console.warn(
+            `Status page: Could not find main mirror ${unlistedMirror.link_to} for ${unlistedMirror.name}`
+          );
+        }
+
+        statusData.push(virtualMirror);
+      }
+    });
+
+    statusData.sort(sortMirrorsByName);
+
+    // Per user request: classify mirrors with no last update time as 'unknown'
+    statusData.forEach((item) => {
+      if (!item.last_update_ts || item.last_update_ts <= 0) {
+        item.status = "unknown";
+      }
+    });
+
+    console.log(
+      "Loaded mirror data:",
+      statusData.length,
+      "items (including extra mirrors)"
+    );
+    renderStatusTable();
+    updateSidebarStats();
+    updateRefreshTime();
+  } catch (e) {
+    console.error("Failed to load sync status:", e);
+    renderStatusError();
+  }
+}
+
+// Render the status table
+function renderStatusTable() {
+  const tbody = document.getElementById("status-table-body");
+  if (!statusData.length) {
+    tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4">No data available</td></tr>`;
+    return;
+  }
+
+  let html = "";
+  statusData.forEach((item) => {
+    const statusInfo = getStatusInfo(item.status);
+    html += `
+            <tr>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-database fa-lg me-3 text-primary"></i>
+                        <div>
+                            <div class="mirror-name" title="${getMirrorDescription(
+                              item.name
+                            )}" 
+                                 data-bs-toggle="tooltip" data-bs-placement="top">${
+                                   item.name || "Unknown"
+                                 }${getNewMirrorBadge(item.name)}</div>
+                            ${
+                              item.upstream
+                                ? `<small class="text-muted">${item.upstream}</small>`
+                                : ""
+                            }
+                        </div>
+                    </div>
+                </td>
+                <td style="width: 8%;">
+                    <span class="badge ${statusInfo.class}">
+                        <i class="${statusInfo.icon}"></i> ${statusInfo.text}
+                    </span>
+                </td>
+                <td class="fs-6" style="width: 15%; white-space: nowrap;">${formatTime(
+                  item.last_update_ts
+                )}</td>
+                <td class="fs-6" style="width: 15%; white-space: nowrap;">${formatTime(
+                  item.next_schedule_ts
+                )}</td>
+                <td class="fs-6" style="width: 15%; white-space: nowrap;">${formatTime(
+                  item.last_started_ts
+                )}</td>
+                <td class="fs-6 mirror-size" style="width: 10%; white-space: nowrap;">${
+                  item.size || "-"
+                }</td>
+            </tr>
+        `;
+  });
+  tbody.innerHTML = html;
+
+  initializeTooltips();
+}
+
+// Initialize Bootstrap tooltips
+function initializeTooltips() {
+  const existingTooltips = document.querySelectorAll(
+    '[data-bs-toggle="tooltip"]'
+  );
+  existingTooltips.forEach((el) => {
+    const tooltip = bootstrap.Tooltip.getInstance(el);
+    if (tooltip) {
+      tooltip.dispose();
+    }
+  });
+
+  const tooltipTriggerList = document.querySelectorAll(
+    '[data-bs-toggle="tooltip"]'
+  );
+  if (typeof bootstrap !== "undefined" && bootstrap.Tooltip) {
+    tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+      new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+  }
+}
+
+function renderStatusError() {
+  const tbody = document.getElementById("status-table-body");
+  tbody.innerHTML = `
+        <tr>
+            <td colspan="6" class="text-center py-4 text-danger">
+                <i class="fas fa-exclamation-triangle fa-2x mb-2"></i><br>
+                Failed to load sync status, please try again later.
+            </td>
+        </tr>
+    `;
+}
+
+function getStatusInfo(status) {
+  switch (status) {
+    case "success":
+      return {
+        class: "bg-success",
+        icon: "fas fa-check",
+        text: "成功",
+      };
+    case "syncing":
+      return {
+        class: "bg-warning",
+        icon: "fas fa-sync-alt fa-spin",
+        text: "同步中",
+      };
+    case "failed":
+    case "fail":
+    case "error":
+      return {
+        class: "bg-danger",
+        icon: "fas fa-times",
+        text: "失败",
+      };
+    case "paused":
+      return {
+        class: "bg-info",
+        icon: "fas fa-pause",
+        text: "暂停",
+      };
+    default: // unknown
+      return {
+        class: "bg-secondary",
+        icon: "fas fa-question",
+        text: "未知",
+      };
+  }
+}
+
+function updateSidebarStats() {
+  const successCount = statusData.filter(
+    (item) => item.status === "success"
+  ).length;
+  const syncingCount = statusData.filter(
+    (item) => item.status === "syncing"
+  ).length;
+  const failedCount = statusData.filter(
+    (item) =>
+      item.status === "failed" ||
+      item.status === "error" ||
+      item.status === "fail"
+  ).length;
+  const pausedCount = statusData.filter(
+    (item) => item.status === "paused"
+  ).length;
+  const totalCount = statusData.length;
+  const unknownCount =
+    totalCount - successCount - syncingCount - failedCount - pausedCount;
+
+  document.getElementById("sidebar-success").textContent = successCount;
+  document.getElementById("sidebar-syncing").textContent = syncingCount;
+  document.getElementById("sidebar-failed").textContent = failedCount;
+  document.getElementById("sidebar-paused").textContent = pausedCount;
+  document.getElementById("sidebar-unknown").textContent = unknownCount;
+  document.getElementById("sidebar-total").textContent = totalCount;
+}
+
+function updateRefreshTime() {
+  const now = new Date();
+  document.getElementById("last-refresh-time").textContent =
+    now.toLocaleString("zh-CN");
+}
+
+function formatTime(ts) {
+  if (!ts || ts <= 0) return "Unknown";
+  if (ts < 0) return "No schedule";
+
+  try {
+    const date = new Date(ts * 1000);
+    return (
+      date.getFullYear() +
+      "-" +
+      String(date.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(date.getDate()).padStart(2, "0") +
+      " " +
+      String(date.getHours()).padStart(2, "0") +
+      ":" +
+      String(date.getMinutes()).padStart(2, "0")
+    );
+  } catch (e) {
+    return "Unknown";
+  }
+}
+
+function refreshStatus() {
+  fetchStatusData();
+}
+
+function setupAutoRefresh() {
+  const checkbox = document.getElementById("auto-refresh");
+  if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+  if (checkbox.checked) {
+    autoRefreshInterval = setInterval(() => {
+      fetchStatusData();
+    }, 10000); // Refresh every 10 seconds
+  }
+}
+
+// Initial load
+document.addEventListener("DOMContentLoaded", function () {
+  loadMirrorDescriptions().then(() => {
+    fetchStatusData();
+  });
+  fetchDiskData();
+  document
+    .getElementById("refresh-status")
+    .addEventListener("click", refreshStatus);
+  document
+    .getElementById("auto-refresh")
+    .addEventListener("change", setupAutoRefresh);
+  setupAutoRefresh();
+});
+
+})();

@@ -1,0 +1,32 @@
+/* Styles for the mirror list title and search bar */
+.mirror-list-container h3 {
+  color: #0A77FF;
+  font-weight: 700;
+}
+
+.mirror-search .form-control {
+  border-color: #0A77FF;
+}
+
+/* Styles for the loading spinner */
+#mirror-loading .spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Styles for the mirror table */
+.mirror-table {
+  border: none;
+}
+
+.mirror-table th:nth-of-type(1) { width: 40%; }
+.mirror-table th:nth-of-type(2) { width: 20%; }
+.mirror-table th:nth-of-type(3) { width: 20%; }
+.mirror-table th:nth-of-type(4) { width: 20%; }
+
+/* Styles for mirror links */
+.mirror-link {
+    color: #0A77FF;
+}
+
+/* Dark mode intentionally disabled — match www.ha.edu.cn (light-only). */

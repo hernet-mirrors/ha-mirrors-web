@@ -2,13 +2,15 @@
 <html lang="zh-Hans">
 {% capture metaDesc %}{{ page.title }}{% endcapture %}
 	{% include head.html cattitle="新闻公告" metaDesc=metaDesc %}
-<body style="background-color: #f8f9fa;">
+	<link rel="stylesheet" href="{{ '/static/css/news.css' | relative_url }}">
+	<link rel="stylesheet" href="{{ '/static/css/news-layout.css' | relative_url }}">
+<body>
 	{% include header.html %}
 	<div class="container mt-4">
 		<div class="row">
 			<div class="col-md-8">
 				<article class="news-article">
-					<h1>{{ page.title }}</h1>
+					<div class="news-title h1 mb-3">{{ page.title }}</div>
 					<div class="news-meta mb-3">
 						<small class="text-muted">
 							<i class="fas fa-calendar"></i> {{ page.date | date: "%Y年%m月%d日" }}
@@ -21,19 +23,19 @@
 						{{ content }}
 					</div>
 				</article>
-				
+
 				<nav class="mt-4">
 					<div class="row">
 						<div class="col-6">
 							{% if page.previous %}
-							<a href="{{ page.previous.url }}" class="btn btn-outline-primary">
+							<a href="{{ page.previous.url | relative_url }}" class="btn btn-outline-primary">
 								<i class="fas fa-chevron-left"></i> 上一篇
 							</a>
 							{% endif %}
 						</div>
 						<div class="col-6 text-end">
 							{% if page.next %}
-							<a href="{{ page.next.url }}" class="btn btn-outline-primary">
+							<a href="{{ page.next.url | relative_url }}" class="btn btn-outline-primary">
 								下一篇 <i class="fas fa-chevron-right"></i>
 							</a>
 							{% endif %}
@@ -41,14 +43,14 @@
 					</div>
 				</nav>
 			</div>
-			
+
 			<div class="col-md-4">
 				<div class="sidebar">
 					<h5>最新公告</h5>
 					<ul class="list-unstyled">
 						{% for news in site.categories.news limit: 5 %}
 						<li class="mb-2">
-							<a href="{{ news.url }}" class="{% if news.url == page.url %}fw-bold{% endif %}">
+							<a href="{{ news.url | relative_url }}" class="{% if news.url == page.url %}fw-bold{% endif %}">
 								{{ news.title }}
 							</a>
 							<br>
@@ -56,14 +58,14 @@
 						</li>
 						{% endfor %}
 					</ul>
-					<a href="/news/" class="btn btn-outline-secondary btn-sm">查看所有公告</a>
+					<a href="{{ '/news/' | relative_url }}" class="btn btn-outline-secondary btn-sm">查看所有公告</a>
 				</div>
 			</div>
 		</div>
 	</div>
 	{% include footer.html %}
-	
-	<!-- 自定义JS -->
-	<script src="{{ '/static/js/main.js' | relative_url }}"></script>
+
+	<script src="{{ '/static/js/bootstrap.bundle.min.js' | relative_url }}" defer></script>
+	<script src="{{ '/static/js/header.js' | relative_url }}" defer></script>
 </body>
 </html>

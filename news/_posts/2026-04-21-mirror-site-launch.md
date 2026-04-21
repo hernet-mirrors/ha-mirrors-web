@@ -1,7 +1,7 @@
 ---
 layout: news
 title: "河南省教育科研网镜像站正式上线"
-date: 2025-077-01 10:00:00 +0800
+date: 2026-04-21 15:00:00 +0800
 author: "Hernet Stuff"
 category: news
 tags: [公告, 镜像站]

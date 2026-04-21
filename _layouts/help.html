@@ -1,60 +1,76 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
-{% capture metaDesc %}{{ page.mirrorid }} 使用帮助{% endcapture %}
+{% capture metaDesc %}{{ page.zconf.name }} 使用帮助{% endcapture %}
 	{% include head.html cattitle="镜像站使用帮助" metaDesc=metaDesc %}
-<body style="background-color: #f8f9fa;">
+	<link rel="stylesheet" href="{{ '/static/css/help.css' | relative_url }}?v=4">
+	<link rel="stylesheet" href="{{ '/static/css/hljs.css' | relative_url }}?v=4">
+<body>
 	{% include header.html %}
 
-{% if page.redirect_help_id %}
-{% assign redirect_to_page = site.categories["help"] | where_exp:"p", "p.mirrorid == page.redirect_help_id" %}
+{% if page.zconf.redirect_help_id %}
+{% assign redirect_to_page = site.help | where_exp:"p", "p.zconf.name == page.zconf.redirect_help_id" %}
+{% if redirect_to_page and redirect_to_page.size > 0 %}
 <script>
-	var redirect_to = window.location.protocol + "//" + window.location.host + "{{redirect_to_page[0].url}}";
-	window.location = redirect_to;
+	window.location.replace("{{ redirect_to_page[0].url | relative_url }}");
 </script>
 {% endif %}
+{% endif %}
 
-{% assign help_pages = site.categories["help"] | sort: 'mirrorid' %}
+{% assign help_pages = site.help | sort: 'zconf.name' %}
 <div id="help-page">
-	<div class="container">
-	  <div class="row">
-		  <div class="d-none d-md-block col-md-3">
-				<ul class="nav nav-pills flex-column" id="help-nav">
+	<div class="container py-4">
+		<div class="row">
+			<nav class="d-none d-md-block col-md-3 col-lg-3 col-xl-2 pe-0" aria-label="镜像目录">
+				<ul class="nav nav-pills flex-column shadow-sm rounded bg-white" id="help-nav">
 					{% for h in help_pages %}
-					<li class="nav-item" id="toc-{{h.mirrorid}}">
-						<a href="{{h.url}}" class="nav-link{% if h.mirrorid == page.mirrorid or h.redirect_help_id == page.mirrorid %} active{%endif%}">
-							{{h.mirrorid}}
+					<li class="nav-item" id="toc-{{ h.zconf.name }}">
+						<a href="{{ h.url | relative_url }}" class="nav-link px-3 py-2{% if h.zconf.name == page.zconf.name or h.zconf.redirect_help_id == page.zconf.name %} active{% endif %}">
+							{{ h.zconf.name }}
 						</a>
 					</li>
 					{% endfor %}
 				</ul>
-			</div>
-			<div class="col-md-9">
-				<div class="d-block d-md-none">
-					<form class="form-inline">
-						<div class="form-group">
-							<label>选择帮助条目: </label>
-							<select class="form-control" id="help-select">
+			</nav>
+			<main class="col-md-9 col-lg-9 col-xl-10">
+				<div class="d-block d-md-none mb-3">
+					<form class="form-inline" onsubmit="return false;">
+						<div class="form-group w-100">
+							<label class="me-2" for="help-select">选择帮助条目:</label>
+							<select class="form-select" id="help-select">
 								{% for h in help_pages %}
-								<option data-help-url="{{h.url}}"{% if h.mirrorid == page.mirrorid%} selected{%endif%} id="toc-{{h.mirrorid}}">{{h.mirrorid}}</option>
+								<option data-help-url="{{ h.url | relative_url }}"{% if h.zconf.name == page.zconf.name %} selected{% endif %} id="toc-m-{{ h.zconf.name }}">{{ h.zconf.name }}</option>
 								{% endfor %}
 							</select>
 						</div>
 					</form>
 				</div>
-				<div id="help-content">
+				<div id="help-content" class="bg-white shadow-sm rounded p-4" data-helpz-not-ready>
 					{{ content }}
 				</div>
-			</div>
-	  </div>
+			</main>
+		</div>
 	</div>
 </div>
 
 {% include footer.html %}
 
-<!-- 自定义JS -->
-<script src="{{ '/static/js/main.js' | relative_url }}"></script>
-</body>
-<script type="text/x-ha-help-mirrorid">
-	{{page.mirrorid | jsonify}}
+<script type="text/x-tuna-zhelp-tmpls" id="zhelp-tmpls"></script>
+<script>
+  (function () {
+    var el = document.getElementById("zhelp-tmpls");
+    el["zhelp-tmpls"] = [{{ page.templates | join: "," }}];
+    el["zhelp-name"]  = {{ page.zconf.name | jsonify }};
+  })();
+  window.jekyllHelp = {
+    tunasyncPath:    {{ "/static/tunasync.json"    | relative_url | jsonify }},
+    mirrorDescPath:  {{ "/static/mirror-desc.json" | relative_url | jsonify }},
+    mirrorzHelpLink: {{ site.mirrorz_help_link | default: "https://help.mirrors.cernet.edu.cn/" | jsonify }}
+  };
 </script>
+<script src="{{ '/static/js/bootstrap.bundle.min.js' | relative_url }}" defer></script>
+<script src="{{ '/static/js/header.js' | relative_url }}" defer></script>
+<script src="{{ '/static/js/hogan.min.js' | relative_url }}" defer></script>
+<script src="{{ '/static/js/highlight.min.js' | relative_url }}" defer></script>
+<script src="{{ '/static/js/help-runtime.js' | relative_url }}?v=3" defer></script>
+</body>
 </html>

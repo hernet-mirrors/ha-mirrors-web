@@ -1,0 +1,60 @@
+/* Styles for the news page */
+
+/* 确保新闻页面内容不被固定页眉遮挡 */
+.news-container {
+    margin-top: 20px;
+}
+
+/* 新闻页面标题样式 - 避免被页眉遮挡 */
+.news-container h1,
+.news-container h2,
+.news-container h3 {
+    padding-top: 20px;
+    margin-top: -20px; /* 负边距补偿 padding，保持视觉效果一致 */
+}
+
+/* 新闻文章页面的主标题特殊处理 */
+.news-article h1 {
+    padding-top: 30px;
+    margin-top: -10px;
+    scroll-margin-top: 100px; /* 确保锚点跳转时不被页眉遮挡 */
+}
+
+/* 通用文章标题样式 - 避免被固定页眉遮挡 */
+article h1,
+.post-title {
+    padding-top: 30px;
+    margin-top: -10px;
+    scroll-margin-top: 100px;
+}
+
+/* Hide elements by default */
+#news-list {
+    display: none;
+}
+
+#news-empty {
+    display: none;
+}
+
+#news-pagination {
+    display: none;
+}
+
+/* Style for individual news items */
+.news-item.border-primary {
+    border-width: 2px; /* Make the border of important news items thicker */
+}
+
+/* Style for news item titles */
+.news-item .card-title a {
+    color: #343a40; /* Default title color */
+    transition: color 0.2s; /* Smooth color transition on hover */
+}
+
+/* Style for news item titles on hover */
+.news-item .card-title a:hover {
+    color: #0A77FF; /* Title color on hover */
+}
+
+/* Dark mode intentionally disabled — match www.ha.edu.cn (light-only). */

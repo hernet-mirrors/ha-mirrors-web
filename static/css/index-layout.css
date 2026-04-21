@@ -1,0 +1,38 @@
+/* Styles for the index layout */
+.index-card {
+    border: 1px solid #dee2e6;
+}
+
+.index-card-header {
+    background-color: #0A77FF;
+    color: white;
+}
+
+.sidebar-content {
+    max-width: 340px;
+    margin: 0 auto;
+}
+
+.news-link {
+    color: #333;
+}
+
+.news-title {
+    color: #0A77FF;
+}
+
+.more-link {
+    color: #0A77FF;
+}
+
+#iso-list {
+    display: none;
+}
+
+.contact-link {
+    color: #0A77FF;
+}
+
+.friendly-link {
+    color: #0A77FF;
+}

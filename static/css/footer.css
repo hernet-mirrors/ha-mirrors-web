@@ -1,0 +1,232 @@
+/* Footer — aligned with 河南省教育科研网 主站 */
+.footer {
+  background: #232e39;
+  color: #fff;
+  padding: 40px 0 0 0;
+  font-size: 16px;
+}
+
+.footer-container { margin-bottom: 32px; }
+
+.footer-left {
+  margin-bottom: 32px;
+  padding-left: 100px;
+}
+
+.footer-heading {
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 18px;
+}
+
+.footer-contact-info {
+  margin-bottom: 8px;
+  color: #a5acba;
+}
+
+.footer-contact-info-last {
+  margin-bottom: 18px;
+  color: #a5acba;
+}
+
+.footer-social-heading {
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.footer-social-icons-container {
+  margin-bottom: 24px;
+  position: relative;
+  padding-left: 20px;
+}
+
+.footer-social-icons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.social-icon-wrapper { position: relative; }
+
+.footer-logo-container {
+  margin-bottom: 0;
+  padding-left: 20px;
+}
+
+.footer-logo {
+  height: 38px;
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.footer-nav-column { margin-bottom: 20px; }
+
+.footer-category-title {
+  color: #fff !important;
+  text-decoration: none !important;
+  font-weight: 600;
+  display: block;
+}
+
+.footer-category-title:hover {
+  color: #0A77FF !important;
+  text-decoration: none !important;
+}
+
+.footer-submenu { display: none !important; }
+
+.footer-sub-link {
+  color: #a5acba !important;
+  text-decoration: none !important;
+  display: block;
+  padding: 2px 0;
+  transition: var(--transition-base);
+}
+
+.footer-sub-link:hover {
+  color: #0A77FF !important;
+  text-decoration: none !important;
+}
+
+footer a:hover { text-decoration: none !important; }
+
+.tooltip-container {
+  position: absolute;
+  left: 50%;
+  bottom: 110%;
+  top: auto;
+  transform: translateX(-50%);
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  min-width: 0;
+  z-index: 100;
+  transition: opacity 0.2s;
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.footer-social-icons .tooltip-container img {
+  width: auto;
+  height: auto;
+  max-width: 160px;
+  max-height: 160px;
+  display: block;
+}
+
+.footer-bottom {
+  border-top: 1px solid #444;
+  padding: 20px 0;
+  font-size: 14px;
+  color: #a5acba;
+}
+
+.footer-bottom-text {
+  text-align: center;
+  margin: 0;
+}
+
+.footer-bottom-text a {
+  color: #a5acba;
+}
+
+.footer-bottom-text a:hover {
+  color: #0A77FF;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  footer .col-lg-4,
+  footer .col-lg-8,
+  footer .col-lg-2,
+  footer .col-lg-6,
+  footer .col-lg-12 {
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+
+  footer .row > div { margin-bottom: 24px !important; }
+  footer .row { flex-wrap: wrap !important; }
+
+  footer .col-lg-4 { padding-left: 15px !important; }
+  footer .col-lg-12 { text-align: center !important; }
+
+  .col-6.col-lg-2 {
+    width: 50% !important;
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+    margin-bottom: 20px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .col-6.col-lg-2 {
+    width: 100% !important;
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 15px !important;
+    text-align: center !important;
+  }
+
+  .footer-category-title {
+    font-size: 16px !important;
+    padding: 8px 0 !important;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+  .col-6.col-lg-2 {
+    width: 50% !important;
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+    text-align: center !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  footer .col-lg-4 { padding-left: 30px !important; }
+  footer .col-6 { width: 50% !important; }
+}
+
+@media (max-width: 576px) {
+  footer { font-size: 14px !important; }
+
+  footer .col-lg-4 { padding-left: 10px !important; }
+
+  .footer-social-icons { gap: 8px !important; }
+
+  .footerImage {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  footer .col-lg-12 {
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+  }
+
+  .col-6.col-lg-2 {
+    width: 50% !important;
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+    margin-bottom: 12px !important;
+    text-align: center !important;
+    padding: 0 5px !important;
+  }
+
+  .footer-category-title {
+    font-size: 14px !important;
+    padding: 6px 0 !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .footer-submenu { display: block !important; }
+  footer .col-lg-4 { padding-left: 100px !important; }
+}

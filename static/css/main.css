@@ -167,25 +167,16 @@ p {
     line-height: 1.6;
 }
 
-/* 容器和布局 */
 .container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1600px;
     margin: 0 auto;
     padding: 0 var(--spacing-md);
 }
 
-@media (min-width: 768px) {
-    .container {
-        padding: 0 var(--spacing-lg);
-    }
-}
-
-@media (min-width: 1200px) {
-    .container {
-        padding: 0 var(--spacing-xl);
-    }
-}
+@media (min-width: 768px)  { .container { padding: 0 var(--spacing-lg); } }
+@media (min-width: 1200px) { .container { padding: 0 var(--spacing-xl); } }
+@media (min-width: 1800px) { .container { max-width: 1720px; } }
 
 /* 页面布局 */
 .main-content {
@@ -230,6 +221,11 @@ p {
     border-bottom: 1px solid #d0d0d0;
 }
 
+/* 新增：向下滚动时隐藏页眉 */
+.header.header-hidden {
+    transform: translateY(-100%);
+}
+
 /* 为固定导航栏添加顶部间距 */
 body {
     padding-top: 80px;
@@ -240,7 +236,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: var(--spacing-md) var(--spacing-lg);
-    max-width: 1200px;
+    max-width: 1600px;
     margin: 0 auto;
     min-height: 60px;
     gap: var(--spacing-lg);
@@ -450,50 +446,35 @@ body {
 
 /* 响应式设计 - 防止文字换行 */
 @media (max-width: 1400px) {
-    .nav-list {
-        gap: var(--spacing-sm);
-    }
-    
-    .nav-list li {
-        margin: 0 2px;
-    }
-    
     .nav-list li a {
-        padding: 10px var(--spacing-sm);
-        font-size: 13px;
-        white-space: nowrap;
+        padding: 10px 14px;
     }
 }
 
 @media (max-width: 1200px) {
-    .nav-list {
-        gap: 5px;
-    }
-    
-    .nav-list li {
-        margin: 0 1px;
-    }
-    
     .nav-list li a {
-        padding: var(--spacing-sm) var(--spacing-xs);
-        font-size: var(--font-size-xs);
-        white-space: nowrap;
+        padding: 8px 12px;
+    }
+    .nav-list li {
+        margin: 0 4px;
     }
 }
 
 @media (max-width: 992px) {
     .nav-list li a {
-        padding: var(--spacing-xs) var(--spacing-xs);
-        font-size: 11px;
-        white-space: nowrap;
+        padding: 6px 10px;
+    }
+    .nav-list li {
+        margin: 0 2px;
     }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 850px) {
     .nav-list li a {
-        padding: 5px 3px;
-        font-size: 10px;
-        white-space: nowrap;
+        padding: 5px 8px;
+    }
+    .nav-list li {
+        margin: 0 1px;
     }
 }
 
@@ -717,13 +698,89 @@ body {
         flex-direction: column;
         display: none !important;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        border-top: 1px solid #e5e5e5;
+        border-top: 1.5px solid #e5e5e5;
+        border-radius: 0 0 12px 12px;
         z-index: 1002;
-        max-height: 80vh;
-        overflow-y: auto;
+        max-height: 90vh;
+        overflow-y: visible;
+        padding: 0.2rem 0 0.2rem 0;
+        margin: 0;
+        transition: box-shadow 0.2s, border-radius 0.2s;
+        align-items: center;
+        justify-content: flex-start;
     }
-    .nav-list.active {
+    .nav-list.open {
         display: flex !important;
+        animation: navListFadeIn 0.25s;
+    }
+    @keyframes navListFadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .nav-list li {
+        margin: 0;
+        width: 100%;
+        text-align: center;
+    }
+    .nav-list li a {
+        padding: 0.85rem 0.5rem;
+        font-size: 1rem; /* 与镜像列表表格一致 */
+        border-radius: 6px;
+        color: #222;
+        background: none;
+        border: none;
+        box-shadow: none;
+        transition: background 0.15s, color 0.15s;
+        font-weight: 500;
+        text-align: center;
+        display: inline-block;
+        width: auto;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+    .nav-list li a.current-page,
+    .nav-list li a:active,
+    .nav-list li a:focus {
+        color: #0A77FF !important;
+        background: rgba(10,119,255,0.08);
+        border-bottom: none;
+        box-shadow: none;
+    }
+    .nav-list li a:hover {
+        background: rgba(10,119,255,0.12);
+        color: #0A77FF !important;
+    }
+    .nav-list .submenu {
+        position: static;
+        background: #f8f9fa !important;
+        color: #222 !important;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        padding: 0.2rem 0 0.2rem 0;
+        margin: 0.2rem 0 0.2rem 0;
+        display: none;
+        opacity: 1;
+        transform: none;
+        min-width: 0;
+    }
+    .nav-list li.has-submenu.open > .submenu {
+        display: block;
+    }
+    .nav-list .submenu li a {
+        padding: 0.7rem 0.5rem;
+        color: #0A77FF !important;
+        background: none !important;
+        border-bottom: none;
+        font-size: 0.98rem;
+        border-radius: 4px;
+        text-align: center;
+        width: auto;
+        margin: 0 auto;
+    }
+    .nav-list .submenu li a:hover {
+        background: rgba(10,119,255,0.08);
+        color: #0056b3 !important;
     }
 }
 
@@ -751,14 +808,12 @@ body {
 /* 动态文字大小 */
 @media (max-width: 1400px) {
     .nav-list li a {
-        font-size: 13px;
         padding: 10px 14px;
     }
 }
 
 @media (max-width: 1200px) {
     .nav-list li a {
-        font-size: 12px;
         padding: 8px 12px;
     }
     
@@ -769,7 +824,6 @@ body {
 
 @media (max-width: 992px) {
     .nav-list li a {
-        font-size: 11px;
         padding: 6px 10px;
     }
     
@@ -780,7 +834,6 @@ body {
 
 @media (max-width: 850px) {
     .nav-list li a {
-        font-size: 10px;
         padding: 5px 8px;
     }
     
@@ -1080,35 +1133,7 @@ body {
 }
 
 /* 移动端适配 */
-@media (max-width: 768px) {
-    .mirror-table thead {
-        display: none;
-    }
-    .mirror-table, .mirror-table tbody, .mirror-table tr, .mirror-table td {
-        display: block;
-        width: 100%;
-    }
-    .mirror-table tr {
-        margin-bottom: 1.2rem;
-        border-bottom: 2px solid #ececec;
-        background: none !important;
-    }
-    .mirror-table td {
-        padding: 0.5rem 0.2rem;
-        font-size: 1rem;
-        border: none;
-        background: none !important;
-        position: relative;
-    }
-    .mirror-table td:before {
-        content: attr(data-label);
-        display: block;
-        font-size: 0.92em;
-        color: #888;
-        margin-bottom: 0.2em;
-        font-weight: 500;
-    }
-}
+/* 已移除 .mirror-table 在 max-width: 768px 下的响应式样式，保持表格布局一致 */
 
 /* 响应式布局优化 */
 @media (max-width: 991.98px) {
@@ -1252,409 +1277,67 @@ body {
     }
 }
 
-/* 深色模式 */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bs-body-bg: #121212;
-        --bs-body-color: #ffffff;
-    }
-    
-    /* 确保页眉在深色模式下仍为白色 */
-    .header {
-        background-color: #ffffff !important;
-        background: #ffffff !important;
-    }
-    
-    .header.scrolled {
-        background-color: #ffffff !important;
-        background: #ffffff !important;
-    }
-    
-    .header:hover {
-        background-color: #ffffff !important;
-        background: #ffffff !important;
-    }
-    
-    .bg-light {
-        background-color: #1e1e1e !important;
-    }
-    
-    .text-muted {
-        color: #aaaaaa !important;
-    }
-    
-    .card {
-        background-color: #1e1e1e;
-        border-color: var(--text-primary);
-    }
-    
-    .table {
-        --bs-table-bg: #1e1e1e;
-        --bs-table-color: #ffffff;
-    }
-    
-    .modal-content {
-        background-color: #1e1e1e;
-        color: #ffffff;
-    }
-}
+/* Dark mode intentionally disabled — match www.ha.edu.cn (light-only). */
 
-/* 右侧边栏固定样式 - 优化垂直居中效果 */
+/* 右侧边栏固定样式 - 与 status 页面一致 */
 @media (min-width: 992px) {
     .sidebar-container {
         position: sticky;
-        top: 50%;
-        transform: translateY(-50%);
-        height: fit-content;
-        align-self: flex-start;
+        top: 80px; /* header 高度 */
         z-index: 100;
-        /* 确保在视窗范围内 */
-        max-height: 100vh;
-        overflow: visible;
-        /* 平滑过渡效果 */
-        transition: var(--transition-slow);
-    }
-    
-    .sidebar-content {
-        position: relative;
-        width: 100%;
-        overflow-y: auto;
-        max-height: calc(100vh - 200px); /* 调整为考虑白色固定导航栏的高度 */
-        padding-right: var(--spacing-md);
-        /* 添加平滑过渡效果 */
-        transition: var(--transition-base);
-        /* 优化滚动 */
-        scroll-behavior: smooth;
-    }
-    
-    /* 当内容高度超过视窗时，调整定位策略 */
-    .sidebar-container.tall-content {
-        position: sticky;
-        top: 140px; /* 调整为考虑白色固定导航栏的高度 */
-        transform: none;
         align-self: flex-start;
-        /* 切换动画 */
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        max-height: calc(100vh - 80px);
+        height: auto;
+        overflow: visible; /* 只由 .sidebar-content 控制滚动 */
+        transition: var(--transition-slow);
+        will-change: transform;
+        backface-visibility: hidden;
+        animation: slideInRight 0.6s ease-out;
     }
-    
-    /* 优化滚动条样式 */
+    .sidebar-content {
+        overflow-y: auto;
+        max-height: calc(100vh - 120px); /* header+footer 预留 */
+        padding-right: var(--spacing-md);
+        scroll-behavior: smooth;
+        will-change: scroll-position;
+        -webkit-overflow-scrolling: touch;
+    }
+    /* 滚动条样式 */
     .sidebar-content::-webkit-scrollbar {
         width: 8px;
     }
-    
     .sidebar-content::-webkit-scrollbar-track {
         background: rgba(0, 0, 0, 0.05);
         border-radius: 4px;
         margin: 4px 0;
     }
-    
     .sidebar-content::-webkit-scrollbar-thumb {
         background: rgba(10, 119, 255, 0.3);
         border-radius: 4px;
         transition: background-color 0.3s ease;
     }
-    
     .sidebar-content::-webkit-scrollbar-thumb:hover {
         background: rgba(10, 119, 255, 0.5);
     }
-    
-    /* 确保卡片间距合理 */
+    /* 卡片间距和动画 */
     .sidebar-content .card {
         margin-bottom: 1rem;
-        /* 添加微妙的阴影过渡 */
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        animation: fadeInUp 0.6s ease-out;
+        animation-fill-mode: both;
     }
-    
     .sidebar-content .card:last-child {
         margin-bottom: 0;
     }
-    
-    /* 卡片悬停效果优化 */
     .sidebar-content .card:hover {
         transform: translateY(-3px) scale(1.02);
         box-shadow: 0 8px 25px rgba(10, 119, 255, 0.15);
     }
-}
-
-/* 添加右侧边栏的入场动画 */
-@media (min-width: 992px) {
-    .sidebar-container {
-        animation: slideInRight 0.6s ease-out;
-    }
-    
-    .sidebar-content .card {
-        animation: fadeInUp 0.6s ease-out;
-        animation-fill-mode: both;
-    }
-    
-    .sidebar-content .card:nth-child(1) {
-        animation-delay: 0.1s;
-    }
-    
-    .sidebar-content .card:nth-child(2) {
-        animation-delay: 0.2s;
-    }
-    
-    .sidebar-content .card:nth-child(3) {
-        animation-delay: 0.3s;
-    }
-}
-
-/* 滑入动画 */
-@keyframes slideInRight {
-    from {
-        opacity: 0;
-        transform: translateX(30px) translateY(-50%);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0) translateY(-50%);
-    }
-}
-
-/* 针对tall-content状态的动画调整 */
-@media (min-width: 992px) {
+    /* tall-content 状态只调整 top */
     .sidebar-container.tall-content {
+        top: 140px;
+        /* 其余属性与 .sidebar-container 保持一致 */
         animation: slideInRightTop 0.6s ease-out;
-    }
-}
-
-@keyframes slideInRightTop {
-    from {
-        opacity: 0;
-        transform: translateX(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-/* 优化滚动性能 */
-@media (min-width: 992px) {
-    .sidebar-container {
-        will-change: transform;
-        backface-visibility: hidden;
-    }
-    
-    .sidebar-content {
-        will-change: scroll-position;
-        -webkit-overflow-scrolling: touch;
-    }
-}
-
-/* 页眉额外样式优化 */
-.header:hover {
-    background-color: #ffffff !important;
-    background: #ffffff !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-/* 确保卡片动画效果 */
-.sidebar-content .card {
-    transition: all 0.3s ease;
-    border: 1px solid #dee2e6;
-}
-
-.sidebar-content .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* 调整页面布局防止重叠 */
-@media (min-width: 992px) {
-    #mirrors {
-        position: relative;
-        z-index: 1;
-    }
-}
-
-/* 最终确保页眉白色背景的强制样式 */
-.header,
-.header.scrolled,
-.header:hover,
-.header:focus,
-.header:active,
-.header.active {
-    background-color: #ffffff !important;
-    background: #ffffff !important;
-    background-image: none !important;
-}
-
-/* 确保所有子元素也不会影响页眉背景 */
-.header * {
-    background-color: transparent !important;
-    background: transparent !important;
-}
-
-.header #navbar,
-.header .navbar-fixed,
-.header .header-left,
-.header .navbarCenter {
-    background-color: transparent !important;
-    background: transparent !important;
-}
-
-/* 特别确保在所有主题和模式下页眉都是白色 */
-[data-bs-theme="dark"] .header,
-[data-bs-theme="auto"] .header,
-body[data-theme="dark"] .header,
-body[data-theme="auto"] .header {
-    background-color: #ffffff !important;
-    background: #ffffff !important;
-}
-
-@media (max-width: 768px) {
-    .nav-list {
-        background: var(--nav-dropdown-bg) !important;
-    }
-    .nav-list li a {
-        color: var(--text-white) !important;
-        background: transparent !important;
-        border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-    .nav-list li a.current-page {
-        color: var(--primary-color) !important;
-        background: rgba(10,119,255,0.12) !important;
-    }
-    .nav-list .submenu {
-        background: var(--nav-dropdown-bg) !important;
-        border-left: 3px solid #34495e;
-        display: none;
-    }
-    .has-submenu.active > .submenu {
-        display: block !important;
-    }
-    .nav-list .submenu li a {
-        color: var(--text-white) !important;
-        background: var(--nav-dropdown-bg) !important;
-        border-bottom: 1px solid rgba(255,255,255,0.12);
-    }
-    .nav-list .submenu li a:hover {
-        background: #34495e !important;
-        color: var(--text-white) !important;
-    }
-}
-
-/* 页脚微信图标样式 */
-.footer-social-icons {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.social-icon-wrapper {
-    position: relative;
-    display: inline-block;
-}
-
-.footerImage {
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    transition: var(--transition-base);
-    border-radius: var(--border-radius);
-    opacity: 0.8;
-    display: block;
-}
-
-.footerImage:hover {
-    opacity: 1;
-    transform: scale(1.1);
-}
-
-.tooltip-container {
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    pointer-events: none;
-    opacity: 0;
-}
-
-.tooltip-container.show {
-    opacity: 1 !important;
-    pointer-events: auto;
-    transform: translateX(-50%) translateY(-2px);
-}
-
-.tooltip-container img {
-    max-width: 120px;
-    max-height: 120px;
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-lg);
-    background: white;
-    padding: 4px;
-    display: block;
-}
-
-/* 兼容旧样式 */
-#imageContainer,
-#imageContainerOne,
-#imageContainerTwo {
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    pointer-events: none;
-}
-
-#imageContainer.show,
-#imageContainerOne.show,
-#imageContainerTwo.show {
-    opacity: 1 !important;
-    pointer-events: auto;
-    transform: translateX(-50%) translateY(-2px);
-}
-
-#image,
-#imageOne,
-#imageTwo {
-    max-width: 120px;
-    max-height: 120px;
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-lg);
-    background: white;
-    padding: 4px;
-    display: block;
-}
-
-/* 响应式设计 - 页脚社交图标 */
-@media (max-width: 767px) {
-    .footer-social-icons {
-        justify-content: flex-start;
-        gap: 8px;
-    }
-    
-    .footerImage {
-        width: 36px;
-        height: 36px;
-    }
-    
-    .tooltip-container img {
-        max-width: 100px;
-        max-height: 100px;
-    }
-}
-
-@media (max-width: 480px) {
-    .footer-social-icons {
-        gap: 6px;
-    }
-    
-    .footerImage {
-        width: 32px;
-        height: 32px;
-    }
-    
-    .tooltip-container img {
-        max-width: 90px;
-        max-height: 90px;
     }
 }
 

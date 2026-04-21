@@ -1,33 +1,26 @@
 ---
 permalink: /fancy-index/before.html
 title: Index of {{url}}
-jsEntry: fancyIndex
 ---
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hans">
 {% capture metaDesc %}Index of {% raw %}{{url}}{% endraw %}{% endcapture %}
 	{% include head.html metaDesc=metaDesc notArticle=true %}
+	<link rel="stylesheet" href="{{ '/static/css/fancyindex.css' | relative_url }}">
 	<body>
-		{% include nav.html %}
-
-		<div id="mirrors">
-			<div class="spacing hidden-xs"></div>
-
+		{% include header.html %}
+		<main class="py-4">
 			<div class="container">
 				<div class="row">
 					{% raw %}
-					<div class="col-12 table-responsive">
-						<div class="row">
-							<div class="col-lg-8 col-12">
-								<h3><i class="fas fa-folder-open"></i> Index of <span id="path">{{url}}</span></h3>
-								<nav aria-label="breadcrumb">
-									<ol class="breadcrumb bg-light" id="breadcrumb-nav">
-										<!-- Breadcrumb will be populated by JavaScript -->
-									</ol>
-								</nav>
-							</div><!--
-							--><div class="col-lg-4 col-12 d-flex align-items-end justify-content-start justify-content-lg-end">
-								<div id="now-browsing-mirror"></div>
+					<div class="col-md-12 table-responsive" id="mirror-list">
+						<div>
+							<div class="col-md-8 col-xs-12 vbottom"><h3>{% endraw %}<i class="fas fa-cube"></i>{% raw %} Index of <span id="path">{{url}}</span></h3></div><!--
+							--><div class="col-md-4 col-xs-12 text-right-md text-left-xs vbottom" id="mirror-info-section">
+								<div id="mirror-update-info" style="display: none;">
+									<strong>Last Update:</strong> <span id="mirror-last-update">--</span>
+									<span id="mirror-status-badge" class="label label-status hidden-xs" style="margin-left: 10px; display: none;">--</span>
+								</div>
 							</div>
 						</div>
 					{% endraw %}

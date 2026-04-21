@@ -2,23 +2,99 @@
 layout: page
 title: 新闻公告
 description: 查看镜像站的最新动态、维护通知和重要公告
+permalink: /news/
 ---
 
-<div class="container my-5">
-  <h1 class="mb-4">新闻公告</h1>
-  <div class="list-group">
-    {% assign news_list = site.categories.news | sort: 'date' | reverse %}
-    {% for news in news_list limit:3 %}
-    <a href="{{ news.url }}" class="list-group-item list-group-item-action flex-column align-items-start">
-      <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">{{ news.title }}</h5>
-        <small class="text-muted">{{ news.date | date: "%Y-%m-%d" }}</small>
-      </div>
-      <p class="mb-1 text-truncate">{{ news.excerpt | strip_html | truncate: 80 }}</p>
-    </a>
-    {% endfor %}
-  </div>
-  <div class="text-end mt-4">
-    <a href="/news/" class="btn btn-outline-primary">查看更多公告</a>
-  </div>
+<link rel="stylesheet" href="{{ '/static/css/news.css' | relative_url }}">
+
+<div class="row mb-4">
+    <div class="col-md-8">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-newspaper text-primary me-2 fa-2x"></i>
+            <div>
+                <h3 class="mb-0">新闻公告</h3>
+                <small class="text-muted">了解镜像站的最新动态和重要通知</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="input-group">
+            <input type="text" class="form-control" id="news-search" placeholder="搜索新闻...">
+            <button class="btn btn-outline-secondary" type="button">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
 </div>
+
+<!-- 分类筛选 -->
+<div class="mb-4">
+    <div class="btn-group" role="group" aria-label="新闻分类">
+        <input type="radio" class="btn-check" name="category-filter" id="all-news" value="all" checked>
+        <label class="btn btn-outline-primary" for="all-news">
+            <i class="fas fa-list"></i> 全部
+        </label>
+        
+        <input type="radio" class="btn-check" name="category-filter" id="announcements" value="news">
+        <label class="btn btn-outline-primary" for="announcements">
+            <i class="fas fa-bullhorn"></i> 公告
+        </label>
+        
+        <input type="radio" class="btn-check" name="category-filter" id="maintenance" value="maintenance">
+        <label class="btn btn-outline-primary" for="maintenance">
+            <i class="fas fa-wrench"></i> 维护
+        </label>
+        
+        <input type="radio" class="btn-check" name="category-filter" id="features" value="feature">
+        <label class="btn btn-outline-primary" for="features">
+            <i class="fas fa-star"></i> 新功能
+        </label>
+    </div>
+</div>
+
+<!-- 新闻列表 -->
+<div class="news-container">
+    <div id="news-loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">加载中...</span>
+        </div>
+        <p class="mt-3 text-muted">正在加载新闻列表...</p>
+    </div>
+    
+    <div id="news-list">
+        <!-- 新闻列表将在这里动态生成 -->
+    </div>
+    
+    <div id="news-empty" class="text-center py-5" style="display: none;">
+        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+        <h5 class="text-muted">没有找到相关新闻</h5>
+        <p class="text-muted">尝试调整搜索条件或选择其他分类</p>
+    </div>
+</div>
+
+<!-- 分页 -->
+<nav aria-label="新闻分页" id="news-pagination" style="display: none;">
+    <ul class="pagination justify-content-center">
+        <!-- 分页将在这里动态生成 -->
+    </ul>
+</nav>
+
+<script id="news-data" type="application/json">
+[
+  {% assign news_list = site.categories.news | sort: 'date' | reverse %}
+  {% for news in news_list %}
+  {
+    "title": {{ news.title | jsonify }},
+    "excerpt": {{ news.excerpt | strip_html | truncate: 80 | jsonify }},
+    "date": {{ news.date | date: "%Y-%m-%d" | jsonify }},
+    "author": {{ news.author | default: "管理员" | jsonify }},
+    "category": {{ news.category | default: "news" | jsonify }},
+    "tags": [{% for tag in news.tags %}{{ tag | jsonify }}{% unless forloop.last %}, {% endunless %}{% endfor %}],
+    "url": {{ news.url | jsonify }},
+    "important": {{ news.important | default: false | jsonify }}
+  }{% unless forloop.last %},{% endunless %}
+  {% endfor %}
+]
+</script>
+
+<script src="{{ '/static/js/news.js' | relative_url }}?v=3" defer></script>

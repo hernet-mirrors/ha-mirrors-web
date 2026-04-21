@@ -1,0 +1,11 @@
+/* Styles for the page layout */
+.page-card {
+    border: 1px solid #dee2e6;
+}
+
+.page-card-header {
+    background-color: #0A77FF;
+    color: white;
+}
+
+/* Dark mode intentionally disabled — match www.ha.edu.cn (light-only). */

@@ -1,16 +1,146 @@
 ---
 permalink: /fancy-index/after.html
 ---
-					{% raw %}
 					</div>
-					{% endraw %}
 				</div>
 			</div><!--/container -->
-		</div><!--/mirrors -->
+		</main>
 
 		{% include footer.html %}
 
 	</body>
+	<script src="{{ '/static/js/bootstrap.bundle.min.js' | relative_url }}" defer></script>
+	<script src="{{ '/static/js/jquery-3.6.0.min.js' | relative_url }}" defer></script>
+	<script src="{{ '/static/js/main.js' | relative_url }}" defer></script>
+	<script src="{{ '/static/js/header.js' | relative_url }}" defer></script>
+	<script>
+		// Enhanced initialization with better error handling and debugging
+		let initAttempts = 0;
+		const maxInitAttempts = 20;
+		
+		function attemptInitialization() {
+			initAttempts++;
+			console.log(`FancyIndex after.html initialization attempt ${initAttempts}`);
+			
+			const list = document.getElementById("list");
+			const path = document.getElementById("path");
+			
+			console.log('Elements found:', { 
+				list: !!list, 
+				path: !!path, 
+				tbody: list ? list.getElementsByTagName('tbody').length : 0 
+			});
+			
+			if (list && path) {
+				// Add body class immediately
+				document.body.classList.add('fancy-index-page');
+				console.log('Added fancy-index-page class');
+				
+				// Ensure list has table classes
+				if (!list.classList.contains('table')) {
+					list.className = 'table table-hover';
+					console.log('Added table classes to list');
+				}
+				
+				// Add additional functionality
+				try {
+					addBackToTopButton();
+					initStickyHeader();
+					console.log('Additional UI components initialized');
+				} catch (e) {
+					console.error('Error adding UI components:', e);
+				}
+				
+				return true;
+			}
+			
+			// Retry if not ready and under max attempts
+			if (initAttempts < maxInitAttempts) {
+				setTimeout(attemptInitialization, 150);
+			} else {
+				console.error('FancyIndex initialization failed after maximum attempts');
+			}
+		}
+		
+		// Add back to top button functionality
+		function addBackToTopButton() {
+			// Check if button already exists
+			if (document.querySelector('.back-to-top')) {
+				return;
+			}
+			
+			const backToTopBtn = document.createElement('button');
+			backToTopBtn.className = 'back-to-top';
+			backToTopBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
+			backToTopBtn.onclick = function() {
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			};
+			document.body.appendChild(backToTopBtn);
+			
+			// Show/hide button based on scroll position
+			window.addEventListener('scroll', function() {
+				if (window.scrollY > 300) {
+					backToTopBtn.classList.add('show');
+				} else {
+					backToTopBtn.classList.remove('show');
+				}
+			});
+		}
+		
+		// Initialize sticky header behavior
+		function initStickyHeader() {
+			const header = document.querySelector('header') || document.querySelector('.navbar');
+			if (header) {
+				// 确保页眉在 fancyindex 页面正常显示
+				header.classList.remove('header-hidden');
+				header.style.position = 'relative';
+				header.style.top = '0';
+				header.style.transform = 'none';
+			}
+		}
+		
+		// Start initialization based on document state
+		console.log('Document readyState:', document.readyState);
+		
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', attemptInitialization);
+		} else {
+			// Document already loaded, try immediately
+			attemptInitialization();
+		}
+		
+		// Fallback initialization on window load
+		window.addEventListener('load', function() {
+			console.log('Window load event fired');
+			setTimeout(attemptInitialization, 500);
+		});
+		
+		// Emergency fallback - force initialization after 3 seconds
+		setTimeout(function() {
+			console.log('Emergency fallback initialization');
+			const list = document.getElementById("list");
+			const path = document.getElementById("path");
+			
+			if (list && path) {
+				document.body.classList.add('fancy-index-page');
+				if (!list.classList.contains('table')) {
+					list.className = 'table table-hover';
+				}
+				
+				try {
+					addBackToTopButton();
+					initStickyHeader();
+				} catch (e) {
+					console.error('Emergency fallback error:', e);
+				}
+			}
+		}, 3000);
+	</script>
+	<style>
+		#list tbody td, #path{
+			font-family: 'Fira Code Retina', 'Fira Code', 'Fira Mono', 'JetBrains Mono', 'Source Code Pro', 'Consolas', 'Menlo', 'Monaco', monospace;
+		}
+	</style>
 </html>
 <!--
 	vim: ts=2 sts=2 sw=2 noexpandtab

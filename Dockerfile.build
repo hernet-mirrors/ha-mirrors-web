@@ -6,18 +6,34 @@ WORKDIR /data
 
 RUN \
     apt-get update && \
-    apt-get install --no-install-recommends -y locales && \
-    apt-get clean
+    apt-get install --no-install-recommends -y \
+    locales \
+    curl \
+    ca-certificates \
+    gnupg2 && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install --no-install-recommends -y nodejs && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-COPY Gemfile Gemfile.lock /data/
+COPY Gemfile Gemfile.lock package.json package-lock.json* /data/
 
 RUN \
     gem install bundler -v "$(sed --silent -r '/BUNDLED WITH/,+1 {s/^[\t ]+//; p}' Gemfile.lock | tail -n +2)" && \
-    bundle install --frozen
+    bundle config set --local frozen false && \
+    bundle config set --local deployment false && \
+    bundle install && \
+    npm install --no-audit --no-fund
 
-ENV LANG en_US.UTF-8
-ENV JEKYLL_ENV production
+ENV LANG=en_US.UTF-8
+ENV JEKYLL_ENV=production
 
 COPY . /data
+
+# Fetch Hogan.js / highlight.js browser runtimes into static/js so the
+# help pages serve them from our own origin (no CDN dependency).
+# Non-fatal: if every mirror fails the build still completes; the help
+# runtime falls back to disabled live rendering.
+RUN sh scripts/fetch-assets.sh || echo "WARN: help runtime assets not fetched; live template rendering disabled"
 
 CMD ["bundle", "exec", "jekyll", "build"]

@@ -34,7 +34,16 @@ paginate_path: "/news/page:num/"
 collections:
   posts:
     output: true
-    permalink: /:categories/:year/:month/:day/:title/
+    permalink: /:categories/:title/
+
+# mirrorz-docs 风格帮助页面（由 _plugins/helpz.rb 构建）
+helpz:
+  language: zh
+  dir: _helpz
+  generator: generate.mjs
+  enabled_pages_file: enabled.yaml
+  collection:
+    label: help
 
 exclude:
   - Gemfile
@@ -49,26 +58,29 @@ exclude:
   - package-lock.json
   - _vite.config.mjs
   - _src
+  - _helpz
   - Dockerfile.build
   - geninfo
+  - scripts
+  - node_modules
   - .github
   - .gitignore
   - .git
   - .DS_Store
-  - Dockerfile.build
   - nginx-*.conf
 
 static_files:
   - static
 
-# 默认值
+# Jekyll defaults: applied to the helpz-generated collection.
 defaults:
   - scope:
-      path: "help/_posts"
-      type: "posts"
+      path: ""
+      type: help
     values:
-      layout: "help"
-      category: "help"
+      layout: help
+      permalink: /help/:name/
+      excerpt_separator: ""
   - scope:
       path: "news/_posts"
       type: "posts"
@@ -79,6 +91,14 @@ defaults:
 timezone: Asia/Shanghai
 safe: false
 incremental: false
+
+# 维护模式配置
+maintenance:
+  enabled: false
+  start_time: "2025年7月12日 2:00"
+  end_time: "2025年7月13日 02:00"
+  reason: "镜像站硬件维护"
+  contact_email: "mirrors@ha.edu.cn"
 
 mirror_info:
   name: "河南省教育科研网镜像站"

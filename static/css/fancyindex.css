@@ -1,213 +1,150 @@
-/* Fancy Index Styles - TUNA Style */
-#list tbody td,
-#path {
-    font-family: var(--bs-font-monospace);
+/* Fancy Index Styles */
+#mirror-list {
+    margin-top: 20px;
 }
 
 #list {
-    margin-top: 1rem;
+    margin-top: 20px;
+}
+
+/* Remove top padding for fancy index pages */
+body:has(#list) {
+    padding-top: 0 !important;
+}
+
+/* Fallback for browsers that don't support :has() */
+.fancy-index-page {
+    padding-top: 0 !important;
+}
+
+/* Ensure header displays correctly on fancy index pages */
+.fancy-index-page .header {
+    position: relative !important;
+    transform: none !important;
+    top: 0 !important;
 }
 
 #list tbody td {
-    padding: 8px 12px;
-    border-style: none;
-    font-size: 12pt;
+    font-family: 'Fira Code Retina', 'Fira Code', 'Fira Mono', 'JetBrains Mono', 'Source Code Pro', 'Consolas', 'Menlo', 'Monaco', monospace;
+    vertical-align: middle;
 }
 
-#list thead th {
-    background: #f8f9fa;
-    font-weight: 600;
-    border-bottom: 2px solid #dee2e6;
-    padding: 12px;
+#path {
+    font-family: 'Fira Code Retina', 'Fira Code', 'Fira Mono', 'JetBrains Mono', 'Source Code Pro', 'Consolas', 'Menlo', 'Monaco', monospace;
+    color: #0A77FF;
 }
 
-#list tbody tr:hover {
-    background-color: rgba(0, 123, 255, 0.075);
-}
-
-/* File type icons styling */
-.fas {
-    margin-right: 8px;
+#list tbody tr td:first-child a i {
     width: 16px;
     text-align: center;
+    margin-right: 8px;
 }
 
-.fa-level-up-alt {
-    color: #6c757d;
+/* Responsive layout for fancy index header */
+.vbottom {
+    display: inline-block;
+    vertical-align: bottom;
+    float: none;
 }
 
-.fa-folder {
-    color: #ffc107;
+.text-right-md {
+    text-align: right;
 }
 
-.fa-file-archive {
-    color: #dc3545;
+@media (max-width: 768px) {
+    .text-right-md {
+        text-align: left !important;
+    }
+    
+    .text-left-xs {
+        text-align: left;
+    }
 }
 
-.fa-compact-disc {
-    color: #6f42c1;
+/* Mirror status labels in fancy index */
+.label {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: bold;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
 }
 
-.fa-file-text {
-    color: #17a2b8;
+.label-status {
+    margin-left: 10px;
 }
 
-.fa-file-pdf {
-    color: #dc3545;
+.label-success {
+    background-color: #5cb85c;
 }
 
-.fa-download {
-    color: #28a745;
+.label-warning {
+    background-color: #f0ad4e;
 }
 
-.fa-file {
-    color: #6c757d;
+.label-danger {
+    background-color: #d9534f;
 }
 
-/* Path styling */
-#path {
-    font-weight: 600;
-    color: #495057;
+.label-info {
+    background-color: #5bc0de;
 }
 
-/* Breadcrumb styling */
-#breadcrumb-nav {
-    margin-bottom: 0.5rem;
-    padding: 0.25rem 0.75rem;
-    font-size: 0.875rem;
+.label-default {
+    background-color: #777;
 }
 
-#breadcrumb-nav .breadcrumb-item a {
-    color: #007bff;
-    text-decoration: none;
+/* Hidden on extra small screens */
+@media (max-width: 767px) {
+    .hidden-xs {
+        display: none !important;
+    }
 }
 
-#breadcrumb-nav .breadcrumb-item a:hover {
-    color: #0056b3;
-    text-decoration: underline;
+/* Sticky header for fancy index */
+.fancy-index-header {
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+    background-color: #fff;
+    border-bottom: 1px solid #dee2e6;
+    transition: all 0.3s ease;
 }
 
-#breadcrumb-nav .breadcrumb-item.active {
-    color: #6c757d;
-}
-
-/* Mirror info card styling */
-#now-browsing-mirror .card {
-    border-width: 1px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#now-browsing-mirror .card-title {
-    color: #495057;
-    font-weight: 600;
-}
-
-#now-browsing-mirror .fas.fa-cube {
-    color: #007bff;
-    margin-right: 6px;
-}
-
-#now-browsing-mirror .badge-primary {
+/* Back to top button */
+.back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
     background-color: #007bff;
     color: white;
-    font-size: 0.7em;
-    padding: 2px 6px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
 }
 
-#now-browsing-mirror .badge-secondary {
-    background-color: #6c757d;
-    color: white;
-    font-size: 0.7em;
-    padding: 2px 6px;
+.back-to-top.show {
+    opacity: 0.8;
+    visibility: visible;
 }
 
-#now-browsing-mirror .btn-outline-info {
-    border-color: #17a2b8;
-    color: #17a2b8;
-    padding: 2px 6px;
-    font-size: 0.75em;
-    border-width: 1px;
-}
-
-#now-browsing-mirror .btn-outline-info:hover {
-    background-color: #17a2b8;
-    color: white;
-}
-
-/* Table responsive styling */
-.table-responsive {
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    #list tbody td {
-        padding: 6px 8px;
-        font-size: 11pt;
-    }
-    
-    #now-browsing-mirror {
-        margin-top: 10px;
-    }
-    
-    #now-browsing-mirror .card {
-        max-width: 100% !important;
-    }
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-    #list thead th {
-        background: #495057;
-        color: white;
-        border-bottom-color: #6c757d;
-    }
-    
-    #list tbody tr:hover {
-        background-color: rgba(255, 255, 255, 0.075);
-    }
-    
-    #path {
-        color: #e9ecef;
-    }
-    
-    #breadcrumb-nav {
-        background-color: #495057 !important;
-    }
-    
-    #breadcrumb-nav .breadcrumb-item a {
-        color: #17a2b8;
-    }
-    
-    #breadcrumb-nav .breadcrumb-item a:hover {
-        color: #1dd1e6;
-    }
-    
-    #breadcrumb-nav .breadcrumb-item.active {
-        color: #adb5bd;
-    }
-    
-    #now-browsing-mirror .card {
-        background-color: #343a40;
-        border-color: #495057;
-    }
-    
-    #now-browsing-mirror .card-title {
-        color: #e9ecef;
-    }
-    
-    #now-browsing-mirror .card-text {
-        color: #adb5bd !important;
-    }
-    
-    #now-browsing-mirror .btn-outline-info {
-        border-color: #17a2b8;
-        color: #17a2b8;
-    }
-    
-    #now-browsing-mirror .btn-outline-info:hover {
-        background-color: #17a2b8;
-        color: white;
-    }
+.back-to-top:hover {
+    opacity: 1;
+    background-color: #0056b3;
+    transform: translateY(-2px);
 }
