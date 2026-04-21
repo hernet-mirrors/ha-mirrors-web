@@ -13,7 +13,7 @@
 					<div class="news-title h1 mb-3">{{ page.title }}</div>
 					<div class="news-meta mb-3">
 						<small class="text-muted">
-							<i class="fas fa-calendar"></i> {{ page.date | date: "%Y年%m月%d日" }}
+							<i class="fas fa-calendar"></i> {{ page.date | date: "%Y年%m月%d日 %H:%M" }}
 							{% if page.author %}
 							<i class="fas fa-user ms-3"></i> {{ page.author }}
 							{% endif %}
