@@ -3,6 +3,16 @@ body {
     background-color: #f8f9fa;
 }
 
+/* News detail uses Bootstrap .container without .bg-white; give it a light
+   card look in light mode so main.css's dark override can re-color it. */
+body > .container.mt-4 {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 1.5rem !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
 .news-article,
 .news-content,
 .news-title {
@@ -15,21 +25,28 @@ body {
 .sidebar .list-unstyled a:hover { text-decoration: underline; }
 
 @media (prefers-color-scheme: dark) {
-    body { background-color: #1a1d24; }
+    body { background-color: #1a1d24 !important; }
+
+    body > .container.mt-4 {
+        background: #2C3444 !important;
+        border: 1px solid #3a4154;
+        box-shadow: none;
+    }
 
     .news-article,
-    .news-content { background: transparent; color: var(--text-primary); }
+    .news-content { background: transparent !important; color: var(--text-primary); }
 
     .news-title { color: var(--text-primary); }
     .news-meta .text-muted,
     .news-article .text-muted { color: var(--text-secondary) !important; }
 
     .sidebar {
-        background: #2C3444;
+        background: #374155;
         border: 1px solid #3a4154;
         border-radius: 8px;
         padding: 1rem;
     }
+    .sidebar h5 { color: var(--text-primary); }
     .sidebar a { color: var(--primary-color); }
     .sidebar a.fw-bold { color: var(--primary-hover); }
     .sidebar small.text-muted { color: var(--text-secondary) !important; }

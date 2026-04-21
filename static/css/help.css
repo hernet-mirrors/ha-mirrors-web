@@ -382,7 +382,7 @@ pre.codeblock code,
 /* ---------- Dark mode (aligned with www.ha.edu.cn palette) ---------- */
 @media (prefers-color-scheme: dark) {
   #help-content {
-    background: #2C3444;
+    background: #2C3444 !important;
     color: var(--text-primary);
   }
 
@@ -400,9 +400,10 @@ pre.codeblock code,
 
   /* pre 内 code 保持透明，避免双重背景色 */
   .codeblock code,
-  #help-content pre code {
+  #help-content pre code,
+  #help-content pre.codeblock code {
     background: transparent !important;
-    color: var(--text-primary);
+    color: var(--text-primary) !important;
   }
 
   #help-content .z-tmpl {
@@ -428,17 +429,47 @@ pre.codeblock code,
   #help-content td,
   #help-content th { border-color: #3a4154; }
 
-  .zhelp-form { background: #374155; }
+  /* The zhelp-form bar: only the toggles/selects render — no border on the
+     form-control wrapper around the switch, no black pill behind the input. */
+  .zhelp-form { background: #374155; border: 0; }
+
   .zhelp-field-label { color: #c9ced6; }
 
+  .zhelp-field .form-switch.form-check,
+  .zhelp-field-control.form-switch,
+  .zhelp-field-control.form-switch.form-control {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
   .zhelp-field-control.form-select,
-  .zhelp-field-control.form-control {
+  .zhelp-field-control.form-control:not(.form-switch):not(.form-check) {
     background-color: #1a1d24;
     color: var(--text-primary);
     border-color: #3a4154;
   }
 
-  .codeblock { background: #1a1d24; color: var(--text-primary); }
+  /* Bare checkbox switch: dim track when off, blue track when on. */
+  .zhelp-field .form-check-input {
+    background-color: #1a1d24;
+    border-color: #4a5568;
+  }
+  .zhelp-field .form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+  .zhelp-field .form-check-input:focus {
+    box-shadow: 0 0 0 2px rgba(67, 126, 247, 0.25);
+    border-color: var(--primary-color);
+  }
+
+  pre.codeblock,
+  #help-content pre.codeblock,
+  .codeblock {
+    background: #1a1d24 !important;
+    color: var(--text-primary) !important;
+  }
 
   .codeblock .btn-clipboard {
     background: #2C3444;
