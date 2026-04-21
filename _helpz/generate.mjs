@@ -282,7 +282,17 @@ for (const page of enablePages) {
   }
 
   mdContent.push("{% endraw %}");
-  mdContent.unshift(`---\n${JSON.stringify({ zconf: conf, templates }, null, 2)}\n---`);
+  // Pin the URL to the original-case page name so help links from the
+  // mirror list (which uses the tunasync-reported name verbatim) match
+  // the generated page URL. Without this, Jekyll's permalink `:name`
+  // token lowercases — e.g. AOSP.md -> /help/aosp/.
+  mdContent.unshift(
+    `---\n${JSON.stringify(
+      { zconf: conf, templates, permalink: `/help/${conf.name}/` },
+      null,
+      2
+    )}\n---`
+  );
 
   fs.writeFileSync(path.join(outputDir, `${page}.md`), mdContent.join("\n"), "utf-8");
   console.log(`helpz: generated ${page}.md`);
