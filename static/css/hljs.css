@@ -56,4 +56,39 @@
 .hljs-emphasis      { font-style: italic; }
 .hljs-strong        { font-weight: 700; }
 
-/* Dark mode intentionally disabled — match www.ha.edu.cn (light-only). */
+/* Dark mode (same palette as main dark theme) */
+@media (prefers-color-scheme: dark) {
+  .hljs {
+    background: #1a1d24;
+    color: #F9F9F9;
+  }
+
+  .hljs-comment,
+  .hljs-quote        { color: #8a9bab; }
+  .hljs-keyword,
+  .hljs-selector-tag,
+  .hljs-subst        { color: #ff7b72; }
+  .hljs-string,
+  .hljs-doctag,
+  .hljs-regexp       { color: #a5d6ff; }
+  .hljs-number,
+  .hljs-literal      { color: #79c0ff; }
+  .hljs-title,
+  .hljs-section,
+  .hljs-name,
+  .hljs-selector-id  { color: #d2a8ff; }
+  .hljs-variable,
+  .hljs-template-variable,
+  .hljs-attribute,
+  .hljs-attr         { color: #ffa657; }
+  .hljs-type,
+  .hljs-class .hljs-title { color: #d2a8ff; }
+  .hljs-symbol,
+  .hljs-bullet,
+  .hljs-built_in,
+  .hljs-builtin-name { color: #79c0ff; }
+  .hljs-meta,
+  .hljs-meta-keyword { color: #79c0ff; }
+  .hljs-deletion     { color: #ffa198; background: #3d1a1f; }
+  .hljs-addition     { color: #6fd38a; background: #17361f; }
+}

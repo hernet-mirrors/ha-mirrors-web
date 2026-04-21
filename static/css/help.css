@@ -379,7 +379,147 @@ pre.codeblock code,
 .highlight .vi { color: #008080; }
 .highlight .il { color: #098658; }
 
-/* Dark mode intentionally disabled — match www.ha.edu.cn (light-only). */
+/* ---------- Dark mode (aligned with www.ha.edu.cn palette) ---------- */
+@media (prefers-color-scheme: dark) {
+  #help-content {
+    background: #2C3444;
+    color: var(--text-primary);
+  }
+
+  #help-content pre,
+  .codehilite,
+  .highlight {
+    background: #1a1d24 !important;
+    color: var(--text-primary);
+  }
+
+  #help-content code {
+    background: #374155;
+    color: #e0e4ec;
+  }
+
+  /* pre 内 code 保持透明，避免双重背景色 */
+  .codeblock code,
+  #help-content pre code {
+    background: transparent !important;
+    color: var(--text-primary);
+  }
+
+  #help-content .z-tmpl {
+    background: #1a1d24;
+    border-left-color: var(--primary-color);
+    color: var(--text-primary);
+  }
+
+  #help-content h1,
+  #help-content h2,
+  #help-content h3,
+  #help-content h4 { color: var(--text-primary); }
+
+  #help-content p,
+  #help-content li,
+  #help-content td { color: var(--text-primary); }
+
+  #help-content th {
+    background: #374155;
+    color: var(--text-primary);
+    border-color: #3a4154;
+  }
+  #help-content td,
+  #help-content th { border-color: #3a4154; }
+
+  .zhelp-form { background: #374155; }
+  .zhelp-field-label { color: #c9ced6; }
+
+  .zhelp-field-control.form-select,
+  .zhelp-field-control.form-control {
+    background-color: #1a1d24;
+    color: var(--text-primary);
+    border-color: #3a4154;
+  }
+
+  .codeblock { background: #1a1d24; color: var(--text-primary); }
+
+  .codeblock .btn-clipboard {
+    background: #2C3444;
+    color: var(--primary-color);
+    border-color: #3a4154;
+  }
+  .codeblock .btn-clipboard:hover,
+  .codeblock .btn-clipboard:focus,
+  .codeblock:hover .btn-clipboard {
+    background: #374155;
+    color: var(--primary-hover);
+    border-color: #4a5568;
+  }
+  .codeblock .btn-clipboard.copied {
+    background: #17361f;
+    color: #6fd38a;
+    border-color: #2a4a30;
+  }
+
+  .help-title { color: var(--primary-color); }
+
+  /* Help sidebar nav (desktop) */
+  #help-nav.bg-white,
+  #help-nav { background: #2C3444 !important; }
+  #help-nav .nav-link { color: var(--text-secondary); }
+  #help-nav .nav-link:hover {
+    background: rgba(67, 126, 247, 0.12);
+    color: var(--text-primary);
+  }
+  #help-nav .nav-link.active {
+    background: rgba(67, 126, 247, 0.22);
+    color: #fff;
+  }
+
+  /* TOC */
+  #help-toc,
+  .help-toc {
+    background: #374155;
+    color: var(--text-primary);
+  }
+  #help-toc a,
+  .help-toc a { color: var(--primary-color); }
+  #help-toc a.active,
+  .help-toc a.active { color: #6fd38a; }
+  #help-toc ul ul,
+  .help-toc ul ul { border-left-color: #3a4154; }
+
+  /* Rouge / codehilite — readable palette */
+  .highlight .c,
+  .highlight .c1,
+  .highlight .cm  { color: #8a9bab; }
+  .highlight .k,
+  .highlight .kc,
+  .highlight .kd,
+  .highlight .kn,
+  .highlight .kp,
+  .highlight .kr  { color: #ff7b72; }
+  .highlight .kt  { color: #6fd38a; }
+  .highlight .s,
+  .highlight .s1,
+  .highlight .s2,
+  .highlight .sb,
+  .highlight .sc,
+  .highlight .sd,
+  .highlight .se,
+  .highlight .sh,
+  .highlight .si,
+  .highlight .sx  { color: #a5d6ff; }
+  .highlight .m,
+  .highlight .mi,
+  .highlight .mf,
+  .highlight .mh,
+  .highlight .mo,
+  .highlight .il  { color: #79c0ff; }
+  .highlight .nb  { color: #79c0ff; }
+  .highlight .nc  { color: #6fd38a; }
+  .highlight .nf  { color: #d2a8ff; }
+  .highlight .nt  { color: #7ee787; }
+  .highlight .o   { color: var(--text-primary); }
+  .highlight .err { color: #ff8188; background: transparent; }
+}
 
 /* Mobile */
 @media (max-width: 768px) {

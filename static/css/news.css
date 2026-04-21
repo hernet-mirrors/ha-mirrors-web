@@ -57,4 +57,10 @@ article h1,
     color: #0A77FF; /* Title color on hover */
 }
 
-/* Dark mode intentionally disabled — match www.ha.edu.cn (light-only). */
+@media (prefers-color-scheme: dark) {
+    .news-item .card-title a { color: var(--text-primary); }
+    .news-item .card-title a:hover { color: var(--primary-color); }
+    .news-item.border-primary { border-color: var(--primary-color) !important; }
+    .news-item.card { background: #2C3444; border-color: #3a4154; }
+    .news-item .card-text { color: var(--text-primary); }
+}

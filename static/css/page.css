@@ -8,4 +8,7 @@
     color: white;
 }
 
-/* Dark mode intentionally disabled — match www.ha.edu.cn (light-only). */
+@media (prefers-color-scheme: dark) {
+    .page-card { background: #2C3444; border-color: #3a4154; color: var(--text-primary); }
+    .page-card-header { background-color: #374155; color: var(--text-primary); }
+}

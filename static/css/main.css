@@ -1277,7 +1277,247 @@ body {
     }
 }
 
-/* Dark mode intentionally disabled — match www.ha.edu.cn (light-only). */
+/* =========================================================
+ * Dark mode — aligned with www.ha.edu.cn's palette:
+ *   brand blue     #437EF7  (hover #5390F8)
+ *   dark surface   #2C3444  (parent site footer bg)
+ *   text primary   #F9F9F9  (neutral-200)
+ *   text muted     #A5ACBA
+ * Surface ramp: body #1a1d24 → card #2C3444 → elevated #374155
+ * ========================================================= */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary-color: #437EF7;
+        --primary-hover: #5390F8;
+        --text-primary:   #F9F9F9;
+        --text-secondary: #A5ACBA;
+        --text-light:     #6b7280;
+        --border-color:       #3a4154;
+        --border-color-light: #2C3444;
+        --light-color:    #2C3444;
+        --shadow-sm: 0 2px 4px rgba(0,0,0,0.35);
+        --shadow-md: 0 2px 8px rgba(0,0,0,0.45);
+        --shadow-lg: 0 4px 16px rgba(0,0,0,0.55);
+        --bs-body-bg:    #1a1d24;
+        --bs-body-color: #F9F9F9;
+    }
+
+    body {
+        background-color: #1a1d24;
+        color: var(--text-primary);
+    }
+
+    /* Header matches parent site style even in dark: neutral bar, dark text
+       kept legible against #1a1d24. */
+    .header,
+    .header.scrolled,
+    .header:hover {
+        background: #2C3444 !important;
+        background-color: #2C3444 !important;
+        border-bottom-color: #3a4154 !important;
+    }
+
+    .nav-list li a,
+    .nav-list > li > a,
+    .nav-list > li > a.current-page {
+        color: var(--text-primary) !important;
+    }
+
+    .nav-list li a:hover {
+        background-color: rgba(67, 126, 247, 0.14) !important;
+        color: var(--primary-color) !important;
+    }
+
+    .nav-list .submenu {
+        background: #374155 !important;
+    }
+    .nav-list .submenu li a { color: var(--text-primary) !important; }
+
+    @media (max-width: 768px) {
+        .nav-list {
+            background: #2C3444 !important;
+            border-top-color: #3a4154 !important;
+        }
+        .nav-list li a,
+        .nav-list li a.current-page,
+        .nav-list li a:active,
+        .nav-list li a:focus {
+            color: var(--text-primary) !important;
+            background: transparent !important;
+        }
+    }
+
+    a { color: var(--primary-color); }
+    a:hover, a:focus { color: var(--primary-hover); }
+
+    /* Any "white" surface becomes the dark card color. */
+    .bg-white,
+    .bg-light {
+        background-color: #2C3444 !important;
+        color: var(--text-primary) !important;
+    }
+
+    main { color: var(--text-primary); }
+
+    .text-muted,
+    .text-white-50,
+    small.text-muted {
+        color: var(--text-secondary) !important;
+    }
+
+    .card {
+        background-color: #2C3444;
+        border-color: #3a4154;
+        color: var(--text-primary);
+    }
+
+    .card-body { color: var(--text-primary); }
+
+    .card-header,
+    .index-card-header,
+    .status-card-header,
+    .page-card-header,
+    .news-card-header {
+        background-color: #374155 !important;
+        color: var(--text-primary) !important;
+        border-bottom-color: #3a4154 !important;
+    }
+
+    /* Form controls */
+    input, textarea, select,
+    .form-control, .form-select {
+        background-color: #1a1d24;
+        color: var(--text-primary);
+        border-color: #3a4154;
+    }
+
+    input:focus, textarea:focus, select:focus,
+    .form-control:focus, .form-select:focus {
+        background-color: #22262e;
+        color: var(--text-primary);
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(67, 126, 247, 0.25);
+    }
+
+    .form-control::placeholder { color: var(--text-light); }
+
+    .btn-outline-primary {
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+    .btn-outline-primary:hover {
+        background-color: var(--primary-color);
+        color: #fff;
+    }
+    .btn-outline-secondary {
+        color: var(--text-secondary);
+        border-color: #3a4154;
+    }
+    .btn-outline-secondary:hover {
+        background-color: #374155;
+        color: var(--text-primary);
+    }
+
+    /* Tables */
+    .table {
+        --bs-table-bg: transparent;
+        --bs-table-color: var(--text-primary);
+        --bs-table-striped-bg: rgba(255,255,255,0.03);
+        --bs-table-hover-bg: rgba(67,126,247,0.08);
+        --bs-table-border-color: #3a4154;
+        color: var(--text-primary);
+    }
+
+    .table th,
+    .table-light thead th,
+    .mirror-table thead th {
+        background: #374155 !important;
+        color: var(--text-primary) !important;
+        border-color: #3a4154 !important;
+    }
+
+    .mirror-table tbody tr { border-bottom-color: #3a4154; }
+    .mirror-table tr:hover,
+    .table-hover > tbody > tr:hover > * {
+        background: rgba(67,126,247,0.08) !important;
+        color: var(--text-primary) !important;
+    }
+
+    /* Bootstrap tooltip (the floating popover visible on mirror rows). */
+    .tooltip-inner {
+        background-color: #374155;
+        color: var(--text-primary);
+        border: 1px solid #3a4154;
+    }
+    .tooltip .tooltip-arrow::before,
+    .tooltip .arrow::before,
+    .bs-tooltip-auto[data-popper-placement^="top"] .tooltip-arrow::before,
+    .bs-tooltip-top .tooltip-arrow::before {
+        border-top-color: #374155;
+    }
+    .bs-tooltip-auto[data-popper-placement^="bottom"] .tooltip-arrow::before,
+    .bs-tooltip-bottom .tooltip-arrow::before {
+        border-bottom-color: #374155;
+    }
+    .bs-tooltip-auto[data-popper-placement^="left"] .tooltip-arrow::before,
+    .bs-tooltip-start .tooltip-arrow::before {
+        border-left-color: #374155;
+    }
+    .bs-tooltip-auto[data-popper-placement^="right"] .tooltip-arrow::before,
+    .bs-tooltip-end .tooltip-arrow::before {
+        border-right-color: #374155;
+    }
+
+    /* Modals */
+    .modal-content {
+        background-color: #2C3444;
+        color: var(--text-primary);
+        border: 1px solid #3a4154;
+    }
+    .modal-header {
+        background-color: #374155;
+        border-bottom-color: #3a4154;
+    }
+    .modal-footer { border-top-color: #3a4154; }
+    .btn-close { filter: invert(1) grayscale(100%) brightness(200%); }
+
+    /* Alerts */
+    .alert-info    { background-color: #0d3345; color: #9fdcf5; border-color: #164a65; }
+    .alert-warning { background-color: #3a2e10; color: #ffd98a; border-color: #5a4410; }
+    .alert-danger  { background-color: #3d1a1f; color: #f8b4bc; border-color: #5a2630; }
+    .alert-success { background-color: #17361f; color: #6fd38a; border-color: #2a4a30; }
+
+    .badge.bg-warning { color: #1a1d24 !important; }
+    .badge.bg-secondary { background-color: #4a5568 !important; }
+
+    /* Dividers */
+    hr { border-color: #3a4154; opacity: 1; }
+
+    /* Pagination */
+    .pagination .page-link {
+        background-color: #2C3444;
+        border-color: #3a4154;
+        color: var(--primary-color);
+    }
+    .pagination .page-link:hover { background-color: #374155; color: var(--primary-hover); }
+    .pagination .page-item.active .page-link {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        color: #fff;
+    }
+    .pagination .page-item.disabled .page-link {
+        background-color: #2C3444;
+        border-color: #3a4154;
+        color: var(--text-light);
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar-track { background: #1a1d24; }
+    ::-webkit-scrollbar-thumb { background: #3a4154; }
+    ::-webkit-scrollbar-thumb:hover { background: #4a5568; }
+
+    .spinner-border.text-primary { color: var(--primary-color) !important; }
+}
 
 /* 右侧边栏固定样式 - 与 status 页面一致 */
 @media (min-width: 992px) {

@@ -61,4 +61,22 @@
     font-size: 0.98rem;
 }
 
-/* Dark mode intentionally disabled — match www.ha.edu.cn (light-only). */
+@media (prefers-color-scheme: dark) {
+    .not-found-title     { color: var(--primary-color); }
+    .not-found-subtitle  { color: var(--text-primary); }
+    .suggestion-list     {
+        color: var(--text-secondary);
+        background: #2C3444;
+        border: 1px solid #3a4154;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    }
+    .action-buttons .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+    .action-buttons .btn-primary:hover {
+        background-color: var(--primary-hover);
+        border-color: var(--primary-hover);
+    }
+    .contact-link { color: var(--primary-color); }
+}

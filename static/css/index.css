@@ -29,4 +29,9 @@
     color: #0A77FF;
 }
 
-/* Dark mode intentionally disabled — match www.ha.edu.cn (light-only). */
+@media (prefers-color-scheme: dark) {
+    .mirror-list-container h3 { color: var(--primary-color); }
+    .mirror-search .form-control { border-color: var(--primary-color); }
+    .mirror-link { color: var(--primary-color); }
+    .mirror-link:hover { color: var(--primary-hover); }
+}

@@ -212,4 +212,34 @@
   .maintenance-icon { font-size: 3rem; }
 }
 
-/* Dark mode intentionally disabled — match www.ha.edu.cn (light-only). */
+@media (prefers-color-scheme: dark) {
+  .maintenance-container {
+    background: linear-gradient(135deg, #1a3060 0%, #2C3444 100%);
+  }
+  .maintenance-card,
+  .info-card {
+    background: rgba(44, 52, 68, 0.92);
+    border-color: #3a4154;
+    color: var(--text-primary);
+  }
+  .maintenance-title { color: var(--text-primary); }
+  .maintenance-subtitle { color: var(--text-secondary); }
+
+  .status-indicator { background: #3a2e10; border-color: #5a4410; }
+  .status-text { color: #f0c464; }
+
+  .time-info { background: #374155; }
+  .time-label { color: var(--text-secondary); }
+  .time-value { color: var(--text-primary); }
+
+  .info-card h4 { color: var(--text-primary); }
+  .info-card h4 i { color: var(--primary-color); }
+  .contact-link { color: var(--primary-color); }
+  .contact-link:hover { color: var(--primary-hover); }
+
+  .mirror-link {
+    color: var(--primary-color);
+    border-bottom-color: #3a4154;
+  }
+  .mirror-link:hover { color: var(--primary-hover); }
+}

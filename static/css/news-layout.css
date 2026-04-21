@@ -2,3 +2,35 @@
 body {
     background-color: #f8f9fa;
 }
+
+.news-article,
+.news-content,
+.news-title {
+    color: inherit;
+}
+
+.sidebar { color: inherit; }
+.sidebar h5 { color: inherit; }
+.sidebar .list-unstyled a { color: var(--primary-color); }
+.sidebar .list-unstyled a:hover { text-decoration: underline; }
+
+@media (prefers-color-scheme: dark) {
+    body { background-color: #1a1d24; }
+
+    .news-article,
+    .news-content { background: transparent; color: var(--text-primary); }
+
+    .news-title { color: var(--text-primary); }
+    .news-meta .text-muted,
+    .news-article .text-muted { color: var(--text-secondary) !important; }
+
+    .sidebar {
+        background: #2C3444;
+        border: 1px solid #3a4154;
+        border-radius: 8px;
+        padding: 1rem;
+    }
+    .sidebar a { color: var(--primary-color); }
+    .sidebar a.fw-bold { color: var(--primary-hover); }
+    .sidebar small.text-muted { color: var(--text-secondary) !important; }
+}

@@ -9,4 +9,8 @@
   outline: none !important;
 }
 
-/* Dark mode intentionally disabled — match www.ha.edu.cn (light-only). */
+@media (prefers-color-scheme: dark) {
+  .CompanyLogo {
+    filter: invert(0.92) hue-rotate(180deg) brightness(1.15);
+  }
+}
