@@ -1,9 +1,18 @@
-<!-- Site header: two-logo brand lockup only (maintenance-page pattern) -->
+<!-- Site header: two-logo brand lockup + flat nav row -->
 <header class="site-header" role="banner">
   <div class="site-header-inner">
     <a class="brand-main" href="{{ site.homelink | default: 'https://www.ha.edu.cn' }}" target="_blank" rel="noopener" aria-label="前往河南省教育科研网主站">
       <img src="{{ '/static/img/logo-main.svg' | relative_url }}" alt="河南省教育科研网">
     </a>
+    <div class="brand-sep" aria-hidden="true"></div>
+
+    <nav class="site-nav" aria-label="主导航">
+      <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>镜像列表</a>
+      <a href="{{ '/help/' | relative_url }}" {% if page.url contains '/help' %}class="active"{% endif %}>使用帮助</a>
+      <a href="{{ '/status/' | relative_url }}" {% if page.url contains '/status' %}class="active"{% endif %}>同步状态</a>
+      <a href="{{ '/news/' | relative_url }}" {% if page.url contains '/news' %}class="active"{% endif %}>镜像公告</a>
+    </nav>
+
     <div class="brand-sep" aria-hidden="true"></div>
     <a class="brand-mirror" href="{{ site.url | default: 'https://mirrors.ha.edu.cn' }}" aria-label="{{ site.title }}">
       <img src="{{ '/static/img/logo-hernet.svg' | relative_url }}" alt="HERNET">
