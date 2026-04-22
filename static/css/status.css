@@ -1,4 +1,10 @@
 /* Custom styles for the status page */
+/* Match the index page's "镜像列表" h3 so the 同步状态 heading reads the same. */
+.status-list-container h3 {
+    color: #0A77FF;
+    font-weight: 700;
+}
+
 .stat-item {
     padding: 0.5rem 0;
 }

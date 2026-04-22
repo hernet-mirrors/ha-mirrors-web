@@ -497,9 +497,10 @@ function updateSidebarStats() {
 }
 
 function updateRefreshTime() {
+  const el = document.getElementById("last-refresh-time");
+  if (!el) return;
   const now = new Date();
-  document.getElementById("last-refresh-time").textContent =
-    now.toLocaleString("zh-CN");
+  el.textContent = now.toLocaleString("zh-CN");
 }
 
 function formatTime(ts) {
@@ -529,12 +530,11 @@ function refreshStatus() {
 }
 
 function setupAutoRefresh() {
-  const checkbox = document.getElementById("auto-refresh");
   if (autoRefreshInterval) clearInterval(autoRefreshInterval);
-  if (checkbox.checked) {
-    autoRefreshInterval = setInterval(() => {
-      fetchStatusData();
-    }, 10000); // Refresh every 10 seconds
+  const checkbox = document.getElementById("auto-refresh");
+  // No toggle on the page -> always auto-refresh every 10s.
+  if (!checkbox || checkbox.checked) {
+    autoRefreshInterval = setInterval(fetchStatusData, 10000);
   }
 }
 
@@ -544,12 +544,10 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchStatusData();
   });
   fetchDiskData();
-  document
-    .getElementById("refresh-status")
-    .addEventListener("click", refreshStatus);
-  document
-    .getElementById("auto-refresh")
-    .addEventListener("change", setupAutoRefresh);
+  const btn = document.getElementById("refresh-status");
+  if (btn) btn.addEventListener("click", refreshStatus);
+  const toggle = document.getElementById("auto-refresh");
+  if (toggle) toggle.addEventListener("change", setupAutoRefresh);
   setupAutoRefresh();
 });
 

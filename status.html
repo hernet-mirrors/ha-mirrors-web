@@ -9,66 +9,34 @@ permalink: /status/
   <div class="container">
     <div class="row">
     <div class="col-lg-8 col-12">
-        <!-- 状态说明 -->
-        <div class="card shadow-sm mb-4 status-card">
-            <div class="card-header status-card-header">
-                <h1 class="h3 mb-0"><i class="fas fa-chart-line"></i> 同步状态</h1>
-                <small class="text-white-50">查看各镜像的实时同步状态和统计信息。页面每 10 秒自动刷新一次。</small>
+        <div class="status-list-container">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3><i class="fas fa-chart-line"></i> 同步状态</h3>
             </div>
-            <div class="card-body">
-                <!-- 控制按钮 -->
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="auto-refresh" checked>
-                        <label class="form-check-label" for="auto-refresh">
-                            <i class="fas fa-sync-alt"></i> 自动刷新
-                        </label>
-                    </div>
-                    <div>
-                        <button class="btn btn-outline-primary btn-sm" id="refresh-status">
-                            <i class="fas fa-sync-alt"></i> 手动刷新
-                        </button>
-                        <small class="text-muted ms-2">
-                            最后更新: <span id="last-refresh-time">--</span>
-                        </small>
-                    </div>
-                </div>
 
-                <!-- 状态列表 -->
-                <div class="card shadow-sm status-card">
-                    <div class="card-header status-card-header-light">
-                        <h5 class="mb-0">
-                            <i class="fas fa-list"></i> 详细状态
-                        </h5>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-hover mb-0">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th width="25%">镜像名称</th>
-                                        <th width="12%">状态</th>
-                                        <th width="18%">上次同步成功</th>
-                                        <th width="18%">下次计划同步</th>
-                                        <th width="15%">同步开始时间</th>
-                                        <th width="12%">大小</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="status-table-body">
-                                    <!-- 状态数据将通过JavaScript动态加载 -->
-                                    <tr>
-                                        <td colspan="6" class="text-center py-4">
-                                            <div class="spinner-border text-primary" role="status">
-                                                <span class="visually-hidden">加载中...</span>
-                                            </div>
-                                            <p class="mt-2 mb-0 text-muted">正在加载同步状态...</p>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th width="25%">镜像名称</th>
+                            <th width="12%">状态</th>
+                            <th width="18%">上次同步成功</th>
+                            <th width="18%">下次计划同步</th>
+                            <th width="15%">同步开始时间</th>
+                            <th width="12%">大小</th>
+                        </tr>
+                    </thead>
+                    <tbody id="status-table-body">
+                        <tr>
+                            <td colspan="6" class="text-center py-4">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">加载中...</span>
+                                </div>
+                                <p class="mt-2 mb-0 text-muted">正在加载同步状态...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
