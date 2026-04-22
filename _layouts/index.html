@@ -23,17 +23,19 @@ layout: default
   </div>
 </div>
 {% else %}
-<div class="row">
-  <div class="col-lg-8 col-12">
-    <div class="card shadow-sm index-card">
-      <div class="card-body">
-        {{ content }}
+<div class="mirrors-container">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-12">
+        <div class="card shadow-sm index-card">
+          <div class="card-body">
+            {{ content }}
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <div class="col-lg-4 col-12 sidebar-container">
-    <div class="sidebar-content">
+      <div class="col-lg-4 col-12 sidebar-container">
+        <div class="sidebar-content">
           <div class="card shadow-sm mb-4 index-card">
             <div class="card-header index-card-header">
               <h5 class="mb-0"><i class="fas fa-bullhorn"></i> 公告通知</h5>
@@ -124,6 +126,8 @@ layout: default
           </div>
         </div>
       </div>
+    </div>
+  </div>
 </div>
 {% endif %}
 

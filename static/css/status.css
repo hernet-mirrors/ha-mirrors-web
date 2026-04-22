@@ -55,10 +55,15 @@
     border: 1px solid #dee2e6;
 }
 
-.status-card-header {
+.status-card-header,
+.status-card-header h1,
+.status-card-header h5,
+.status-card-header i,
+.status-card-header small {
     background-color: #0A77FF;
-    color: white;
+    color: #ffffff !important;
 }
+.status-card-header { background-color: #0A77FF; }
 
 .status-card-header-light {
     background-color: #f8f9fa;
