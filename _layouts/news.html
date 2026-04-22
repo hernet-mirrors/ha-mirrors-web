@@ -59,7 +59,7 @@
 								<ul class="list-unstyled mb-0">
 									{% for news in site.categories.news limit: 5 %}
 									<li class="mb-2">
-										<a href="{{ news.url | relative_url }}" class="text-decoration-none news-link{% if news.url == page.url %} fw-bold{% endif %}">
+										<a href="{{ news.url | relative_url }}" class="text-decoration-none news-link">
 											<small class="text-muted">{{ news.date | date: "%Y-%m-%d" }}</small><br>
 											<span class="news-title">{{ news.title }}</span>
 										</a>
