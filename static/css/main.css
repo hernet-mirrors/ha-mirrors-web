@@ -1008,6 +1008,12 @@ body > footer.footer { margin-top: auto; }
     font-weight: 600;
 }
 
+/* ISO modal tab bar (os / app / font) — keep Bootstrap's tab edges square */
+#isoModal .nav-tabs .nav-link,
+#isoModal .nav-tabs .nav-link.active {
+    border-radius: 0;
+}
+
 /* 新增：动画效果 */
 @keyframes fadeInUp {
     from {

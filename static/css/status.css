@@ -41,6 +41,12 @@
     .sidebar-container { margin-top: 2rem; }
 }
 
+/* Match the index sidebar: cap card column width + center in col-lg-4 */
+.sidebar-content {
+    max-width: 340px;
+    margin: 0 auto;
+}
+
 .row {
     margin-left: 0;
     margin-right: 0;
