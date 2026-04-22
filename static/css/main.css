@@ -74,6 +74,9 @@ html {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
+    /* Always reserve the vertical scrollbar gutter so short pages like /news/
+       don't shift a few pixels to the right compared to long pages like / . */
+    overflow-y: scroll;
 }
 
 body {
