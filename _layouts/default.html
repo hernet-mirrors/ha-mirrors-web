@@ -2,7 +2,16 @@
 <html lang="zh-Hans">
 	{% include head.html notArticle=true %}
 	<body>
-		{% if site.maintenance.enabled and page.url != '/maintenance/' %}
+		{%- comment -%}
+		Pages exempt from the maintenance redirect. /maintenance/ itself
+		plus anything under /news/ so announcements stay reachable while
+		the mirror tree is down.
+		{%- endcomment -%}
+		{% assign allow_in_maintenance = false %}
+		{% if page.url == '/maintenance/' or page.url == '/news/' or page.url contains '/news/' %}
+			{% assign allow_in_maintenance = true %}
+		{% endif %}
+		{% if site.maintenance.enabled and allow_in_maintenance == false %}
 		<script>
 			window.location.replace('{{ "/maintenance/" | relative_url }}');
 		</script>
