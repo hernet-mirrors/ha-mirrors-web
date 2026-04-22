@@ -60,27 +60,9 @@
             border: 0;
         }
         
-        /* Skip link for accessibility */
-        .skip-link {
-            position: absolute;
-            top: -40px;
-            left: 6px;
-            background: #000;
-            color: #fff;
-            padding: 8px;
-            text-decoration: none;
-            z-index: 1000;
-        }
-        
-        .skip-link:focus {
-            top: 6px;
-        }
     </style>
 </head>
 <body>
-    <!-- Skip link for accessibility -->
-    <a href="#main-content" class="skip-link">跳转到主内容</a>
-    
     <!-- Main content -->
     <main id="main-content">
         {{ content }}
