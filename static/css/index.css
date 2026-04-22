@@ -1,33 +1,35 @@
-/* Domain selector box (auto / IPv4 / IPv6) */
-.domain-selector {
-  background: #f7f9fc;
-  border: 1px solid #e3e8f0;
-  border-radius: 8px;
-  padding: 16px 20px;
-}
+/* Domain selector — bulleted URL list in tuna style */
+.domain-selector { padding: 4px 0 8px; }
 
-.domain-selector h5 {
+.domain-selector-title {
   color: #0A77FF;
   font-weight: 700;
-  white-space: nowrap;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.domain-selector code {
-  font-size: 1.05em;
-  background: #fff;
-  border: 1px solid #dce3ee;
-  color: #0A77FF;
-  padding: 2px 8px;
-  border-radius: 4px;
+.domain-list {
+  list-style: disc;
+  padding-left: 2em;
+  margin: 0;
 }
 
-.domain-selector #domain-copy {
+.domain-list li {
+  padding: 2px 0;
+  line-height: 1.8;
+  color: #495057;
+}
+
+.domain-list a {
   color: #0A77FF;
   text-decoration: none;
-  vertical-align: middle;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  margin-right: 6px;
 }
 
-.domain-selector #domain-copy:hover { color: #0056b3; }
+.domain-list a:hover { text-decoration: underline; }
 
 /* Styles for the mirror list title and search bar */
 .mirror-list-container h3 {
@@ -66,16 +68,8 @@
     .mirror-link { color: var(--primary-color); }
     .mirror-link:hover { color: var(--primary-hover); }
 
-    .domain-selector {
-        background: #2C3444;
-        border-color: #3b4457;
-    }
-    .domain-selector h5 { color: var(--primary-color); }
-    .domain-selector code {
-        background: #1f2632;
-        border-color: #3b4457;
-        color: var(--primary-color);
-    }
-    .domain-selector #domain-copy { color: var(--primary-color); }
-    .domain-selector #domain-copy:hover { color: var(--primary-hover); }
+    .domain-selector-title { color: var(--primary-color); }
+    .domain-list li { color: var(--text-secondary); }
+    .domain-list a { color: var(--primary-color); }
+    .domain-list a:hover { color: var(--primary-hover); }
 }

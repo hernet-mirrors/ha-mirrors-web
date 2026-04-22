@@ -19,10 +19,10 @@
 .mirror-brand {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   text-decoration: none !important;
   color: #0E59A6;
-  padding: 4px 8px;
+  padding: 4px 6px;
   border-radius: 6px;
   transition: transform 0.15s ease, background-color 0.15s ease;
 }
@@ -37,10 +37,11 @@
   height: 32px;
   width: auto;
   display: block;
+  margin-right: -2px;
 }
 
 .mirror-brand-text {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 700;
   letter-spacing: 0.02em;
   color: #0E59A6;

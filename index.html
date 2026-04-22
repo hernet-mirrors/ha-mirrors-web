@@ -6,28 +6,12 @@ description: "河南省教育科研网开源软件镜像站，为河南省高校
 
 <!-- 域名选择 -->
 <div class="domain-selector mb-4">
-	<div class="row g-3 align-items-center">
-		<div class="col-md-auto">
-			<h5 class="mb-0"><i class="fas fa-globe"></i> 域名选择</h5>
-		</div>
-		<div class="col-md-auto">
-			<span class="text-muted me-2">当前域名：</span>
-			<code id="domain-display">{{ site.hostname }}</code>
-			<button type="button" class="btn btn-link btn-sm p-0 ms-2" id="domain-copy" title="复制域名" aria-label="复制域名">
-				<i class="fas fa-copy"></i>
-			</button>
-		</div>
-		<div class="col-md-auto ms-md-auto">
-			<div class="btn-group btn-group-sm" role="group" aria-label="线路选择">
-				<input type="radio" class="btn-check" name="domain-choice" id="domain-auto" value="auto" checked>
-				<label class="btn btn-outline-primary" for="domain-auto">自动</label>
-				<input type="radio" class="btn-check" name="domain-choice" id="domain-v4" value="ipv4">
-				<label class="btn btn-outline-primary" for="domain-v4">IPv4</label>
-				<input type="radio" class="btn-check" name="domain-choice" id="domain-v6" value="ipv6">
-				<label class="btn btn-outline-primary" for="domain-v6">IPv6</label>
-			</div>
-		</div>
-	</div>
+	<h5 class="domain-selector-title"><i class="fas fa-link"></i> 域名选择</h5>
+	<ul class="domain-list">
+		<li><a href="{{ site.url   }}">{{ site.url   }}</a> 自动选择</li>
+		<li><a href="{{ site.urlv6 }}">{{ site.urlv6 }}</a> 只解析 IPv6</li>
+		<li><a href="{{ site.urlv4 }}">{{ site.urlv4 }}</a> 只解析 IPv4</li>
+	</ul>
 </div>
 
 <!-- 镜像列表表格 -->
@@ -80,96 +64,4 @@ var helpPages = {
     {{ h.zconf.name | jsonify }}: {{ h.url | relative_url | jsonify }}{%- unless forloop.last -%},{%- endunless -%}
   {%- endfor -%}
 };
-
-// Domain selector state + mirror-link rewriting
-(function () {
-  "use strict";
-  var endpoints = {
-    auto: {{ site.url  | jsonify }},
-    ipv4: {{ site.urlv4 | jsonify }},
-    ipv6: {{ site.urlv6 | jsonify }}
-  };
-  var STORAGE_KEY = "ha-mirrors-domain-choice";
-  var display = document.getElementById("domain-display");
-  var copyBtn = document.getElementById("domain-copy");
-
-  function hostOf(url) {
-    try { return new URL(url).host; } catch (e) { return url; }
-  }
-
-  function applyChoice(choice) {
-    if (!endpoints[choice]) choice = "auto";
-    if (display) display.textContent = hostOf(endpoints[choice]);
-    var prefix = choice === "auto" ? "" : endpoints[choice];
-    document.querySelectorAll("a.mirror-link").forEach(function (a) {
-      var original = a.getAttribute("data-mirror-path");
-      if (!original) {
-        original = a.getAttribute("href");
-        if (original && original.charAt(0) === "/") a.setAttribute("data-mirror-path", original);
-      }
-      if (original && original.charAt(0) === "/") {
-        a.setAttribute("href", prefix + original);
-      }
-    });
-    try { localStorage.setItem(STORAGE_KEY, choice); } catch (e) {}
-  }
-
-  function getSaved() {
-    try { return localStorage.getItem(STORAGE_KEY); } catch (e) { return null; }
-  }
-
-  function wireRadios() {
-    document.querySelectorAll('input[name="domain-choice"]').forEach(function (input) {
-      input.addEventListener("change", function (e) {
-        if (e.target.checked) applyChoice(e.target.value);
-      });
-    });
-  }
-
-  var saved = getSaved();
-  if (saved && endpoints[saved]) {
-    var id = "domain-" + (saved === "ipv4" ? "v4" : saved === "ipv6" ? "v6" : "auto");
-    var el = document.getElementById(id);
-    if (el) el.checked = true;
-  } else {
-    saved = "auto";
-  }
-  wireRadios();
-
-  // Re-apply when mirror table finishes rendering (main.js populates it async)
-  var tbody = document.getElementById("mirror-table-body");
-  if (tbody && typeof MutationObserver !== "undefined") {
-    var observer = new MutationObserver(function () {
-      var cur = document.querySelector('input[name="domain-choice"]:checked');
-      applyChoice(cur ? cur.value : "auto");
-    });
-    observer.observe(tbody, { childList: true });
-  }
-  applyChoice(saved);
-
-  if (copyBtn && display) {
-    copyBtn.addEventListener("click", function () {
-      var text = display.textContent.trim();
-      var done = function () {
-        var icon = copyBtn.querySelector("i");
-        if (!icon) return;
-        var old = icon.className;
-        icon.className = "fas fa-check";
-        setTimeout(function () { icon.className = old; }, 1200);
-      };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(done, function () {});
-      } else {
-        var ta = document.createElement("textarea");
-        ta.value = text;
-        ta.style.position = "fixed";
-        ta.style.opacity = "0";
-        document.body.appendChild(ta);
-        ta.select();
-        try { document.execCommand("copy"); done(); } catch (e) {}
-        document.body.removeChild(ta);
-      }
-    });
-  }
-})();
 </script>
