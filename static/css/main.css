@@ -89,6 +89,16 @@ body {
     -ms-text-size-adjust: 100%;
 }
 
+/* Shared sidebar card chrome — used on / (index), /status/, /news/, /news/<x>/ */
+.index-card { border: 1px solid #dee2e6; }
+.index-card-header,
+.index-card-header h5,
+.index-card-header i {
+    background-color: #0A77FF;
+    color: #ffffff !important;
+}
+.index-card-header { background-color: #0A77FF; }
+
 /* 链接样式 */
 a {
     color: var(--primary-color);
