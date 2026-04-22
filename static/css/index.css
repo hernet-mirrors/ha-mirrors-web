@@ -1,3 +1,34 @@
+/* Domain selector box (auto / IPv4 / IPv6) */
+.domain-selector {
+  background: #f7f9fc;
+  border: 1px solid #e3e8f0;
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+
+.domain-selector h5 {
+  color: #0A77FF;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.domain-selector code {
+  font-size: 1.05em;
+  background: #fff;
+  border: 1px solid #dce3ee;
+  color: #0A77FF;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.domain-selector #domain-copy {
+  color: #0A77FF;
+  text-decoration: none;
+  vertical-align: middle;
+}
+
+.domain-selector #domain-copy:hover { color: #0056b3; }
+
 /* Styles for the mirror list title and search bar */
 .mirror-list-container h3 {
   color: #0A77FF;
@@ -34,4 +65,17 @@
     .mirror-search .form-control { border-color: var(--primary-color); }
     .mirror-link { color: var(--primary-color); }
     .mirror-link:hover { color: var(--primary-hover); }
+
+    .domain-selector {
+        background: #2C3444;
+        border-color: #3b4457;
+    }
+    .domain-selector h5 { color: var(--primary-color); }
+    .domain-selector code {
+        background: #1f2632;
+        border-color: #3b4457;
+        color: var(--primary-color);
+    }
+    .domain-selector #domain-copy { color: var(--primary-color); }
+    .domain-selector #domain-copy:hover { color: var(--primary-hover); }
 }

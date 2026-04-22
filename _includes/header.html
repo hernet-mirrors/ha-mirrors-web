@@ -5,7 +5,7 @@
             <nav id="navbar" class="navbar-fixed" role="navigation" aria-label="主导航">
                 <div class="header-left">
                     <a href="{{ site.homelink | default: 'https://www.ha.edu.cn' }}" aria-label="前往河南省教育科研网主站" target="_blank" rel="noopener">
-                        <img src="{{ '/static/img/logomainb.svg' | relative_url }}" class="CompanyLogo" id="logo" alt="河南省教育科研网开源软件镜像站">
+                        <img src="{{ '/static/img/logo-main.svg' | relative_url }}" class="CompanyLogo" id="logo" alt="河南省教育科研网">
                     </a>
                 </div>
 
@@ -17,75 +17,26 @@
                             <span class="bar" id="bar3"></span>
                         </button>
                         <ul class="nav-list" role="menubar">
-                            <li role="none"><a href="https://www.ha.edu.cn/" role="menuitem">首页</a></li>
                             <li class="has-submenu" role="none">
-                                <a href="https://www.ha.edu.cn/indexfront/Hernet_Introduction.aspx" role="menuitem">省网简介</a>
+                                <a href="/" {% if page.url contains '/help' or page.url contains '/status' or page.url contains '/news' or page.url == '/' %}class="current-page"{% endif %} role="menuitem">开源镜像</a>
                                 <ul class="submenu" role="menu">
-                                    <li><a href="https://www.ha.edu.cn/indexfront/Hernet_Introduction.aspx">省网简介</a></li>
-                                    <li><a href="https://www.ha.edu.cn/indexfront/HernetCenter_Introduction.aspx">省网中心简介</a></li>
-                                    <li><a href="https://www.ha.edu.cn/indexfront/Hernet_Greatevents.aspx">省网大事记</a></li>
-                                    <li><a href="https://www.ha.edu.cn/indexfront/Hernet_NetwordAccess.aspx">入网单位</a></li>
-                                    <li><a href="https://www.ha.edu.cn/indexfront/Hernet_Contactus.aspx">联系我们</a></li>
-                                </ul>
-                            </li>
-                            <li class="has-submenu" role="none">
-                                <a href="https://www.ha.edu.cn/indexfront/Hernet_Introduction.aspx" role="menuitem">新闻资讯</a>
-                                <ul class="submenu" role="menu">
-                                    <li><a href="https://www.ha.edu.cn/indexfront/NewActivity_List.aspx">会议＆活动</a></li>
-                                    <li><a href="https://www.ha.edu.cn/indexfront/News_Hernet.aspx">省网新闻</a></li>
-                                    <li><a href="https://www.ha.edu.cn/indexfront/News_University.aspx">高校新闻</a></li>
-                                    <li><a href="https://www.ha.edu.cn/indexfront/HotTopic_List.aspx">热点专题</a></li>
-                                    <li><a href="https://www.ha.edu.cn/indexfront/NewsNoticeList.aspx">信息公告</a></li>
-                                </ul>
-                            </li>
-                            <li class="has-submenu" role="none">
-                                <a href="https://www.ha.edu.cn/indexfront/ServiceGuide.aspx" role="menuitem">运行服务</a>
-                                <ul class="submenu" role="menu">
-                                    <li><a href="https://www.ha.edu.cn/indexfront/ServiceGuide.aspx">服务指南</a></li>
-                                    <li><a href="https://www.ha.edu.cn/indexfront/AccessServices.aspx">接入服务</a></li>
-                                    <li><a href="https://www.ha.edu.cn/indexfront/Monitoring.aspx">机房监控服务</a></li>
-                                    <li><a href="https://www.ha.edu.cn/indexfront/CDN.aspx">CDN服务</a></li>
-                                    <li><a href="https://www.ha.edu.cn/indexfront/VideoMeeting.aspx">教育厅视频会议接入</a></li>
-                                    <li><a href="https://www.ha.edu.cn/indexfront/DataBackup.aspx">数据灾备服务</a></li>
-                                </ul>
-                            </li>
-                            <li class="has-submenu" role="none">
-                                <a href="https://www.ha.edu.cn/indexfront/InfoService.aspx" role="menuitem">信息服务</a>
-                                <ul class="submenu" role="menu">
-                                    <li><a href="https://www.ha.edu.cn/indexfront/InfoService.aspx">服务指南</a></li>
-                                    <li><a href="https://www.ha.edu.cn/indexfront/WebsiteRanking.aspx">网站排名</a></li>
-                                    <li><a href="https://www.ha.edu.cn/indexfront/DocumentAssembly.aspx">文件汇编</a></li>
-                                    <li><a href="https://www.ha.edu.cn/indexfront/InfoResource.aspx">信息资源</a></li>
-                                    <li><a href="https://www.ha.edu.cn/indexfront/ElecJournal.aspx">电子期刊</a></li>
-                                    <li><a href="https://www.ha.edu.cn/indexfront/WeChat.aspx">微信公众号</a></li>
-                                    <li><a href="https://www.ha.edu.cn/indexfront/ViedoMeetingService.aspx">省网视频会议服务</a></li>
-                                </ul>
-                            </li>
-                            <li role="none">
-                                <a href="https://sec.ha.edu.cn/" target="_blank" rel="noopener noreferrer" role="menuitem">安全服务</a>
-                            </li>
-                            <li class="has-submenu" role="none">
-                                <a href="https://www.ha.edu.cn/indexfront/ScientificResearch.aspx" role="menuitem">科研服务</a>
-                                <ul class="submenu" role="menu">
-                                    <li><a href="https://www.ha.edu.cn/indexfront/ScientificResearch.aspx#sicentificserviceid">服务指南</a></li>
-                                    <li><a href="https://www.ha.edu.cn/indexfront/ScientificResearch.aspx#scentificresourceid">科研资源</a></li>
-                                </ul>
-                            </li>
-                            <li class="has-submenu" role="none">
-                                <a href="/" {% if page.url contains '/help' or page.url contains '/status' or page.url contains '/about' or (page.url == '/' and page.title contains '镜像') %}class="current-page"{% endif %} role="menuitem">开源镜像</a>
-                                <ul class="submenu" role="menu">
-                                    <li><a href="/">镜像列表</a></li>
-                                    <li><a href="/help/">使用帮助</a></li>
-                                    <li><a href="/status/">同步状态</a></li>
-                                    <li><a href="/news/">镜像公告</a></li>
+                                    <li><a href="{{ '/' | relative_url }}">镜像列表</a></li>
+                                    <li><a href="{{ '/help/' | relative_url }}">使用帮助</a></li>
+                                    <li><a href="{{ '/status/' | relative_url }}">同步状态</a></li>
+                                    <li><a href="{{ '/news/' | relative_url }}">镜像公告</a></li>
                                 </ul>
                             </li>
                         </ul>
                     </div>
                 </div>
+
+                <div class="header-right">
+                    <a href="{{ site.url | default: 'https://mirrors.ha.edu.cn' }}" aria-label="{{ site.title }}" class="mirror-brand">
+                        <img src="{{ '/static/img/logo-hernet.svg' | relative_url }}" class="mirror-brand-logo" alt="HERNET">
+                        <span class="mirror-brand-text">Mirror</span>
+                    </a>
+                </div>
             </nav>
         </div>
     </div>
 </header>
-
-

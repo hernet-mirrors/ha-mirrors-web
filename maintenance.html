@@ -5,92 +5,76 @@ description: 镜像站正在进行系统维护
 permalink: /maintenance/
 ---
 
-<link rel="stylesheet" href="{{ '/static/css/maintenance.css' | relative_url }}">
+<link rel="stylesheet" href="{{ '/static/css/maintenance.css' | relative_url }}?v=7">
 
-<div class="maintenance-container">
-  <div class="particles-bg">
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-  </div>
+<div class="maintenance-page">
+  <header class="maintenance-header">
+    <a href="{{ site.homelink | default: 'https://www.ha.edu.cn' }}" class="brand-main" target="_blank" rel="noopener">
+      <img src="{{ '/static/img/logo-main.svg' | relative_url }}" alt="河南省教育科研网">
+    </a>
+    <div class="brand-sep" aria-hidden="true"></div>
+    <a href="{{ site.url | default: 'https://mirrors.ha.edu.cn' }}" class="brand-mirror">
+      <img src="{{ '/static/img/logo-hernet.svg' | relative_url }}" alt="HERNET">
+      <span>Mirror</span>
+    </a>
+  </header>
 
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-lg-8 col-md-10">
-
-        <div class="maintenance-card animate-fade-in">
-          <div class="maintenance-icon">
-            <i class="fas fa-tools"></i>
-          </div>
-
-          <h1 class="maintenance-title">
-            {{ site.mirror_info.name }}正在维护中
-          </h1>
-
-          <p class="maintenance-subtitle">
-            {{ site.maintenance.reason | default: "系统正在进行例行维护" }}
-          </p>
-
-          <div class="status-indicator">
-            <div class="status-dot"></div>
-            <span class="status-text">维护进行中</span>
-          </div>
-
-          {% if site.maintenance.start_time or site.maintenance.end_time %}
-          <div class="maintenance-time">
-            {% if site.maintenance.start_time %}
-            <div class="time-info">
-              <i class="fas fa-clock"></i>
-              <div>
-                <div class="time-label">开始时间</div>
-                <div class="time-value">{{ site.maintenance.start_time }}</div>
-              </div>
-            </div>
-            {% endif %}
-
-            {% if site.maintenance.end_time %}
-            <div class="time-info">
-              <i class="fas fa-calendar-check"></i>
-              <div>
-                <div class="time-label">预计完成</div>
-                <div class="time-value">{{ site.maintenance.end_time }}</div>
-              </div>
-            </div>
-            {% endif %}
-          </div>
-          {% endif %}
-        </div>
-
-        <div class="info-section animate-fade-in-delay">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="info-card">
-                <h4><i class="fas fa-envelope"></i> 联系我们</h4>
-                <p>如有紧急需求，请联系：</p>
-                <a href="mailto:{{ site.maintenance.contact_email | default: site.email }}" class="contact-link">
-                  {{ site.maintenance.contact_email | default: site.email }}
-                </a>
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="info-card">
-                <h4><i class="fas fa-external-link-alt"></i> 替代镜像</h4>
-                <p>维护期间可使用其他镜像站点：</p>
-                <div class="mirror-links">
-                  <a href="https://mirrors.cernet.edu.cn/" target="_blank" rel="noopener" class="mirror-link">
-                    教育网联合镜像站
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+  <main class="maintenance-main">
+    <div class="maintenance-card">
+      <div class="maintenance-icon" aria-hidden="true">
+        <i class="fas fa-tools"></i>
       </div>
+
+      <h1 class="maintenance-title">{{ site.mirror_info.name | default: site.title }} 正在维护中</h1>
+      <p class="maintenance-subtitle">
+        {{ site.maintenance.reason | default: "系统正在进行例行维护，暂时无法提供服务。" }}
+      </p>
+
+      <div class="status-indicator" role="status">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>维护进行中</span>
+      </div>
+
+      {% if site.maintenance.start_time or site.maintenance.end_time %}
+      <dl class="maintenance-time">
+        {% if site.maintenance.start_time %}
+        <div class="time-info">
+          <dt><i class="fas fa-clock" aria-hidden="true"></i> 开始时间</dt>
+          <dd>{{ site.maintenance.start_time }}</dd>
+        </div>
+        {% endif %}
+        {% if site.maintenance.end_time %}
+        <div class="time-info">
+          <dt><i class="fas fa-calendar-check" aria-hidden="true"></i> 预计完成</dt>
+          <dd>{{ site.maintenance.end_time }}</dd>
+        </div>
+        {% endif %}
+      </dl>
+      {% endif %}
     </div>
-  </div>
+
+    <section class="info-grid">
+      <div class="info-card">
+        <h2><i class="fas fa-envelope" aria-hidden="true"></i> 联系我们</h2>
+        <p>如有紧急需求，请发送邮件至：</p>
+        <a class="info-link" href="mailto:{{ site.maintenance.contact_email | default: site.email }}">
+          {{ site.maintenance.contact_email | default: site.email }}
+        </a>
+      </div>
+
+      <div class="info-card">
+        <h2><i class="fas fa-external-link-alt" aria-hidden="true"></i> 替代镜像</h2>
+        <p>维护期间可使用其他镜像站：</p>
+        <ul class="alt-mirrors">
+          <li><a href="https://mirrors.cernet.edu.cn/" target="_blank" rel="noopener">教育网联合镜像站</a></li>
+          <li><a href="https://mirrors.tuna.tsinghua.edu.cn/" target="_blank" rel="noopener">清华大学开源软件镜像站</a></li>
+          <li><a href="https://mirror.nyist.edu.cn/" target="_blank" rel="noopener">南阳理工学院开源软件镜像站</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="maintenance-footer">
+    <p>&copy; {{ 'now' | date: '%Y' }} {{ site.school | default: '河南省教育科研网' }} &middot; 感谢您的理解与耐心等候</p>
+  </footer>
 </div>

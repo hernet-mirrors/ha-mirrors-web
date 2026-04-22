@@ -2,110 +2,25 @@
 <footer class="footer">
   <div class="container-fluid commonContainer">
     <div class="row footer-container">
-      <div class="col-lg-4 col-md-12 col-sm-12 footer-left">
+      <div class="col-lg-6 col-md-12 col-sm-12 footer-left">
         <div class="footer-heading">联系我们</div>
         <div class="footer-contact-info">地址：郑州市二七区大学路75号郑州大学南校区逸夫楼</div>
-        <div class="footer-contact-info">电子邮箱：hernet@ha.edu.cn</div>
+        <div class="footer-contact-info">电子邮箱：{{ site.email | default: "mirrors@ha.edu.cn" }}</div>
         <div class="footer-contact-info-last">邮编：450052</div>
-        <div class="footer-social-heading">关注我们</div>
-        <div class="footer-social-icons-container">
-          <div class="footer-social-icons">
-            <div class="social-icon-wrapper">
-              <img src="{{ '/static/img/wechat_1@2x.png' | relative_url }}" class="footerImage" id="showWechat" alt="微信公众号">
-              <div id="imageContainer" class="tooltip-container">
-                <img src="{{ '/static/img/Tooltip.png' | relative_url }}" alt="微信公众号二维码" id="image">
-              </div>
-            </div>
-            <div class="social-icon-wrapper">
-              <img src="{{ '/static/img/wechat_1@2x.png' | relative_url }}" class="footerImage" id="showWechatOne" alt="微信群">
-              <div id="imageContainerOne" class="tooltip-container">
-                <img src="{{ '/static/img/Tooltip-1.png' | relative_url }}" alt="微信群二维码" id="imageOne">
-              </div>
-            </div>
-            <div class="social-icon-wrapper">
-              <img src="{{ '/static/img/img_1@2x.png' | relative_url }}" class="footerImage" id="showWechatTwo" alt="视频号">
-              <div id="imageContainerTwo" class="tooltip-container">
-                <img src="{{ '/static/img/Tooltip-2.png' | relative_url }}" alt="视频号二维码" id="imageTwo">
-              </div>
-            </div>
-          </div>
-        </div>
         <div class="footer-logo-container">
           <img src="{{ '/static/img/logomainw.svg' | relative_url }}" alt="河南省教育科研网LOGO" class="footer-logo">
         </div>
       </div>
 
-      <div class="col-lg-8 col-md-12 col-sm-12">
-        <div class="row">
-          <div class="col-6 col-lg-2 col-md-4 col-sm-6 mb-3 footer-nav-column">
-            <div class="footer-category-title">
-              <a href="https://www.ha.edu.cn/indexfront/Hernet_Introduction.aspx" target="_blank" rel="noopener" class="footer-category-title">省网简介</a>
-            </div>
-            <div class="footer-submenu d-none d-lg-block">
-              <div><a href="https://www.ha.edu.cn/indexfront/Hernet_Introduction.aspx" target="_blank" rel="noopener" class="footer-sub-link">省网简介</a></div>
-              <div><a href="https://www.ha.edu.cn/indexfront/HernetCenter_Introduction.aspx" target="_blank" rel="noopener" class="footer-sub-link">省网中心简介</a></div>
-              <div><a href="https://www.ha.edu.cn/indexfront/Hernet_Greatevents.aspx" target="_blank" rel="noopener" class="footer-sub-link">省网大事记</a></div>
-              <div><a href="https://www.ha.edu.cn/indexfront/Hernet_NetwordAccess.aspx" target="_blank" rel="noopener" class="footer-sub-link">入网单位</a></div>
-              <div><a href="https://www.ha.edu.cn/indexfront/Hernet_Contactus.aspx" target="_blank" rel="noopener" class="footer-sub-link">联系我们</a></div>
-            </div>
-          </div>
-          <div class="col-6 col-lg-2 col-md-4 col-sm-6 mb-3 footer-nav-column">
-            <div class="footer-category-title">
-              <a href="https://www.ha.edu.cn/indexfront/News_info.aspx" target="_blank" rel="noopener" class="footer-category-title">新闻资讯</a>
-            </div>
-            <div class="footer-submenu d-none d-lg-block">
-              <div><a href="https://www.ha.edu.cn/indexfront/News_info.aspx" target="_blank" rel="noopener" class="footer-sub-link">会议&活动</a></div>
-              <div><a href="https://www.ha.edu.cn/indexfront/News_Hernet.aspx" target="_blank" rel="noopener" class="footer-sub-link">省网新闻</a></div>
-              <div><a href="https://www.ha.edu.cn/indexfront/News_University.aspx" target="_blank" rel="noopener" class="footer-sub-link">高校新闻</a></div>
-              <div><a href="https://www.ha.edu.cn/indexfront/HotTopic_List.aspx" target="_blank" rel="noopener" class="footer-sub-link">热点专题</a></div>
-              <div><a href="https://www.ha.edu.cn/indexfront/NewsNoticeList.aspx" target="_blank" rel="noopener" class="footer-sub-link">信息公告</a></div>
-            </div>
-          </div>
-          <div class="col-6 col-lg-2 col-md-4 col-sm-6 mb-3 footer-nav-column">
-            <div class="footer-category-title">
-              <a href="https://www.ha.edu.cn/indexfront/ServiceGuide.aspx" target="_blank" rel="noopener" class="footer-category-title">运行服务</a>
-            </div>
-            <div class="footer-submenu d-none d-lg-block">
-              <div><a href="https://www.ha.edu.cn/indexfront/ServiceGuide.aspx" target="_blank" rel="noopener" class="footer-sub-link">服务指南</a></div>
-              <div><a href="https://www.ha.edu.cn/indexfront/AccessServices.aspx" target="_blank" rel="noopener" class="footer-sub-link">接入服务</a></div>
-              <div><a href="https://www.ha.edu.cn/indexfront/Monitoring.aspx" target="_blank" rel="noopener" class="footer-sub-link">机房监控服务</a></div>
-              <div><a href="https://www.ha.edu.cn/indexfront/CDN.aspx" target="_blank" rel="noopener" class="footer-sub-link">CDN服务</a></div>
-              <div><a href="https://www.ha.edu.cn/indexfront/VideoMeeting.aspx" target="_blank" rel="noopener" class="footer-sub-link">教育厅视频会议接入</a></div>
-              <div><a href="https://www.ha.edu.cn/indexfront/DataBackup.aspx" target="_blank" rel="noopener" class="footer-sub-link">数据灾备服务</a></div>
-            </div>
-          </div>
-          <div class="col-6 col-lg-2 col-md-4 col-sm-6 mb-3 footer-nav-column">
-            <div class="footer-category-title">
-              <a href="https://www.ha.edu.cn/indexfront/InfoService.aspx" target="_blank" rel="noopener" class="footer-category-title">信息服务</a>
-            </div>
-            <div class="footer-submenu d-none d-lg-block">
-              <div><a href="https://www.ha.edu.cn/indexfront/InfoService.aspx" target="_blank" rel="noopener" class="footer-sub-link">服务指南</a></div>
-              <div><a href="https://www.ha.edu.cn/indexfront/WebsiteRanking.aspx" target="_blank" rel="noopener" class="footer-sub-link">网站排名</a></div>
-              <div><a href="https://www.ha.edu.cn/indexfront/DocumentAssembly.aspx" target="_blank" rel="noopener" class="footer-sub-link">文件汇编</a></div>
-              <div><a href="https://www.ha.edu.cn/indexfront/InfoResource.aspx" target="_blank" rel="noopener" class="footer-sub-link">信息资源</a></div>
-              <div><a href="https://www.ha.edu.cn/indexfront/ElecJournal.aspx" target="_blank" rel="noopener" class="footer-sub-link">电子期刊</a></div>
-              <div><a href="https://www.ha.edu.cn/indexfront/WeChat.aspx" target="_blank" rel="noopener" class="footer-sub-link">微信公众号</a></div>
-              <div><a href="https://www.ha.edu.cn/indexfront/ViedoMeetingService.aspx" target="_blank" rel="noopener" class="footer-sub-link">省网视频会议服务</a></div>
-            </div>
-          </div>
-          <div class="col-6 col-lg-2 col-md-4 col-sm-6 mb-3 footer-nav-column">
-            <div class="footer-category-title">
-              <a href="https://sec.ha.edu.cn/" target="_blank" rel="noopener" class="footer-category-title">安全服务</a>
-            </div>
-            <div class="footer-submenu d-none d-lg-block">
-              <div><a href="https://sec.ha.edu.cn/" target="_blank" rel="noopener" class="footer-sub-link">河南省教育信息安全监测中心</a></div>
-            </div>
-          </div>
-          <div class="col-6 col-lg-2 col-md-4 col-sm-6 mb-3 footer-nav-column">
-            <div class="footer-category-title">
-              <a href="https://www.ha.edu.cn/indexfront/ScientificResearch.aspx" target="_blank" rel="noopener" class="footer-category-title">科研服务</a>
-            </div>
-            <div class="footer-submenu d-none d-lg-block">
-              <div><a href="https://www.ha.edu.cn/indexfront/ScientificResearch.aspx#sicentificserviceid" target="_blank" rel="noopener" class="footer-sub-link">服务指南</a></div>
-              <div><a href="https://www.ha.edu.cn/indexfront/ScientificResearch.aspx#scentificresourceid" target="_blank" rel="noopener" class="footer-sub-link">科研资源</a></div>
-            </div>
-          </div>
-        </div>
+      <div class="col-lg-6 col-md-12 col-sm-12 footer-about">
+        <div class="footer-heading">关于本站</div>
+        <p class="footer-about-text">
+          本站由河南省教育科研网支持创办，由南阳理工学院信息化建设与管理中心负责维护，本站相关源码可在
+          <a href="https://github.com/tuna/tunasync" target="_blank" rel="noopener">这里(镜像管理器)</a>
+          和
+          <a href="https://github.com/hernet-mirrors/ha-mirrors-web" target="_blank" rel="noopener">这里(镜像站网页)</a>
+          获取。镜像管理器是 tunasync。
+        </p>
       </div>
     </div>
   </div>
@@ -113,4 +28,3 @@
     <p class="footer-bottom-text">Copyright &copy; 2026 河南省教育科研网 All rights reserved. <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备2021002636号-2</a></p>
   </div>
 </footer>
-<script src="{{ '/static/js/footer.js' | relative_url }}" defer></script>

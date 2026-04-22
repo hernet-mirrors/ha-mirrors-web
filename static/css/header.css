@@ -9,8 +9,66 @@
   outline: none !important;
 }
 
+/* Right-side brand: HERNET logo + "Mirror" text, links to mirror home */
+.header-right {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.mirror-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none !important;
+  color: #0E59A6;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.mirror-brand:hover {
+  text-decoration: none !important;
+  background-color: rgba(14, 89, 166, 0.06);
+  transform: translateY(-1px);
+}
+
+.mirror-brand-logo {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+
+.mirror-brand-text {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #0E59A6;
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .header-left { flex: 0 1 auto !important; }
+  .header-right {
+    order: 2;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .mirror-brand { padding: 2px 4px; gap: 4px; }
+  .mirror-brand-logo { height: 22px; }
+  .mirror-brand-text { font-size: 14px; }
+}
+
+@media (max-width: 480px) {
+  .mirror-brand-text { display: none; }
+}
+
 @media (prefers-color-scheme: dark) {
-  .CompanyLogo {
+  .CompanyLogo,
+  .mirror-brand-logo {
     filter: invert(0.92) hue-rotate(180deg) brightness(1.15);
   }
+  .mirror-brand,
+  .mirror-brand-text { color: #8BB4E8; }
+  .mirror-brand:hover { background-color: rgba(139, 180, 232, 0.12); }
 }

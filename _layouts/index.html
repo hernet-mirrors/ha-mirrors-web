@@ -2,8 +2,8 @@
 layout: default
 ---
 
-<link rel="stylesheet" href="{{ '/static/css/index.css' | relative_url }}">
-<link rel="stylesheet" href="{{ '/static/css/index-layout.css' | relative_url }}">
+<link rel="stylesheet" href="{{ '/static/css/index.css' | relative_url }}?v=7">
+<link rel="stylesheet" href="{{ '/static/css/index-layout.css' | relative_url }}?v=7">
 
 {% if page.legacy %}
 <div class="legacy-wrapper">
@@ -26,88 +26,10 @@ layout: default
 <div class="mirrors-container">
   <div class="container">
     <div class="row">
-      <div class="col-lg-8">
+      <div class="col-12">
         <div class="card shadow-sm index-card">
           <div class="card-body">
             {{ content }}
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4 sidebar-container">
-        <div class="sidebar-content">
-          <div class="card shadow-sm mb-4 index-card">
-            <div class="card-header index-card-header">
-              <h5 class="mb-0"><i class="fas fa-bullhorn"></i> 公告通知</h5>
-            </div>
-            <div class="card-body">
-              {% if site.categories.news and site.categories.news.size > 0 %}
-              <ul class="list-unstyled mb-0">
-                {% for news in site.categories.news limit: 3 %}
-                <li class="mb-2">
-                  <a href="{{ news.url | relative_url }}" class="text-decoration-none news-link">
-                    <small class="text-muted">{{ news.date | date: "%Y-%m-%d" }}</small><br>
-                    <span class="news-title">{{ news.title }}</span>
-                  </a>
-                </li>
-                {% endfor %}
-              </ul>
-              <div class="text-end mt-3">
-                <a href="{{ '/news/' | relative_url }}" class="text-decoration-none more-link">更多 <i class="fas fa-angle-double-right"></i></a>
-              </div>
-              {% else %}
-              <p class="text-muted mb-0">暂无公告</p>
-              {% endif %}
-            </div>
-          </div>
-
-          <div class="card shadow-sm mb-4 index-card">
-            <div class="card-header index-card-header">
-              <h5 class="mb-0"><i class="fas fa-download"></i> 下载链接</h5>
-            </div>
-            <div class="card-body text-center">
-              <p class="mb-3 text-muted">常用发行版ISO和应用软件安装包下载：</p>
-              <button id="show-iso-list" class="btn btn-primary">
-                <i class="fas fa-link"></i> 获取下载链接
-              </button>
-            </div>
-          </div>
-
-          <div class="card shadow-sm mb-4 index-card">
-            <div class="card-header index-card-header">
-              <h5 class="mb-0"><i class="fas fa-envelope"></i> 联系我们</h5>
-            </div>
-            <div class="card-body">
-              <ul class="list-unstyled mb-0">
-                <li>
-                  <strong>意见反馈</strong><br>
-                  <a href="mailto:{{ site.email }}" class="text-decoration-none contact-link">
-                    <i class="fas fa-envelope me-1"></i>{{ site.email }}
-                  </a>
-                </li>
-                <li class="mt-2">
-                  <strong>GitHub</strong><br>
-                  <a href="https://github.com/hernet-mirrors/ha-mirrors-web/issues" class="text-decoration-none contact-link" target="_blank" rel="noopener">
-                    <i class="fab fa-github me-1"></i>github.com/hernet-mirrors
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="card shadow-sm index-card">
-            <div class="card-header index-card-header">
-              <h5 class="mb-0"><i class="fas fa-external-link-alt"></i> 友情链接</h5>
-            </div>
-            <div class="card-body">
-              <ul class="list-unstyled mb-0">
-                <li class="mb-1"><a href="{{ '/status/' | relative_url }}" class="text-decoration-none friendly-link"><i class="fas fa-chart-line me-1"></i>同步状态</a></li>
-                <li class="mb-1"><a href="{{ '/help/' | relative_url }}" class="text-decoration-none friendly-link"><i class="fas fa-question-circle me-1"></i>使用帮助</a></li>
-                <li class="mb-1"><a href="https://www.ha.edu.cn" class="text-decoration-none friendly-link" target="_blank" rel="noopener">{{ site.school }}</a></li>
-                <li class="mb-1"><a href="https://mirrors.cernet.edu.cn" class="text-decoration-none friendly-link" target="_blank" rel="noopener">教育网联合镜像站</a></li>
-                <li class="mb-1"><a href="https://mirror.nyist.edu.cn" class="text-decoration-none friendly-link" target="_blank" rel="noopener">南阳理工学院开源镜像站</a></li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>
