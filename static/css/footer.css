@@ -2,12 +2,12 @@
 .footer {
   background: #232e39;
   color: #fff;
-  padding: 40px 0 0 0;
+  padding: 40px 0 28px;
   font-size: 16px;
 }
 
 .footer-container {
-  margin-bottom: 32px;
+  margin-bottom: 0;
   row-gap: 32px;
 }
 

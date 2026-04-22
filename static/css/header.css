@@ -1,75 +1,170 @@
-/* Styles for the navigation list in the header */
-.nav-list > li > a,
-.nav-list > li > a.current-page,
-.nav-list > li > a:active,
-.nav-list > li > a:focus {
-  border-bottom: none !important;
-  box-shadow: none !important;
-  background: none !important;
-  outline: none !important;
+/* Site header: two-logo brand lockup + flat nav row, fixed to top */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #ffffff;
+  border-bottom: 1px solid #e3e8f0;
+  box-shadow: 0 2px 10px rgba(17, 24, 39, 0.04);
 }
 
-/* Right-side brand: HERNET logo + "Mirror" text, links to mirror home */
-.header-right {
+.site-header-inner {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 10px 24px;
   display: flex;
   align-items: center;
-  flex-shrink: 0;
+  gap: 20px;
+  min-height: 64px;
 }
 
-.mirror-brand {
+/* Left brand: logo-main -> www.ha.edu.cn */
+.brand-main {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+}
+.brand-main img {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
+/* Separator between brand(s) and nav */
+.brand-sep {
+  flex-shrink: 0;
+  width: 1px;
+  height: 36px;
+  background: #d7dde8;
+}
+
+/* Flat nav row */
+.site-nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.site-nav a {
+  color: #1f2937;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: color 0.15s ease, background-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.site-nav a:hover {
+  color: #437EF7;
+  background-color: rgba(67, 126, 247, 0.08);
+}
+
+.site-nav a.active {
+  color: #437EF7;
+  background-color: rgba(67, 126, 247, 0.1);
+}
+
+/* Right brand: logo-hernet + "Mirror" -> mirrors.ha.edu.cn */
+.brand-mirror {
+  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   text-decoration: none !important;
   color: #0E59A6;
+  font-weight: 700;
+  font-size: 22px;
   padding: 4px 6px;
   border-radius: 6px;
   transition: transform 0.15s ease, background-color 0.15s ease;
 }
 
-.mirror-brand:hover {
+.brand-mirror:hover {
   text-decoration: none !important;
   background-color: rgba(14, 89, 166, 0.06);
   transform: translateY(-1px);
+  color: #0E59A6;
 }
 
-.mirror-brand-logo {
-  height: 32px;
+.brand-mirror img {
+  height: 30px;
   width: auto;
   display: block;
   margin-right: -2px;
 }
 
-.mirror-brand-text {
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: #0E59A6;
-  line-height: 1;
+.brand-mirror span { line-height: 1; }
+
+/* Reserve space for fixed header */
+body { padding-top: 80px; }
+
+/* Tablet: compact nav spacing */
+@media (max-width: 1100px) {
+  .site-header-inner { gap: 14px; padding: 10px 18px; }
+  .site-nav { gap: 14px; }
+  .site-nav a { font-size: 14px; padding: 5px 8px; }
+  .brand-main img { height: 34px; }
+  .brand-mirror img { height: 26px; }
+  .brand-mirror { font-size: 18px; }
 }
 
+/* Mobile: stack into two rows — brands up top, nav below */
 @media (max-width: 768px) {
-  .header-left { flex: 0 1 auto !important; }
-  .header-right {
-    order: 2;
-    margin-left: auto;
-    flex-shrink: 0;
+  .site-header-inner {
+    flex-wrap: wrap;
+    padding: 8px 14px;
+    gap: 10px;
   }
-  .mirror-brand { padding: 2px 4px; gap: 4px; }
-  .mirror-brand-logo { height: 22px; }
-  .mirror-brand-text { font-size: 14px; }
+  .brand-sep { display: none; }
+  .site-nav {
+    order: 3;
+    width: 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    gap: 4px;
+    padding-top: 4px;
+    border-top: 1px solid #eef1f6;
+  }
+  .site-nav a { font-size: 13px; padding: 4px 6px; flex-shrink: 0; }
+  .brand-main { order: 1; margin-right: auto; }
+  .brand-mirror { order: 2; font-size: 16px; }
+  .brand-main img { height: 30px; }
+  .brand-mirror img { height: 22px; }
+  body { padding-top: 112px; }
 }
 
 @media (max-width: 480px) {
-  .mirror-brand-text { display: none; }
+  .brand-mirror span { display: none; }
 }
 
+/* Dark mode */
 @media (prefers-color-scheme: dark) {
-  .CompanyLogo,
-  .mirror-brand-logo {
+  .site-header {
+    background: #2C3444;
+    border-bottom-color: #3b4457;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+  .brand-sep { background: #3b4457; }
+  .brand-main img,
+  .brand-mirror img {
     filter: invert(0.92) hue-rotate(180deg) brightness(1.15);
   }
-  .mirror-brand,
-  .mirror-brand-text { color: #8BB4E8; }
-  .mirror-brand:hover { background-color: rgba(139, 180, 232, 0.12); }
+  .site-nav a { color: #F9F9F9; }
+  .site-nav a:hover,
+  .site-nav a.active {
+    color: #8BB4E8;
+    background-color: rgba(139, 180, 232, 0.12);
+  }
+  .brand-mirror { color: #8BB4E8; }
+  .brand-mirror:hover {
+    color: #8BB4E8;
+    background-color: rgba(139, 180, 232, 0.12);
+  }
 }

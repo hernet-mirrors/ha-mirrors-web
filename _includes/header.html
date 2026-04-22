@@ -1,42 +1,23 @@
-<!-- 头部导航栏 - 与河南省教育科研网主站保持一致 -->
-<header class="header" role="banner">
-    <div class="container-fluid">
-        <div class="header-wrapper">
-            <nav id="navbar" class="navbar-fixed" role="navigation" aria-label="主导航">
-                <div class="header-left">
-                    <a href="{{ site.homelink | default: 'https://www.ha.edu.cn' }}" aria-label="前往河南省教育科研网主站" target="_blank" rel="noopener">
-                        <img src="{{ '/static/img/logo-main.svg' | relative_url }}" class="CompanyLogo" id="logo" alt="河南省教育科研网">
-                    </a>
-                </div>
+<!-- Site header: two-logo brand + flat nav row -->
+<header class="site-header" role="banner">
+  <div class="site-header-inner">
+    <a class="brand-main" href="{{ site.homelink | default: 'https://www.ha.edu.cn' }}" target="_blank" rel="noopener" aria-label="前往河南省教育科研网主站">
+      <img src="{{ '/static/img/logo-main.svg' | relative_url }}" alt="河南省教育科研网">
+    </a>
+    <div class="brand-sep" aria-hidden="true"></div>
 
-                <div class="header-center">
-                    <div class="navbarCenter" id="navbarDisplay">
-                        <button class="menu-icon" aria-label="切换导航菜单" aria-expanded="false">
-                            <span class="bar" id="bar1"></span>
-                            <span class="bar" id="bar2"></span>
-                            <span class="bar" id="bar3"></span>
-                        </button>
-                        <ul class="nav-list" role="menubar">
-                            <li class="has-submenu" role="none">
-                                <a href="/" {% if page.url contains '/help' or page.url contains '/status' or page.url contains '/news' or page.url == '/' %}class="current-page"{% endif %} role="menuitem">开源镜像</a>
-                                <ul class="submenu" role="menu">
-                                    <li><a href="{{ '/' | relative_url }}">镜像列表</a></li>
-                                    <li><a href="{{ '/help/' | relative_url }}">使用帮助</a></li>
-                                    <li><a href="{{ '/status/' | relative_url }}">同步状态</a></li>
-                                    <li><a href="{{ '/news/' | relative_url }}">镜像公告</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+    <nav class="site-nav" aria-label="主导航">
+      <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>开源镜像</a>
+      <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>镜像列表</a>
+      <a href="{{ '/help/' | relative_url }}" {% if page.url contains '/help' %}class="active"{% endif %}>使用帮助</a>
+      <a href="{{ '/status/' | relative_url }}" {% if page.url contains '/status' %}class="active"{% endif %}>同步状态</a>
+      <a href="{{ '/news/' | relative_url }}" {% if page.url contains '/news' %}class="active"{% endif %}>镜像公告</a>
+    </nav>
 
-                <div class="header-right">
-                    <a href="{{ site.url | default: 'https://mirrors.ha.edu.cn' }}" aria-label="{{ site.title }}" class="mirror-brand">
-                        <img src="{{ '/static/img/logo-hernet.svg' | relative_url }}" class="mirror-brand-logo" alt="HERNET">
-                        <span class="mirror-brand-text">Mirror</span>
-                    </a>
-                </div>
-            </nav>
-        </div>
-    </div>
+    <div class="brand-sep" aria-hidden="true"></div>
+    <a class="brand-mirror" href="{{ site.url | default: 'https://mirrors.ha.edu.cn' }}" aria-label="{{ site.title }}">
+      <img src="{{ '/static/img/logo-hernet.svg' | relative_url }}" alt="HERNET">
+      <span>Mirror</span>
+    </a>
+  </div>
 </header>
