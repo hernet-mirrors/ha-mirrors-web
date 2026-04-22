@@ -9,34 +9,38 @@ permalink: /status/
   <div class="container">
     <div class="row">
     <div class="col-lg-8 col-12">
-        <div class="status-list-container">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h3><i class="fas fa-chart-line"></i> 同步状态</h3>
-            </div>
+        <div class="card shadow-sm index-card">
+            <div class="card-body">
+                <div class="status-list-container">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h3><i class="fas fa-chart-line"></i> 同步状态</h3>
+                    </div>
 
-            <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th width="25%">镜像名称</th>
-                            <th width="12%">状态</th>
-                            <th width="18%">上次同步成功</th>
-                            <th width="18%">下次计划同步</th>
-                            <th width="15%">同步开始时间</th>
-                            <th width="12%">大小</th>
-                        </tr>
-                    </thead>
-                    <tbody id="status-table-body">
-                        <tr>
-                            <td colspan="6" class="text-center py-4">
-                                <div class="spinner-border text-primary" role="status">
-                                    <span class="visually-hidden">加载中...</span>
-                                </div>
-                                <p class="mt-2 mb-0 text-muted">正在加载同步状态...</p>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th width="25%">镜像名称</th>
+                                    <th width="12%">状态</th>
+                                    <th width="18%">上次同步成功</th>
+                                    <th width="18%">下次计划同步</th>
+                                    <th width="15%">同步开始时间</th>
+                                    <th width="12%">大小</th>
+                                </tr>
+                            </thead>
+                            <tbody id="status-table-body">
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">加载中...</span>
+                                        </div>
+                                        <p class="mt-2 mb-0 text-muted">正在加载同步状态...</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
