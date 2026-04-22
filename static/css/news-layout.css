@@ -1,67 +1,21 @@
-/* Styles for the news layout */
-body {
-    background-color: #f8f9fa;
-}
-
-/* Shared sidebar card chrome — news layout doesn't load index-layout.css */
-.index-card { border: 1px solid #dee2e6; }
-.index-card-header,
-.index-card-header h5,
-.index-card-header i {
-    background-color: #0A77FF;
-    color: #ffffff !important;
-}
-.index-card-header { background-color: #0A77FF; }
-
-.news-link { color: #333; }
-.news-title { color: #0A77FF; }
-.more-link { color: #0A77FF; }
-
-/* News detail uses Bootstrap .container without .bg-white; give it a light
-   card look in light mode so main.css's dark override can re-color it. */
-body > .container.mt-4 {
-    background: #ffffff;
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin-top: 1.5rem !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-}
+/* Styles for the news layout — shared chrome now lives in main.css.
+   Keep only article-body typography here so /news/ (layout: default)
+   and /news/<article>/ (layout: news) look identical in the sidebar. */
 
 .news-article,
-.news-content,
-.news-title {
+.news-content {
     color: inherit;
 }
 
-.sidebar { color: inherit; }
-.sidebar h5 { color: inherit; }
-.sidebar .list-unstyled a { color: var(--primary-color); }
-.sidebar .list-unstyled a:hover { text-decoration: underline; }
+.news-article .news-meta .text-muted,
+.news-article .text-muted {
+    color: #6c757d;
+}
 
 @media (prefers-color-scheme: dark) {
-    body { background-color: #1a1d24 !important; }
-
-    body > .container.mt-4 {
-        background: #2C3444 !important;
-        border: 1px solid #3a4154;
-        box-shadow: none;
-    }
-
     .news-article,
     .news-content { background: transparent !important; color: var(--text-primary); }
 
-    .news-title { color: var(--text-primary); }
-    .news-meta .text-muted,
+    .news-article .news-meta .text-muted,
     .news-article .text-muted { color: var(--text-secondary) !important; }
-
-    .sidebar {
-        background: #374155;
-        border: 1px solid #3a4154;
-        border-radius: 8px;
-        padding: 1rem;
-    }
-    .sidebar h5 { color: var(--text-primary); }
-    .sidebar a { color: var(--primary-color); }
-    .sidebar a.fw-bold { color: var(--primary-hover); }
-    .sidebar small.text-muted { color: var(--text-secondary) !important; }
 }
