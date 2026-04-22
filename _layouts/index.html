@@ -2,8 +2,8 @@
 layout: default
 ---
 
-<link rel="stylesheet" href="{{ '/static/css/index.css' | relative_url }}?v=17">
-<link rel="stylesheet" href="{{ '/static/css/index-layout.css' | relative_url }}?v=17">
+<link rel="stylesheet" href="{{ '/static/css/index.css' | relative_url }}?v=26">
+<link rel="stylesheet" href="{{ '/static/css/index-layout.css' | relative_url }}?v=26">
 
 {% if page.legacy %}
 <div class="legacy-wrapper">
@@ -23,16 +23,14 @@ layout: default
   </div>
 </div>
 {% else %}
-<div class="mirrors-container">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-12">
-        <div class="card shadow-sm index-card">
-          <div class="card-body">
-            {{ content }}
-          </div>
-        </div>
+<div class="row">
+  <div class="col-lg-8 col-12">
+    <div class="card shadow-sm index-card">
+      <div class="card-body">
+        {{ content }}
       </div>
+    </div>
+  </div>
 
       <div class="col-lg-4 col-12 sidebar-container">
         <div class="sidebar-content">
@@ -126,8 +124,6 @@ layout: default
           </div>
         </div>
       </div>
-    </div>
-  </div>
 </div>
 {% endif %}
 

@@ -3,6 +3,20 @@ body {
     background-color: #f8f9fa;
 }
 
+/* Shared sidebar card chrome — news layout doesn't load index-layout.css */
+.index-card { border: 1px solid #dee2e6; }
+.index-card-header,
+.index-card-header h5,
+.index-card-header i {
+    background-color: #0A77FF;
+    color: #ffffff !important;
+}
+.index-card-header { background-color: #0A77FF; }
+
+.news-link { color: #333; }
+.news-title { color: #0A77FF; }
+.more-link { color: #0A77FF; }
+
 /* News detail uses Bootstrap .container without .bg-white; give it a light
    card look in light mode so main.css's dark override can re-color it. */
 body > .container.mt-4 {
