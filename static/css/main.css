@@ -99,6 +99,14 @@ body {
 }
 .index-card-header { background-color: #0A77FF; }
 
+/* Shared right-sidebar column — cap card column width + center in col-lg-4
+   so /, /status/, /news/, /news/<article>/ all render the sidebar at the
+   same width and horizontal position. */
+.sidebar-content {
+    max-width: 340px;
+    margin: 0 auto;
+}
+
 /* 链接样式 */
 a {
     color: var(--primary-color);
