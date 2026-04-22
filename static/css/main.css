@@ -228,16 +228,8 @@ p {
 
 /* Header now flows in-document; no body padding-top reserved.
    Use flex column + min-height so the footer sticks to the bottom
-   when page content is shorter than the viewport.
-   overflow-y: scroll keeps the vertical scrollbar reserved on every
-   page so short pages don't widen relative to tall ones (prevents
-   the sidebar-card width jump when switching between /, /status/,
-   /news/ etc.). */
-html {
-    height: 100%;
-    overflow-y: scroll;
-    scrollbar-gutter: stable;
-}
+   when page content is shorter than the viewport. */
+html { height: 100%; }
 body {
     padding-top: 0;
     min-height: 100vh;
