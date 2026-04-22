@@ -1526,65 +1526,18 @@ body > footer.footer { margin-top: auto; }
     .spinner-border.text-primary { color: var(--primary-color) !important; }
 }
 
-/* 右侧边栏固定样式 - 与 status 页面一致 */
+/* Right sidebar — flows in natural document order, no sticky/scroll. */
 @media (min-width: 992px) {
-    .sidebar-container {
-        position: sticky;
-        top: 80px; /* header 高度 */
-        z-index: 100;
-        align-self: flex-start;
-        max-height: calc(100vh - 80px);
-        height: auto;
-        overflow: visible; /* 只由 .sidebar-content 控制滚动 */
-        transition: var(--transition-slow);
-        will-change: transform;
-        backface-visibility: hidden;
-        animation: slideInRight 0.6s ease-out;
-    }
-    .sidebar-content {
-        overflow-y: auto;
-        max-height: calc(100vh - 120px); /* header+footer 预留 */
-        padding-right: var(--spacing-md);
-        scroll-behavior: smooth;
-        will-change: scroll-position;
-        -webkit-overflow-scrolling: touch;
-    }
-    /* 滚动条样式 */
-    .sidebar-content::-webkit-scrollbar {
-        width: 8px;
-    }
-    .sidebar-content::-webkit-scrollbar-track {
-        background: rgba(0, 0, 0, 0.05);
-        border-radius: 4px;
-        margin: 4px 0;
-    }
-    .sidebar-content::-webkit-scrollbar-thumb {
-        background: rgba(10, 119, 255, 0.3);
-        border-radius: 4px;
-        transition: background-color 0.3s ease;
-    }
-    .sidebar-content::-webkit-scrollbar-thumb:hover {
-        background: rgba(10, 119, 255, 0.5);
-    }
-    /* 卡片间距和动画 */
     .sidebar-content .card {
         margin-bottom: 1rem;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        animation: fadeInUp 0.6s ease-out;
-        animation-fill-mode: both;
+        transition: box-shadow 0.2s ease, transform 0.2s ease;
     }
     .sidebar-content .card:last-child {
         margin-bottom: 0;
     }
     .sidebar-content .card:hover {
-        transform: translateY(-3px) scale(1.02);
-        box-shadow: 0 8px 25px rgba(10, 119, 255, 0.15);
-    }
-    /* tall-content 状态只调整 top */
-    .sidebar-container.tall-content {
-        top: 140px;
-        /* 其余属性与 .sidebar-container 保持一致 */
-        animation: slideInRightTop 0.6s ease-out;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(10, 119, 255, 0.1);
     }
 }
 
