@@ -15,61 +15,45 @@ let labelMap = {};
 let autoRefreshInterval;
 let diskInfoRendered = false;
 
-// Load mirror description data from JSON file
+// Load mirror description data from options.json (tuna-style layout)
 async function loadMirrorDescriptions() {
   try {
-    const response = await fetch("/static/mirror-desc.json?_=" + Date.now());
+    const response = await fetch("/static/options.json?_=" + Date.now());
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
 
     const data = await response.json();
+    const opts = (data && data.options) || {};
 
-    // Convert array to object for quick lookup
-    if (data.mirror_desc && Array.isArray(data.mirror_desc)) {
-      data.mirror_desc.forEach((item) => {
-        mirrorDescriptions[item.name] = item.desc;
+    if (Array.isArray(opts.mirror_desc)) {
+      opts.mirror_desc.forEach((item) => {
+        if (item && item.name) mirrorDescriptions[item.name] = item.desc;
       });
-      console.log(
-        "Status page: Loaded mirror descriptions:",
-        Object.keys(mirrorDescriptions).length
-      );
+      console.log("Status page: Loaded mirror descriptions:", Object.keys(mirrorDescriptions).length);
     }
 
-    // Load new mirrors list
-    if (data.new_mirrors && Array.isArray(data.new_mirrors)) {
-      newMirrors = data.new_mirrors;
+    if (Array.isArray(opts.new_mirrors)) {
+      newMirrors = opts.new_mirrors;
       console.log("Status page: Loaded new mirrors:", newMirrors.length);
     }
 
-    // Load unlisted mirrors
-    if (data.unlisted_mirrors && Array.isArray(data.unlisted_mirrors)) {
-      unlistedMirrors = data.unlisted_mirrors;
+    if (Array.isArray(opts.unlisted_mirrors)) {
+      unlistedMirrors = opts.unlisted_mirrors;
       console.log("Status page: Loaded extra mirrors:", unlistedMirrors.length);
     }
 
-    // Load mirrors that force redirect to help page
-    if (
-      data.force_redirect_help_mirrors &&
-      Array.isArray(data.force_redirect_help_mirrors)
-    ) {
-      forceRedirectHelpMirrors = data.force_redirect_help_mirrors;
-      console.log(
-        "Status page: Loaded force redirect mirrors:",
-        forceRedirectHelpMirrors.length
-      );
+    if (Array.isArray(opts.force_redirect_help_mirrors)) {
+      forceRedirectHelpMirrors = opts.force_redirect_help_mirrors;
+      console.log("Status page: Loaded force redirect mirrors:", forceRedirectHelpMirrors.length);
     }
 
-    // Load label map
-    if (data.label_map && typeof data.label_map === "object") {
-      labelMap = data.label_map;
-      console.log(
-        "Status page: Loaded label map:",
-        Object.keys(labelMap).length
-      );
+    if (opts.label_map && typeof opts.label_map === "object") {
+      labelMap = opts.label_map;
+      console.log("Status page: Loaded label map:", Object.keys(labelMap).length);
     }
   } catch (error) {
-    console.error("Status page: Failed to load mirror descriptions:", error);
+    console.error("Status page: Failed to load options.json:", error);
     mirrorDescriptions = {};
     newMirrors = [];
     unlistedMirrors = [];

@@ -29,7 +29,22 @@ git pull --recurse-submodules
 git submodule update --init --recursive --remote
 ```
 
-## 三、本地构建
+## 三、构建前：拉取运行时数据
+
+`static/disk.json`、`static/isoinfo.json`、`static/tunasync.json` 是镜像站运行时生成的实时数据（磁盘占用、ISO 镜像元数据、tunasync 同步状态），不纳入仓库版本控制。**构建前必须从
+线上镜像站拉取**，否则首页镜像列表、同步状态页、ISO 下载弹窗都会加载失败。
+
+```bash
+mkdir -p static
+curl -fsSL -o static/disk.json      https://mirrors.ha.edu.cn/static/disk.json
+curl -fsSL -o static/isoinfo.json   https://mirrors.ha.edu.cn/static/isoinfo.json
+curl -fsSL -o static/tunasync.json  https://mirrors.ha.edu.cn/static/tunasync.json
+```
+
+> 如果没有 `curl`，用 `wget -O <path> <url>` 等价替换。三者均位于
+> `https://mirrors.ha.edu.cn/static/` 下，由 nginx 直接提供。
+
+## 四、本地构建
 
 ```bash
 # 安装 Ruby 依赖
@@ -44,11 +59,16 @@ bundle exec jekyll serve
 
 访问 <http://localhost:4000>。
 
-## 四、Docker 构建
+## 五、Docker 构建
 
 ```bash
 git pull --ff-only
 git submodule update --init --recursive
+
+# 同上：先拉取运行时数据到宿主 static/
+curl -fsSL -o static/disk.json      https://mirrors.ha.edu.cn/static/disk.json
+curl -fsSL -o static/isoinfo.json   https://mirrors.ha.edu.cn/static/isoinfo.json
+curl -fsSL -o static/tunasync.json  https://mirrors.ha.edu.cn/static/tunasync.json
 
 docker build -f Dockerfile.build -t ha-mirrors-web:build .
 docker run --rm -v "$(pwd)":/data ha-mirrors-web:build
@@ -56,7 +76,7 @@ docker run --rm -v "$(pwd)":/data ha-mirrors-web:build
 
 构建完成后静态文件在 `_site/`。
 
-## 五、目录结构
+## 六、目录结构
 
 ```
 _config.yml                 # Jekyll 配置（包含 helpz.language / helpz.dir 等）
@@ -73,19 +93,21 @@ _layouts/                   # default / help / index / news / page / minimal
 static/                     # 静态资源（CSS / JS / 图片 / njs）
 ```
 
-## 六、添加帮助页面
+## 七、添加帮助页面
 
 多数镜像上游已有文档——只需把镜像名加入 `_helpz/enabled.yaml`。
 若需本站私有覆盖或新增未收录页面，把 `<镜像名>.yaml` + `index.zh.md` 等
 文件放到 `_helpz/local/<镜像名>/`（与 `_helpz/global/` 同路径）。
 
-## 七、常见问题
+## 八、常见问题
 
 - 修改 `_config.yml` 以自定义站点信息。
-- 镜像描述、ISO、磁盘等数据在 `static/` 目录。
+- `static/options.json` 由 Jekyll 从 `_data/options.yml` 渲染，镜像描述
+  只需改 YAML；`static/disk.json` / `isoinfo.json` / `tunasync.json` 由
+  镜像站运行时生成，见 [第三节](#三构建前拉取运行时数据)。
 - `static/njs/` 下的脚本由 nginx njs 运行时使用（与网页无关）。
 
-## 八、参考命令
+## 九、参考命令
 
 - 清理：`bundle clean && rm -rf .jekyll-cache _site`
 - 重装：`bundle install --redownload`

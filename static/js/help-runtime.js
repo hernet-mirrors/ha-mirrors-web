@@ -72,8 +72,8 @@
   }
 
   function pruneUnavailableHelpEntries() {
-    var tunasyncURL   = (window.jekyllHelp && window.jekyllHelp.tunasyncPath)   || "/static/tunasync.json";
-    var mirrorDescURL = (window.jekyllHelp && window.jekyllHelp.mirrorDescPath) || "/static/mirror-desc.json";
+    var tunasyncURL = (window.jekyllHelp && window.jekyllHelp.tunasyncPath) || "/static/tunasync.json";
+    var optionsURL  = (window.jekyllHelp && window.jekyllHelp.optionsPath)  || "/static/options.json";
 
     function asJson(resp) {
       if (!resp || !resp.ok) throw new Error("fetch failed: " + (resp && resp.status));
@@ -81,18 +81,18 @@
     }
 
     Promise.all([
-      fetch(tunasyncURL,   { cache: "no-cache" }).then(asJson).catch(function () { return []; }),
-      fetch(mirrorDescURL, { cache: "no-cache" }).then(asJson).catch(function () { return {}; })
+      fetch(tunasyncURL, { cache: "no-cache" }).then(asJson).catch(function () { return []; }),
+      fetch(optionsURL,  { cache: "no-cache" }).then(asJson).catch(function () { return {}; })
     ]).then(function (results) {
       var tunasync = results[0];
-      var desc     = results[1] || {};
+      var opts     = (results[1] && results[1].options) || {};
       var available = new Set();
 
       (Array.isArray(tunasync) ? tunasync : []).forEach(function (m) {
         if (m && m.name) available.add(m.name);
       });
 
-      var unlisted = desc && desc.unlisted_mirrors;
+      var unlisted = opts.unlisted_mirrors;
       if (Array.isArray(unlisted)) {
         unlisted.forEach(function (m) {
           if (m && m.name) available.add(m.name);

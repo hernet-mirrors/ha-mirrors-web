@@ -42,3 +42,8 @@ nginx-*.conf
 *.zip
 *.tar.gz
 *.rar
+
+# Live runtime data fetched from mirrors.ha.edu.cn before building
+static/disk.json
+static/isoinfo.json
+static/tunasync.json

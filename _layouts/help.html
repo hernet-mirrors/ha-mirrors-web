@@ -63,7 +63,7 @@
   })();
   window.jekyllHelp = {
     tunasyncPath:    {{ "/static/tunasync.json"    | relative_url | jsonify }},
-    mirrorDescPath:  {{ "/static/mirror-desc.json" | relative_url | jsonify }},
+    optionsPath:     {{ "/static/options.json" | relative_url | jsonify }},
     mirrorzHelpLink: {{ site.mirrorz_help_link | default: "https://help.mirrors.cernet.edu.cn/" | jsonify }}
   };
 </script>

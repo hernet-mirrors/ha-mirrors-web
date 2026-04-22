@@ -182,49 +182,34 @@ function getTunasyncData() {
 
 /**
  * Loads mirror descriptions, new mirrors, unlisted mirrors,
- * force redirect help mirrors and label map from mirror-desc.json.
+ * force redirect help mirrors and label map from options.json
+ * (tuna/mirror-web layout: top-level { options, helps }).
  */
 async function loadMirrorDescriptions() {
   try {
-    const response = await fetch("/static/mirror-desc.json?_=" + Date.now());
+    const response = await fetch("/static/options.json?_=" + Date.now());
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
 
     const data = await response.json();
+    const opts = (data && data.options) || {};
 
-    // Adapt to the actual structure: data.mirrors
-    if (data.mirrors && typeof data.mirrors === "object") {
-      Object.keys(data.mirrors).forEach((key) => {
-        mirrorDescriptions[key.trim().toLowerCase()] =
-          data.mirrors[key].description || "";
+    // mirror_desc: [{ name, desc }] -> lowercased-name -> description
+    if (Array.isArray(opts.mirror_desc)) {
+      opts.mirror_desc.forEach((item) => {
+        if (item && item.name) {
+          mirrorDescriptions[item.name.trim().toLowerCase()] = item.desc || "";
+        }
       });
     }
 
-    // Load new mirrors list
-    if (data.new_mirrors && Array.isArray(data.new_mirrors)) {
-      newMirrors = data.new_mirrors;
-    }
-
-    // Load unlisted mirrors
-    if (data.unlisted_mirrors && Array.isArray(data.unlisted_mirrors)) {
-      unlistedMirrors = data.unlisted_mirrors;
-    }
-
-    // Load mirrors that force redirect to help page
-    if (
-      data.force_redirect_help_mirrors &&
-      Array.isArray(data.force_redirect_help_mirrors)
-    ) {
-      forceRedirectHelpMirrors = data.force_redirect_help_mirrors;
-    }
-
-    // Load label map
-    if (data.label_map && typeof data.label_map === "object") {
-      labelMap = data.label_map;
-    }
+    if (Array.isArray(opts.new_mirrors))               newMirrors               = opts.new_mirrors;
+    if (Array.isArray(opts.unlisted_mirrors))          unlistedMirrors          = opts.unlisted_mirrors;
+    if (Array.isArray(opts.force_redirect_help_mirrors)) forceRedirectHelpMirrors = opts.force_redirect_help_mirrors;
+    if (opts.label_map && typeof opts.label_map === "object") labelMap = opts.label_map;
   } catch (error) {
-    console.error("Failed to load mirror descriptions:", error);
+    console.error("Failed to load options.json:", error);
     mirrorDescriptions = {};
     newMirrors = [];
     unlistedMirrors = [];

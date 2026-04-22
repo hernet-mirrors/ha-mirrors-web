@@ -1,0 +1,14 @@
+---
+---
+{
+  "options": {
+    "mirror_desc": {{ site.data.options.mirror_desc | jsonify }},
+    "new_mirrors": {{ site.data.options.new_mirrors | jsonify }},
+    "unlisted_mirrors": {{ site.data.options.unlisted_mirrors | jsonify }},
+    "force_redirect_help_mirrors": {{ site.data.options.force_redirect_help_mirrors | jsonify }},
+    "label_map": {{ site.data.options.label_map | jsonify }}
+  },
+  "helps": [
+    {% for h in site.help %}{"url": {{ h.url | relative_url | jsonify }}, "mirrorid": {{ h.zconf.name | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}
+  ]
+}
