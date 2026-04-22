@@ -107,6 +107,14 @@ body {
     margin: 0 auto;
 }
 
+/* Shared sidebar link colors so /news/ (layout: default) and
+   /news/<article>/ (layout: news) render the 最新公告 list identically. */
+.news-link      { color: #333; }
+.news-title     { color: #0A77FF; }
+.more-link      { color: #0A77FF; }
+.contact-link,
+.friendly-link  { color: #0A77FF; }
+
 /* 链接样式 */
 a {
     color: var(--primary-color);
