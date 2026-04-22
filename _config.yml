@@ -13,6 +13,12 @@ email: "mirrors@ha.edu.cn"
 
 homelink: "https://www.ha.edu.cn"
 
+# Header 显示配置
+# brand_visible: 是否显示左侧的两个 logo (河南省教育科研网 + HERNET Mirror)
+#                默认 true，设为 false 则仅显示中间导航。
+header:
+  brand_visible: true
+
 markdown: kramdown
 highlighter: rouge
 kramdown:

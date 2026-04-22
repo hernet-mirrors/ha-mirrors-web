@@ -1,6 +1,11 @@
 <!-- Site header: two-logo brand lockup (maintenance-page grouping) + nav on the right -->
 <header class="site-header" role="banner">
   <div class="site-header-inner">
+    {%- comment -%}
+      header.brand_visible toggles the two brand logos. Unset or true -> show,
+      explicit false -> hide. Defaults to shown.
+    {%- endcomment -%}
+    {% if site.header.brand_visible != false %}
     <a class="brand-main" href="{{ site.homelink | default: 'https://www.ha.edu.cn' }}" target="_blank" rel="noopener" aria-label="前往河南省教育科研网主站">
       <img src="{{ '/static/img/logo-main.svg' | relative_url }}" alt="河南省教育科研网">
     </a>
@@ -9,6 +14,7 @@
       <img src="{{ '/static/img/logo-hernet.svg' | relative_url }}" alt="HERNET">
       <span>Mirror</span>
     </a>
+    {% endif %}
 
     <nav class="site-nav" aria-label="主导航">
       <a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>镜像列表</a>
