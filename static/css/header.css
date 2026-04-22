@@ -40,11 +40,10 @@
   background: #d7dde8;
 }
 
-/* Flat nav row */
+/* Flat nav row — pushed to the right so the two brands stay adjacent */
 .site-nav {
-  flex: 1;
+  margin-left: auto;
   display: flex;
-  justify-content: center;
   align-items: center;
   gap: 24px;
   flex-wrap: wrap;
@@ -122,10 +121,10 @@ body { padding-top: 80px; }
     padding: 8px 14px;
     gap: 10px;
   }
-  .brand-sep { display: none; }
   .site-nav {
-    order: 3;
+    order: 4;
     width: 100%;
+    margin-left: 0;
     justify-content: flex-start;
     overflow-x: auto;
     gap: 4px;
@@ -133,8 +132,9 @@ body { padding-top: 80px; }
     border-top: 1px solid #eef1f6;
   }
   .site-nav a { font-size: 13px; padding: 4px 6px; flex-shrink: 0; }
-  .brand-main { order: 1; margin-right: auto; }
-  .brand-mirror { order: 2; font-size: 16px; }
+  .brand-main { order: 1; }
+  .brand-sep { order: 2; height: 24px; }
+  .brand-mirror { order: 3; margin-left: auto; font-size: 16px; }
   .brand-main img { height: 30px; }
   .brand-mirror img { height: 22px; }
   body { padding-top: 112px; }
