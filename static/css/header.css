@@ -1,10 +1,7 @@
-/* Site header: two-logo brand lockup + flat nav row, fixed to top */
+/* Site header: two-logo brand lockup + flat nav row (normal flow, not fixed) */
 .site-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
+  position: relative;
+  z-index: 10;
   background: #ffffff;
   border-bottom: 1px solid #e3e8f0;
   box-shadow: 0 2px 10px rgba(17, 24, 39, 0.04);
@@ -107,9 +104,6 @@
 
 .brand-mirror span { line-height: 1; }
 
-/* Reserve space for fixed header */
-body { padding-top: 80px; }
-
 /* Tablet: compact nav spacing */
 @media (max-width: 1100px) {
   .site-header-inner { gap: 14px; padding: 10px 18px; }
@@ -120,10 +114,11 @@ body { padding-top: 80px; }
   .brand-mirror { font-size: 18px; }
 }
 
-/* Mobile: stack into two rows — brands up top, nav below */
+/* Mobile: brands stay grouped and centered; nav drops to a full-width row */
 @media (max-width: 768px) {
   .site-header-inner {
     flex-wrap: wrap;
+    justify-content: center;
     padding: 8px 14px;
     gap: 10px;
   }
@@ -141,10 +136,9 @@ body { padding-top: 80px; }
   .site-nav a { font-size: 13px; padding: 4px 6px; flex-shrink: 0; }
   .brand-main { order: 1; }
   .brand-sep { order: 2; height: 24px; }
-  .brand-mirror { order: 3; margin-left: auto; font-size: 16px; }
+  .brand-mirror { order: 3; margin-left: 0; font-size: 16px; }
   .brand-main img { height: 30px; }
   .brand-mirror img { height: 22px; }
-  body { padding-top: 112px; }
 }
 
 @media (max-width: 480px) {

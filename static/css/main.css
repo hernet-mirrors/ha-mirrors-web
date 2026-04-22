@@ -226,9 +226,9 @@ p {
     transform: translateY(-100%);
 }
 
-/* 为固定导航栏添加顶部间距 */
+/* Header now flows in-document; no body padding-top reserved. */
 body {
-    padding-top: 80px;
+    padding-top: 0;
 }
 
 #navbar {
