@@ -3,10 +3,13 @@
     border: 1px solid #dee2e6;
 }
 
-.index-card-header {
+.index-card-header,
+.index-card-header h5,
+.index-card-header i {
     background-color: #0A77FF;
-    color: white;
+    color: #ffffff !important;
 }
+.index-card-header { background-color: #0A77FF; }
 
 .sidebar-content {
     max-width: 340px;

@@ -38,64 +38,7 @@
 }
 
 @media (max-width: 991.98px) {
-    .sidebar-container {
-        margin-top: 2rem;
-    }
-}
-
-@media (min-width: 992px) {
-    .row.status-equal-height {
-        display: flex;
-        align-items: stretch;
-    }
-
-    .status-equal-height > .col-lg-9,
-    .status-equal-height > .col-lg-3 {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .status-equal-height > .col-lg-9 > .card,
-    .status-equal-height > .col-lg-3 > .sidebar-container {
-        flex: 1 1 auto; /* Grow to fill column */
-    }
-
-    .sidebar-container {
-        position: sticky;
-        top: 100px; /* Header height (80px) + spacing (20px) */
-        height: calc(100vh - 100px); /* Set height for sticky to work */
-        display: flex;
-        flex-direction: column;
-    }
-
-    .sidebar-content {
-        overflow-y: auto;
-        /* Custom scrollbar styles */
-        scrollbar-width: thin;
-        scrollbar-color: #0A77FF #f1f1f1;
-    }
-
-    .sidebar-content::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .sidebar-content::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 3px;
-    }
-
-    .sidebar-content::-webkit-scrollbar-thumb {
-        background: #0A77FF;
-        border-radius: 3px;
-    }
-
-    .sidebar-content::-webkit-scrollbar-thumb:hover {
-        background: #0056b3;
-    }
-}
-
-.container {
-    max-width: 100%;
+    .sidebar-container { margin-top: 2rem; }
 }
 
 .row {
