@@ -50,14 +50,20 @@ curl -fsSL -o static/tunasync.json  https://mirrors.ha.edu.cn/static/tunasync.js
 # 安装 Ruby 依赖
 bundle install
 
-# 安装 Node 依赖（_helpz/generate.mjs 需要）
+# 安装 Node 依赖（_helpz/generate.mjs 和 JS 混淆需要）
 npm install
 
 # 启动本地预览
 bundle exec jekyll serve
+
+# 生产构建（编译 + JS 混淆）
+bundle exec jekyll build
+node build-js.mjs
 ```
 
 访问 <http://localhost:4000>。
+
+构建完成后混淆后的 JS 文件在 `_site/static/js/`。
 
 ## 五、Docker 构建
 
@@ -74,7 +80,7 @@ docker build -f Dockerfile.build -t ha-mirrors-web:build .
 docker run --rm -v "$(pwd)":/data ha-mirrors-web:build
 ```
 
-构建完成后静态文件在 `_site/`。
+构建完成后静态文件在 `_site/`，JS 文件已自动混淆。
 
 ## 六、目录结构
 
