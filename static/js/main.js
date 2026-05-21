@@ -16,6 +16,47 @@ var labelMap                 = window.labelMap                 || {};
 
 var tunasyncDataPromise = window.tunasyncDataPromise || null;
 
+/**
+ * Returns true only when a mirror record has a non-empty, non-whitespace name.
+ * Guards against blank rows that can arise from build-time obfuscation artifacts
+ * or malformed runtime data.
+ * @param {object} record - A mirror record.
+ * @returns {boolean}
+ */
+function isValidMirror(record) {
+  return (
+    record &&
+    typeof record === "object" &&
+    typeof record.name === "string" &&
+    record.name.trim().length > 0
+  );
+}
+
+/**
+ * Filters an array of mirror records, returning only valid entries and logging
+ * a concise warning for each invalid entry to aid debugging without changing UI.
+ * @param {Array} records - Raw mirror records (may contain null/invalid entries).
+ * @param {string} source - Label describing the data source (e.g. "tunasync.json", "unlisted_mirror").
+ * @returns {Array} Filtered array containing only valid mirror records.
+ */
+function filterValidMirrors(records, source) {
+  if (!Array.isArray(records)) return [];
+  const valid = [];
+  records.forEach((r) => {
+    if (isValidMirror(r)) {
+      valid.push(r);
+    } else {
+      console.warn(
+        "[ha-mirrors] Skipping mirror record with missing/blank name from " +
+          source +
+          ":",
+        r
+      );
+    }
+  });
+  return valid;
+}
+
 // Global error handler for debugging
 window.addEventListener("error", function (e) {
   console.error("Global error caught:", e.error);
@@ -161,13 +202,11 @@ function getTunasyncData() {
         return response.json();
       })
       .then((data) => {
-        console.log(
-          "Tunasync data loaded successfully:",
-          data ? data.length : 0,
-          "mirrors"
-        );
-        window.mirrorsData = data;
-        resolve(data);
+        // Sanitize before caching so displayMirrorInfo (which reads window.mirrorsData
+        // directly) cannot crash on null/missing-name entries.
+        const validData = filterValidMirrors(data, "tunasync.json");
+        window.mirrorsData = validData;
+        resolve(validData);
       })
       .catch((error) => {
         clearTimeout(timeoutId);
@@ -399,7 +438,9 @@ function renderMirrorTable(mirrors) {
   const tbody = document.getElementById("mirror-table-body");
   if (!tbody) return;
   tbody.innerHTML = "";
-  mirrors.forEach((mirror) => {
+  // Skip records with missing/blank names to avoid blank mirror rows after build.
+  const validMirrors = mirrors.filter(isValidMirror);
+  validMirrors.forEach((mirror) => {
     const row = document.createElement("tr");
     row.className = "mirror-row";
 
@@ -479,7 +520,7 @@ async function loadMirrorData() {
   try {
     await loadMirrorDescriptions();
 
-    // Use cached tunasync data
+    // Use cached tunasync data (already sanitized by filterValidMirrors in getTunasyncData).
     const data = await getTunasyncData();
 
     if (Array.isArray(data)) {
@@ -489,12 +530,20 @@ async function loadMirrorData() {
     }
 
     unlistedMirrors.forEach((unlistedMirror) => {
+      // Skip virtual mirrors whose own name is missing/blank.
+      if (!isValidMirror(unlistedMirror)) {
+        console.warn(
+          "[ha-mirrors] Skipping unlisted_mirror with missing/blank name:",
+          unlistedMirror
+        );
+        return;
+      }
       const existingMirror = mirrorsData.find(
-        (m) => m.name === unlistedMirror.name
+        (m) => isValidMirror(m) && m.name === unlistedMirror.name
       );
       if (!existingMirror) {
         const linkToMirror = mirrorsData.find(
-          (m) => m.name === unlistedMirror.link_to
+          (m) => isValidMirror(m) && m.name === unlistedMirror.link_to
         );
 
         const virtualMirror = {
@@ -698,8 +747,9 @@ function displayMirrorInfo(mirrorName, currentPath) {
 
   // Use existing data if available, otherwise fetch
   if (window.mirrorsData && window.mirrorsData.length > 0) {
+    // Guard: skip null/missing-name entries so toLowerCase() never throws.
     const mirrorData = window.mirrorsData.find(
-      (m) => m.name.toLowerCase() === mirrorName.toLowerCase()
+      (m) => isValidMirror(m) && m.name.toLowerCase() === mirrorName.toLowerCase()
     );
 
     if (mirrorData) {

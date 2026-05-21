@@ -15,6 +15,47 @@ let labelMap = {};
 let autoRefreshInterval;
 let diskInfoRendered = false;
 
+/**
+ * Returns true only when a mirror record has a non-empty, non-whitespace name.
+ * Guards against blank rows that can arise from build-time obfuscation artifacts
+ * or malformed runtime data.
+ * @param {object} record - A mirror record.
+ * @returns {boolean}
+ */
+function isValidMirror(record) {
+  return (
+    record &&
+    typeof record === "object" &&
+    typeof record.name === "string" &&
+    record.name.trim().length > 0
+  );
+}
+
+/**
+ * Filters an array of mirror records, returning only valid entries and logging
+ * a concise warning for each invalid entry to aid debugging without changing UI.
+ * @param {Array} records - Raw mirror records (may contain null/invalid entries).
+ * @param {string} source - Label describing the data source (e.g. "tunasync.json", "unlisted_mirror").
+ * @returns {Array} Filtered array containing only valid mirror records.
+ */
+function filterValidMirrors(records, source) {
+  if (!Array.isArray(records)) return [];
+  const valid = [];
+  records.forEach((r) => {
+    if (isValidMirror(r)) {
+      valid.push(r);
+    } else {
+      console.warn(
+        "[ha-mirrors] Skipping mirror record with missing/blank name from " +
+          source +
+          ":",
+        r
+      );
+    }
+  });
+  return valid;
+}
+
 // Load mirror description data from options.json (tuna-style layout)
 async function loadMirrorDescriptions() {
   try {
@@ -270,20 +311,30 @@ async function fetchStatusData() {
     const data = await res.json();
 
     if (Array.isArray(data)) {
-      statusData = data;
-      statusData.sort(sortMirrorsByName);
+      statusData = filterValidMirrors(data, "tunasync.json");
     } else {
       console.error("tunasync.json format is incorrect:", data);
       statusData = [];
     }
 
+    // Sort after filtering so sortMirrorsByName never sees invalid entries.
+    statusData.sort(sortMirrorsByName);
+
     unlistedMirrors.forEach((unlistedMirror) => {
+      // Skip virtual mirrors whose own name is missing/blank.
+      if (!isValidMirror(unlistedMirror)) {
+        console.warn(
+          "[ha-mirrors] Skipping unlisted_mirror with missing/blank name:",
+          unlistedMirror
+        );
+        return;
+      }
       const existingMirror = statusData.find(
-        (m) => m.name === unlistedMirror.name
+        (m) => isValidMirror(m) && m.name === unlistedMirror.name
       );
       if (!existingMirror) {
         const linkToMirror = statusData.find(
-          (m) => m.name === unlistedMirror.link_to
+          (m) => isValidMirror(m) && m.name === unlistedMirror.link_to
         );
 
         const virtualMirror = {
@@ -344,13 +395,15 @@ async function fetchStatusData() {
 // Render the status table
 function renderStatusTable() {
   const tbody = document.getElementById("status-table-body");
-  if (!statusData.length) {
+  // Skip records with missing/blank names to avoid blank mirror rows after build.
+  const validData = statusData.filter(isValidMirror);
+  if (!validData.length) {
     tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4">No data available</td></tr>`;
     return;
   }
 
   let html = "";
-  statusData.forEach((item) => {
+  validData.forEach((item) => {
     const statusInfo = getStatusInfo(item.status);
     html += `
             <tr>
@@ -469,22 +522,24 @@ function getStatusInfo(status) {
 }
 
 function updateSidebarStats() {
-  const successCount = statusData.filter(
+  // Use only valid mirror records (name present and non-blank).
+  const validData = statusData.filter(isValidMirror);
+  const successCount = validData.filter(
     (item) => item.status === "success"
   ).length;
-  const syncingCount = statusData.filter(
+  const syncingCount = validData.filter(
     (item) => item.status === "syncing"
   ).length;
-  const failedCount = statusData.filter(
+  const failedCount = validData.filter(
     (item) =>
       item.status === "failed" ||
       item.status === "error" ||
       item.status === "fail"
   ).length;
-  const pausedCount = statusData.filter(
+  const pausedCount = validData.filter(
     (item) => item.status === "paused"
   ).length;
-  const totalCount = statusData.length;
+  const totalCount = validData.length;
   const unknownCount =
     totalCount - successCount - syncingCount - failedCount - pausedCount;
 
