@@ -4,6 +4,12 @@
 :root {
     /* 主题色 */
     --primary-color: #0A77FF;
+    --primary-color-rgb: 10, 119, 255;
+    --primary-hover: #0056b3;
+    --brand-accent: #437EF7;
+    --brand-accent-rgb: 67, 126, 247;
+    --brand-wordmark: #0E59A6;
+    --brand-wordmark-rgb: 14, 89, 166;
     --secondary-color: #6c757d;
     --success-color: #198754;
     --info-color: #0dcaf0;
@@ -11,8 +17,10 @@
     --danger-color: #dc3545;
     --light-color: #f8f9fa;
     --dark-color: #212529;
-    --border-primary: #0A77FF;
-    --footer-bg: #2c3e50;
+    --footer-bg: #232e39;
+    --footer-text: #a5acba;
+    --footer-link: #9cc2ff;
+    --footer-link-hover: #437EF7;
     --nav-dropdown-bg: #2c3e50;
     --text-primary: #333333;
     --text-secondary: #666666;
@@ -97,10 +105,10 @@ body {
 .index-card-header,
 .index-card-header h5,
 .index-card-header i {
-    background-color: #0A77FF;
+    background-color: var(--primary-color);
     color: #ffffff !important;
 }
-.index-card-header { background-color: #0A77FF; }
+.index-card-header { background-color: var(--primary-color); }
 
 /* Shared right-sidebar column — cap card column width + center in col-lg-4
    so /, /status/, /news/, /news/<article>/ all render the sidebar at the
@@ -113,10 +121,10 @@ body {
 /* Shared sidebar link colors so /news/ (layout: default) and
    /news/<article>/ (layout: news) render the 最新公告 list identically. */
 .news-link      { color: #333; }
-.news-title     { color: #0A77FF; }
-.more-link      { color: #0A77FF; }
+.news-title     { color: var(--primary-color); }
+.more-link      { color: var(--primary-color); }
 .contact-link,
-.friendly-link  { color: #0A77FF; }
+.friendly-link  { color: var(--primary-color); }
 
 /* 链接样式 */
 a {
@@ -127,8 +135,43 @@ a {
 
 a:hover,
 a:focus {
-    color: #0056b3;
+    color: var(--primary-hover);
     text-decoration: none;
+}
+
+/* Bootstrap primary 组件跟随品牌色（覆盖 bootstrap.min.css 的 #0d6efd） */
+.btn-primary {
+    --bs-btn-bg: var(--primary-color);
+    --bs-btn-border-color: var(--primary-color);
+    --bs-btn-hover-bg: var(--primary-hover);
+    --bs-btn-hover-border-color: var(--primary-hover);
+    --bs-btn-active-bg: var(--primary-hover);
+    --bs-btn-active-border-color: var(--primary-hover);
+    --bs-btn-disabled-bg: var(--primary-color);
+    --bs-btn-disabled-border-color: var(--primary-color);
+}
+.btn-outline-primary {
+    --bs-btn-color: var(--primary-color);
+    --bs-btn-border-color: var(--primary-color);
+    --bs-btn-hover-bg: var(--primary-color);
+    --bs-btn-hover-border-color: var(--primary-color);
+    --bs-btn-active-bg: var(--primary-color);
+    --bs-btn-active-border-color: var(--primary-color);
+    --bs-btn-disabled-color: var(--primary-color);
+    --bs-btn-disabled-border-color: var(--primary-color);
+}
+.text-primary   { color: var(--primary-color) !important; }
+.bg-primary     { background-color: var(--primary-color) !important; }
+.border-primary { border-color: var(--primary-color) !important; }
+.pagination {
+    --bs-pagination-color: var(--primary-color);
+    --bs-pagination-hover-color: var(--primary-hover);
+    --bs-pagination-active-bg: var(--primary-color);
+    --bs-pagination-active-border-color: var(--primary-color);
+}
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
 /* 图片响应式 */
@@ -164,7 +207,7 @@ textarea:focus,
 select:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(10, 119, 255, 0.2);
+    box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
 }
 
 /* 列表样式重置 */
@@ -215,7 +258,7 @@ p {
 
 /* 渐变背景 */
 .bg-gradient-primary {
-    background: linear-gradient(135deg, var(--primary-color) 0%, #0056b3 100%);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
 }
 
 /* 头部导航样式 - 使用河南省教育科研网主站样式 */
@@ -336,14 +379,14 @@ body > footer.footer { margin-top: auto; }
 }
 
 .nav-list li a:hover {
-    background-color: rgba(10, 119, 255, 0.1);
+    background-color: rgba(var(--primary-color-rgb), 0.1);
     color: var(--primary-color) !important;
 }
 
 /* 当前页样式 - 只有当前页显示蓝色 */
 .nav-list li a.current-page {
     color: var(--primary-color) !important;
-    background: rgba(10,119,255,0.1);
+    background: rgba(var(--primary-color-rgb), 0.1);
     border-bottom: 2px solid var(--primary-color);
 }
 
@@ -642,7 +685,7 @@ body > footer.footer { margin-top: auto; }
     /* 移除当前页高亮在移动端的下划线 */
     .nav-list li a.current-page {
         border-bottom: none !important;
-        background-color: rgba(10, 119, 255, 0.1) !important;
+        background-color: rgba(var(--primary-color-rgb), 0.1) !important;
         color: var(--primary-color) !important;
     }
 }
@@ -651,7 +694,7 @@ body > footer.footer { margin-top: auto; }
 
 /* 桌面端二级菜单底色与页脚一致，增强可读性 */
 .nav-list .submenu {
-    background-color: #2c3e50 !important;
+    background-color: var(--nav-dropdown-bg) !important;
     color: #fff !important;
     box-shadow: 0 6px 20px rgba(44,62,80,0.18);
     border: 2px solid #34495e;
@@ -673,13 +716,13 @@ body > footer.footer { margin-top: auto; }
 /* 移动端二级菜单同色，增强分隔线和阴影 */
 @media (max-width: 768px) {
     .nav-list .submenu {
-        background-color: #2c3e50 !important;
+        background-color: var(--nav-dropdown-bg) !important;
         border-left: 3px solid #34495e;
         box-shadow: none;
         border-radius: 0;
     }
     .nav-list .submenu li a {
-        background: #2c3e50 !important;
+        background: var(--nav-dropdown-bg) !important;
         color: #fff !important;
         border-bottom: 1px solid rgba(255,255,255,0.18);
         font-weight: 500;
@@ -693,7 +736,7 @@ body > footer.footer { margin-top: auto; }
 
 /* 汉堡按钮底色与页脚一致，靠右且占用空间小 */
 .menu-icon {
-    background: #2c3e50 !important;
+    background: var(--nav-dropdown-bg) !important;
     color: #fff;
     width: 40px;
     height: 32px;
@@ -777,14 +820,14 @@ body > footer.footer { margin-top: auto; }
     .nav-list li a.current-page,
     .nav-list li a:active,
     .nav-list li a:focus {
-        color: #0A77FF !important;
-        background: rgba(10,119,255,0.08);
+        color: var(--primary-color) !important;
+        background: rgba(var(--primary-color-rgb), 0.08);
         border-bottom: none;
         box-shadow: none;
     }
     .nav-list li a:hover {
-        background: rgba(10,119,255,0.12);
-        color: #0A77FF !important;
+        background: rgba(var(--primary-color-rgb), 0.12);
+        color: var(--primary-color) !important;
     }
     .nav-list .submenu {
         position: static;
@@ -805,7 +848,7 @@ body > footer.footer { margin-top: auto; }
     }
     .nav-list .submenu li a {
         padding: 0.7rem 0.5rem;
-        color: #0A77FF !important;
+        color: var(--primary-color) !important;
         background: none !important;
         border-bottom: none;
         font-size: 0.98rem;
@@ -815,15 +858,15 @@ body > footer.footer { margin-top: auto; }
         margin: 0 auto;
     }
     .nav-list .submenu li a:hover {
-        background: rgba(10,119,255,0.08);
-        color: #0056b3 !important;
+        background: rgba(var(--primary-color-rgb), 0.08);
+        color: var(--primary-hover) !important;
     }
 }
 
 /* 首页高亮修正：仅主页或镜像页高亮 */
 .nav-list li a.current-page {
     color: var(--primary-color) !important;
-    background: rgba(10,119,255,0.1);
+    background: rgba(var(--primary-color-rgb), 0.1);
     border-bottom: 2px solid var(--primary-color);
 }
 
@@ -1167,7 +1210,7 @@ body > footer.footer { margin-top: auto; }
     vertical-align: middle;
 }
 .mirror-table a.mirror-help-link:hover {
-    color: #0056b3;
+    color: var(--primary-hover);
     text-decoration: none;
 }
 .mirror-table tr:hover {
@@ -1320,17 +1363,18 @@ body > footer.footer { margin-top: auto; }
 }
 
 /* =========================================================
- * Dark mode — aligned with www.ha.edu.cn's palette:
- *   brand blue     #437EF7  (hover #5390F8)
- *   dark surface   #2C3444  (parent site footer bg)
- *   text primary   #F9F9F9  (neutral-200)
- *   text muted     #A5ACBA
+ * Dark mode — redefines the brand variables from the light :root.
+ * (main 分支取 www.ha.edu.cn 的暗色蓝；品牌分支只需改这里的值)
  * Surface ramp: body #1a1d24 → card #2C3444 → elevated #374155
  * ========================================================= */
 @media (prefers-color-scheme: dark) {
     :root {
         --primary-color: #437EF7;
+        --primary-color-rgb: 67, 126, 247;
         --primary-hover: #5390F8;
+        --brand-accent: #8BB4E8;
+        --brand-accent-rgb: 139, 180, 232;
+        --brand-wordmark: #8BB4E8;
         --text-primary:   #F9F9F9;
         --text-secondary: #A5ACBA;
         --text-light:     #6b7280;
@@ -1366,7 +1410,7 @@ body > footer.footer { margin-top: auto; }
     }
 
     .nav-list li a:hover {
-        background-color: rgba(67, 126, 247, 0.14) !important;
+        background-color: rgba(var(--primary-color-rgb), 0.14) !important;
         color: var(--primary-color) !important;
     }
 
@@ -1438,7 +1482,7 @@ body > footer.footer { margin-top: auto; }
         background-color: #22262e;
         color: var(--text-primary);
         border-color: var(--primary-color);
-        box-shadow: 0 0 0 2px rgba(67, 126, 247, 0.25);
+        box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.25);
     }
 
     .form-control::placeholder { color: var(--text-light); }
@@ -1465,7 +1509,7 @@ body > footer.footer { margin-top: auto; }
         --bs-table-bg: transparent;
         --bs-table-color: var(--text-primary);
         --bs-table-striped-bg: rgba(255,255,255,0.03);
-        --bs-table-hover-bg: rgba(67,126,247,0.08);
+        --bs-table-hover-bg: rgba(var(--primary-color-rgb), 0.08);
         --bs-table-border-color: #3a4154;
         color: var(--text-primary);
     }
@@ -1481,7 +1525,7 @@ body > footer.footer { margin-top: auto; }
     .mirror-table tbody tr { border-bottom-color: #3a4154; }
     .mirror-table tr:hover,
     .table-hover > tbody > tr:hover > * {
-        background: rgba(67,126,247,0.08) !important;
+        background: rgba(var(--primary-color-rgb), 0.08) !important;
         color: var(--text-primary) !important;
     }
 
@@ -1572,7 +1616,7 @@ body > footer.footer { margin-top: auto; }
     }
     .sidebar-content .card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(10, 119, 255, 0.1);
+        box-shadow: 0 6px 18px rgba(var(--primary-color-rgb), 0.1);
     }
 }
 

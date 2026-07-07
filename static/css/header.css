@@ -64,13 +64,13 @@
 }
 
 .site-nav a:hover {
-  color: #437EF7;
-  background-color: rgba(67, 126, 247, 0.08);
+  color: var(--brand-accent);
+  background-color: rgba(var(--brand-accent-rgb), 0.08);
 }
 
 .site-nav a.active {
-  color: #437EF7;
-  background-color: rgba(67, 126, 247, 0.1);
+  color: var(--brand-accent);
+  background-color: rgba(var(--brand-accent-rgb), 0.1);
 }
 
 /* Right brand: logo-hernet + "Mirror" -> mirrors.ha.edu.cn */
@@ -80,7 +80,7 @@
   align-items: center;
   gap: 6px;
   text-decoration: none !important;
-  color: #0E59A6;
+  color: var(--brand-wordmark);
   font-weight: 700;
   font-size: 22px;
   padding: 4px 6px;
@@ -90,9 +90,9 @@
 
 .brand-mirror:hover {
   text-decoration: none !important;
-  background-color: rgba(14, 89, 166, 0.06);
+  background-color: rgba(var(--brand-wordmark-rgb), 0.06);
   transform: translateY(-1px);
-  color: #0E59A6;
+  color: var(--brand-wordmark);
 }
 
 .brand-mirror img {
@@ -160,12 +160,12 @@
   .site-nav a { color: #F9F9F9; }
   .site-nav a:hover,
   .site-nav a.active {
-    color: #8BB4E8;
-    background-color: rgba(139, 180, 232, 0.12);
+    color: var(--brand-accent);
+    background-color: rgba(var(--brand-accent-rgb), 0.12);
   }
-  .brand-mirror { color: #8BB4E8; }
+  .brand-mirror { color: var(--brand-wordmark); }
   .brand-mirror:hover {
-    color: #8BB4E8;
-    background-color: rgba(139, 180, 232, 0.12);
+    color: var(--brand-wordmark);
+    background-color: rgba(var(--brand-wordmark-rgb), 0.12);
   }
 }

@@ -31,7 +31,7 @@ body:has(#list) {
 
 #path {
     font-family: 'Fira Code Retina', 'Fira Code', 'Fira Mono', 'JetBrains Mono', 'Source Code Pro', 'Consolas', 'Menlo', 'Monaco', monospace;
-    color: #0A77FF;
+    color: var(--primary-color);
 }
 
 #list tbody tr td:first-child a i {
@@ -123,7 +123,7 @@ body:has(#list) {
     right: 20px;
     width: 50px;
     height: 50px;
-    background-color: #007bff;
+    background-color: var(--primary-color);
     color: white;
     border: none;
     border-radius: 50%;
@@ -145,6 +145,6 @@ body:has(#list) {
 
 .back-to-top:hover {
     opacity: 1;
-    background-color: #0056b3;
+    background-color: var(--primary-hover);
     transform: translateY(-2px);
 }

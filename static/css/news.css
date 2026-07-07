@@ -54,7 +54,7 @@ article h1,
 
 /* Style for news item titles on hover */
 .news-item .card-title a:hover {
-    color: #0A77FF; /* Title color on hover */
+    color: var(--primary-color); /* Title color on hover */
 }
 
 @media (prefers-color-scheme: dark) {

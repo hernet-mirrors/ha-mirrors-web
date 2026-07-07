@@ -1,6 +1,6 @@
 /* Footer — aligned with 河南省教育科研网 主站 */
 .footer {
-  background: #232e39;
+  background: var(--footer-bg);
   color: #fff;
   padding: 40px 0 28px;
   font-size: 16px;
@@ -28,27 +28,29 @@
 
 .footer-contact-info {
   margin-bottom: 8px;
-  color: #a5acba;
+  color: var(--footer-text);
 }
 
 .footer-contact-info-last {
   margin-bottom: 18px;
-  color: #a5acba;
+  color: var(--footer-text);
 }
 
 .footer-about-text {
-  color: #a5acba;
+  color: var(--footer-text);
   line-height: 1.8;
   margin: 0;
 }
 
-.footer-about-text a {
-  color: #9cc2ff;
+.footer-about-text a,
+.footer-contact-info a {
+  color: var(--footer-link);
   text-decoration: none;
 }
 
-.footer-about-text a:hover {
-  color: #437EF7;
+.footer-about-text a:hover,
+.footer-contact-info a:hover {
+  color: var(--footer-link-hover);
   text-decoration: underline;
 }
 
@@ -68,7 +70,7 @@
   border-top: 1px solid #444;
   padding: 20px 0;
   font-size: 14px;
-  color: #a5acba;
+  color: var(--footer-text);
 }
 
 .footer-bottom-text {
@@ -76,8 +78,8 @@
   margin: 0;
 }
 
-.footer-bottom-text a { color: #a5acba; }
-.footer-bottom-text a:hover { color: #0A77FF; }
+.footer-bottom-text a { color: var(--footer-text); }
+.footer-bottom-text a:hover { color: var(--footer-link-hover); }
 
 footer a:hover { text-decoration: none !important; }
 

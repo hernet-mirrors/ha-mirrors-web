@@ -6,10 +6,10 @@
 .index-card-header,
 .index-card-header h5,
 .index-card-header i {
-    background-color: #0A77FF;
+    background-color: var(--primary-color);
     color: #ffffff !important;
 }
-.index-card-header { background-color: #0A77FF; }
+.index-card-header { background-color: var(--primary-color); }
 
 .sidebar-content {
     max-width: 340px;
@@ -21,11 +21,11 @@
 }
 
 .news-title {
-    color: #0A77FF;
+    color: var(--primary-color);
 }
 
 .more-link {
-    color: #0A77FF;
+    color: var(--primary-color);
 }
 
 #iso-list {
@@ -33,9 +33,9 @@
 }
 
 .contact-link {
-    color: #0A77FF;
+    color: var(--primary-color);
 }
 
 .friendly-link {
-    color: #0A77FF;
+    color: var(--primary-color);
 }

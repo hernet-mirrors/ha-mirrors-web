@@ -1,7 +1,7 @@
 /* Custom styles for the status page */
 /* Match the index page's "镜像列表" h3 so the 同步状态 heading reads the same. */
 .status-list-container h3 {
-    color: #0A77FF;
+    color: var(--primary-color);
     font-weight: 700;
 }
 
@@ -29,7 +29,7 @@
 
 .mirror-name {
     font-weight: 500;
-    color: #0A77FF;
+    color: var(--primary-color);
 }
 
 .mirror-size {
@@ -62,10 +62,10 @@
 .status-card-header h5,
 .status-card-header i,
 .status-card-header small {
-    background-color: #0A77FF;
+    background-color: var(--primary-color);
     color: #ffffff !important;
 }
-.status-card-header { background-color: #0A77FF; }
+.status-card-header { background-color: var(--primary-color); }
 
 .status-card-header-light {
     background-color: #f8f9fa;
