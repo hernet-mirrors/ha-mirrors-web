@@ -5,16 +5,16 @@ description: 镜像站正在进行系统维护
 permalink: /maintenance/
 ---
 
-<link rel="stylesheet" href="{{ '/static/css/maintenance.css' | relative_url }}?v=7">
+<link rel="stylesheet" href="{{ '/static/css/maintenance.css' | relative_url }}?v=8">
 
 <div class="maintenance-page">
   <header class="maintenance-header">
     <a href="{{ site.homelink | default: 'https://www.ha.edu.cn' }}" class="brand-main" target="_blank" rel="noopener">
-      <img src="{{ '/static/img/logo-main.svg' | relative_url }}" alt="河南省教育科研网">
+      <img src="{{ '/static/img/logo-main.svg' | relative_url }}" alt="{{ site.school }}">
     </a>
     <div class="brand-sep" aria-hidden="true"></div>
     <a href="{{ site.url | default: 'https://mirrors.ha.edu.cn' }}" class="brand-mirror">
-      <img src="{{ '/static/img/logo-hernet.svg' | relative_url }}" alt="HERNET">
+      <img src="{{ '/static/img/logo-hernet.svg' | relative_url }}" alt="{{ site.brand }}">
       <span>Mirror</span>
     </a>
   </header>

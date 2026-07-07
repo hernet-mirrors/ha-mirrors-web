@@ -3,6 +3,24 @@
 本项目基于 Jekyll 构建，使用 [mirrorz-docs](https://github.com/mirrorz-org/mirrorz-docs)
 作为帮助页面上游；生成流程参考了 [tuna/mirror-web `_helpz`](https://github.com/tuna/mirror-web/tree/master/_helpz)。
 
+## 分支说明（main / nyist-web）
+
+- **`main`**：河南省教育科研网镜像站（mirrors.ha.edu.cn，蓝色主题）。
+- **`nyist-web`**：南阳理工学院镜像站（mirror.nyist.edu.cn，深红主题）。与 main 共享全部代码，
+  只在品牌层面不同：`static/css/main.css` 与 `static/css/maintenance.css` 顶部 `:root` 的变量值、
+  `_config.yml`、`_includes/footer.html`、header/maintenance 的 logo 图、`static/img/` 素材、
+  `news/_posts/` 新闻、首页友情链接。
+
+**工作流**：功能改动一律在 `main` 上进行，然后合并到 nyist-web：
+
+```bash
+git checkout nyist-web
+git merge main
+```
+
+改颜色时只改 `:root` 里的变量值（品牌色都已集中在 `main.css` / `maintenance.css` 顶部），
+不要在其他 CSS 里写死色值，否则两个分支会重新发散。
+
 ## 一、环境准备
 
 - Ruby >= 3.2 + Bundler

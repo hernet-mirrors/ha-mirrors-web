@@ -6,12 +6,12 @@
       explicit false -> hide. Defaults to shown.
     {%- endcomment -%}
     {% if site.header.brand_visible != false %}
-    <a class="brand-main" href="{{ site.homelink | default: 'https://www.ha.edu.cn' }}" target="_blank" rel="noopener" aria-label="前往河南省教育科研网主站">
-      <img src="{{ '/static/img/logo-main.svg' | relative_url }}" alt="河南省教育科研网">
+    <a class="brand-main" href="{{ site.homelink | default: 'https://www.ha.edu.cn' }}" target="_blank" rel="noopener" aria-label="前往{{ site.school }}主站">
+      <img src="{{ '/static/img/logo-main.svg' | relative_url }}" alt="{{ site.school }}">
     </a>
     <div class="brand-sep" aria-hidden="true"></div>
     <a class="brand-mirror" href="{{ site.url | default: 'https://mirrors.ha.edu.cn' }}" aria-label="{{ site.title }}">
-      <img src="{{ '/static/img/logo-hernet.svg' | relative_url }}" alt="HERNET">
+      <img src="{{ '/static/img/logo-hernet.svg' | relative_url }}" alt="{{ site.brand }}">
       <span>Mirror</span>
     </a>
     {% endif %}
