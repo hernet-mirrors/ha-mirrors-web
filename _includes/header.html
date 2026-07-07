@@ -6,12 +6,12 @@
       explicit false -> hide. Defaults to shown.
     {%- endcomment -%}
     {% if site.header.brand_visible != false %}
-    <a class="brand-main" href="{{ site.homelink | default: 'https://www.ha.edu.cn' }}" target="_blank" rel="noopener" aria-label="前往{{ site.school }}主站">
-      <img src="{{ '/static/img/logo-main.svg' | relative_url }}" alt="{{ site.school }}">
+    <a class="brand-main" href="{{ site.homelink | default: 'https://cips.nyist.edu.cn' }}" target="_blank" rel="noopener" aria-label="前往{{ site.school }}主站">
+      <img src="{{ '/static/img/logo-share.png' | relative_url }}" alt="{{ site.school }}">
     </a>
     <div class="brand-sep" aria-hidden="true"></div>
     <a class="brand-mirror" href="{{ site.url | default: 'https://mirror.nyist.edu.cn' }}" aria-label="{{ site.title }}">
-      <span>Mirror</span>
+      <span>南阳理工学院开源软件镜像站</span>
     </a>
     {% endif %}
 
