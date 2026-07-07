@@ -75,6 +75,7 @@ exclude:
   - .DS_Store
   - nginx-*.conf
   - mirror-web
+  - LICENSE
 
 static_files:
   - static
