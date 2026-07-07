@@ -2,14 +2,14 @@
 
 /* 主题变量定义 */
 :root {
-    /* 主题色 */
-    --primary-color: #0A77FF;
-    --primary-color-rgb: 10, 119, 255;
-    --primary-hover: #0056b3;
-    --brand-accent: #437EF7;
-    --brand-accent-rgb: 67, 126, 247;
-    --brand-wordmark: #0E59A6;
-    --brand-wordmark-rgb: 14, 89, 166;
+    /* 主题色（NYIST 深红，取自旧站 style.scss） */
+    --primary-color: #900606;
+    --primary-color-rgb: 144, 6, 6;
+    --primary-hover: #da2424;
+    --brand-accent: #da2424;
+    --brand-accent-rgb: 218, 36, 36;
+    --brand-wordmark: #900606;
+    --brand-wordmark-rgb: 144, 6, 6;
     --secondary-color: #6c757d;
     --success-color: #198754;
     --info-color: #0dcaf0;
@@ -17,11 +17,11 @@
     --danger-color: #dc3545;
     --light-color: #f8f9fa;
     --dark-color: #212529;
-    --footer-bg: #232e39;
-    --footer-text: #a5acba;
-    --footer-link: #9cc2ff;
-    --footer-link-hover: #437EF7;
-    --nav-dropdown-bg: #2c3e50;
+    --footer-bg: #684040;
+    --footer-text: #d3bfbf;
+    --footer-link: #e3b4b8;
+    --footer-link-hover: #ffffff;
+    --nav-dropdown-bg: #684040;
     --text-primary: #333333;
     --text-secondary: #666666;
     --text-light: #999999;
@@ -1369,12 +1369,12 @@ body > footer.footer { margin-top: auto; }
  * ========================================================= */
 @media (prefers-color-scheme: dark) {
     :root {
-        --primary-color: #437EF7;
-        --primary-color-rgb: 67, 126, 247;
-        --primary-hover: #5390F8;
-        --brand-accent: #8BB4E8;
-        --brand-accent-rgb: 139, 180, 232;
-        --brand-wordmark: #8BB4E8;
+        --primary-color: #c04851;
+        --primary-color-rgb: 192, 72, 81;
+        --primary-hover: #c67373;
+        --brand-accent: #e3b4b8;
+        --brand-accent-rgb: 227, 180, 184;
+        --brand-wordmark: #e3b4b8;
         --text-primary:   #F9F9F9;
         --text-secondary: #A5ACBA;
         --text-light:     #6b7280;

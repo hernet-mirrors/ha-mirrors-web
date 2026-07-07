@@ -1,17 +1,17 @@
-title: "河南省教育科研网开源软件镜像站"
-desc: "河南省教育科研网(HERNET)开源软件镜像站，为河南省高校和科研院所提供开源软件镜像服务"
-url: "https://mirrors.ha.edu.cn"
-urlv4: "https://mirrors4.ha.edu.cn"
-urlv6: "https://mirrors6.ha.edu.cn"
-hostname: "mirrors.ha.edu.cn"
+title: "南阳理工学院开源镜像站"
+desc: "南阳理工学院开源镜像站，致力于为国内和校内用户提供高质量的开源软件镜像、Linux 镜像源服务，由南阳理工学院 CIPS 协会负责运行维护"
+url: "https://mirror.nyist.edu.cn"
+urlv4: "https://mirror4.nyist.edu.cn"
+urlv6: "https://mirror6.nyist.edu.cn"
+hostname: "mirror.nyist.edu.cn"
 baseurl: ""
 
-school: "河南省教育科研网"
-brand: "HERNET"
-author: "河南省教育科研网镜像站"
-email: "mirrors@ha.edu.cn"
+school: "南阳理工学院"
+brand: "NYIST"
+author: "南阳理工学院 CIPS 协会"
+email: "cips@nyist.edu.cn"
 
-homelink: "https://www.ha.edu.cn"
+homelink: "https://cips.nyist.edu.cn"
 
 # Header 显示配置
 # brand_visible: 是否显示左侧的两个 logo (河南省教育科研网 + HERNET Mirror)
@@ -105,9 +105,9 @@ maintenance:
   start_time: "2025年7月12日 2:00"
   end_time: "2025年7月13日 02:00"
   reason: "镜像站硬件维护"
-  contact_email: "mirrors@ha.edu.cn"
+  contact_email: "cips@nyist.edu.cn"
 
 mirror_info:
-  name: "河南省教育科研网镜像站"
-  description: "为河南省高校和科研院所提供开源软件镜像服务"
-  location: "中国 河南 郑州"
+  name: "南阳理工学院开源镜像站"
+  description: "为国内和校内用户提供高质量的开源软件镜像服务"
+  location: "中国 河南 南阳"

@@ -5,10 +5,10 @@
   --mnt-border: #e3e8f0;
   --mnt-text: #1f2937;
   --mnt-muted: #6b7280;
-  --mnt-primary: #437EF7;
-  --mnt-primary-hover: #2d6bea;
-  --mnt-primary-rgb: 67, 126, 247;
-  --mnt-wordmark: #0E59A6;
+  --mnt-primary: #900606;
+  --mnt-primary-hover: #da2424;
+  --mnt-primary-rgb: 144, 6, 6;
+  --mnt-wordmark: #900606;
   --mnt-warn-bg: #fff8e6;
   --mnt-warn-border: #ffe0a6;
   --mnt-warn-text: #b45309;
@@ -239,10 +239,10 @@ body { background: var(--mnt-bg); color: var(--mnt-text); }
     --mnt-warn-bg: #3a2e10;
     --mnt-warn-border: #5a4410;
     --mnt-warn-text: #f0c464;
-    --mnt-primary: #437EF7;
-    --mnt-primary-hover: #2d6bea;
-    --mnt-primary-rgb: 67, 126, 247;
-    --mnt-wordmark: #8BB4E8;
+    --mnt-primary: #c04851;
+    --mnt-primary-hover: #c67373;
+    --mnt-primary-rgb: 192, 72, 81;
+    --mnt-wordmark: #e3b4b8;
   }
   body { background: var(--mnt-bg); color: var(--mnt-text); }
   .maintenance-card,
