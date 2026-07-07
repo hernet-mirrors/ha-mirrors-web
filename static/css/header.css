@@ -142,7 +142,9 @@
 }
 
 @media (max-width: 480px) {
-  .brand-mirror span { display: none; }
+  /* Drop the wordmark text only when a logo image precedes it (logo + text
+     lockup). Branches whose brand is text-only keep the text on mobile. */
+  .brand-mirror img + span { display: none; }
 }
 
 /* Dark mode */
