@@ -85,8 +85,20 @@ function obfuscateFile(filePath) {
     // javascript-obfuscator with simplify:true + stringArrayEncoding:['base64']
     // caused blank mirror rows in the table (build artifact corruption).
     // The isValidMirror() guard in main.js/status.js catches remaining cases.
+    //
+    // IMPORTANT: identifiersPrefix is MANDATORY. Each file is obfuscated in a
+    // separate pass with renameGlobals:true, so without a per-file prefix the
+    // randomly generated global names (string-array decoders etc.) can collide
+    // between files loaded on the same page (e.g. main.js + status.js),
+    // corrupting string decoding at runtime ("Cannot read properties of
+    // undefined (reading 'charAt')"). Whether it triggers is random per build.
+    const identifiersPrefix = fileName
+      .replace(/\.js$/, "")
+      .replace(/[^a-zA-Z0-9]/g, "_");
+
     const obfuscatedCode = JavaScriptObfuscator.obfuscate(originalCode, {
       simplify: false,
+      identifiersPrefix,
 
       compact: true,
       identifierNamesGenerator: "hexadecimal",
