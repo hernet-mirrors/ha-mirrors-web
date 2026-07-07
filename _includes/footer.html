@@ -1,25 +1,26 @@
-<!-- Footer — 与河南省教育科研网主站保持一致 -->
+<!-- Footer — 南阳理工学院开源镜像站 -->
 <footer class="footer">
   <div class="container-fluid commonContainer">
     <div class="row footer-container">
       <div class="col-lg-6 col-md-12 col-sm-12 footer-left">
         <div class="footer-heading">联系我们</div>
-        <div class="footer-contact-info">地址：郑州市二七区大学路75号郑州大学南校区逸夫楼</div>
-        <div class="footer-contact-info">电子邮箱：{{ site.email | default: "mirrors@ha.edu.cn" }}</div>
-        <div class="footer-contact-info-last">邮编：450052</div>
+        <div class="footer-contact-info">电子邮箱：<a href="mailto:{{ site.email | default: 'cips@nyist.edu.cn' }}">{{ site.email | default: "cips@nyist.edu.cn" }}</a></div>
+        <div class="footer-contact-info">GitHub：<a href="https://github.com/NYIST-CIPS/" target="_blank" rel="noopener">github.com/NYIST-CIPS</a></div>
+        <div class="footer-contact-info-last">QQ 群：<a href="https://qm.qq.com/q/Cf5Cl1dlIW" target="_blank" rel="noopener">加入 QQ 群</a></div>
         <div class="footer-logo-container">
-          <img src="{{ '/static/img/logomainw.svg' | relative_url }}" alt="{{ site.school }}LOGO" class="footer-logo">
+          <img src="{{ '/static/img/logo-white.png' | relative_url }}" alt="{{ site.school }}开源镜像站LOGO" class="footer-logo">
         </div>
       </div>
 
       <div class="col-lg-6 col-md-12 col-sm-12 footer-about">
         <div class="footer-heading">关于本站</div>
         <p class="footer-about-text">
-          本站由河南省教育科研网支持创办，由南阳理工学院负责维护，本站相关源码可在
+          本站由南阳理工学院信息化建设与管理中心支持创办，由南阳理工学院 CIPS 协会运行维护，
+          本站基于河南省教育科研网镜像站网页搭建，相关源码可在
           <a href="https://github.com/tuna/tunasync" target="_blank" rel="noopener">这里(镜像管理器)</a>
           和
           <a href="https://github.com/hernet-mirrors/ha-mirrors-web" target="_blank" rel="noopener">这里(镜像站网页)</a>
-          获取。
+          获取。根据相关法律法规，本站不对欧盟用户提供服务。
         </p>
       </div>
     </div>
