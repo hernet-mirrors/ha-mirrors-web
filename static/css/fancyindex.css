@@ -92,7 +92,7 @@ body:has(#list) {
 }
 
 .label-info {
-    background-color: #5bc0de;
+    background-color: #684040; /* 「暂停」徽章，与状态页 bg-info 同色 */
 }
 
 .label-default {

@@ -10,9 +10,19 @@
     --brand-accent-rgb: 218, 36, 36;
     --brand-wordmark: #900606;
     --brand-wordmark-rgb: 144, 6, 6;
+    --primary-hover-rgb: 218, 36, 36;
+    /* Bootstrap 全局蓝色令牌统一指到品牌色（var 运行时求值，暗色块重定义 --primary-* 后自动跟随） */
+    --bs-primary: var(--primary-color);
+    --bs-primary-rgb: var(--primary-color-rgb);
+    --bs-link-color: var(--primary-color);
+    --bs-link-color-rgb: var(--primary-color-rgb);
+    --bs-link-hover-color: var(--primary-hover);
+    --bs-link-hover-color-rgb: var(--primary-hover-rgb);
+    --bs-info: var(--info-color);
+    --bs-info-rgb: 104, 64, 64;
     --secondary-color: #6c757d;
     --success-color: #198754;
-    --info-color: #0dcaf0;
+    --info-color: #684040; /* 「暂停」状态色：主题内棕红，避开 bootstrap 青蓝 */
     --warning-color: #ffc107;
     --danger-color: #dc3545;
     --light-color: #f8f9fa;
@@ -141,6 +151,7 @@ a:focus {
 
 /* Bootstrap primary 组件跟随品牌色（覆盖 bootstrap.min.css 的 #0d6efd） */
 .btn-primary {
+    --bs-btn-focus-shadow-rgb: var(--primary-color-rgb);
     --bs-btn-bg: var(--primary-color);
     --bs-btn-border-color: var(--primary-color);
     --bs-btn-hover-bg: var(--primary-hover);
@@ -151,6 +162,7 @@ a:focus {
     --bs-btn-disabled-border-color: var(--primary-color);
 }
 .btn-outline-primary {
+    --bs-btn-focus-shadow-rgb: var(--primary-color-rgb);
     --bs-btn-color: var(--primary-color);
     --bs-btn-border-color: var(--primary-color);
     --bs-btn-hover-bg: var(--primary-color);
@@ -160,6 +172,9 @@ a:focus {
     --bs-btn-disabled-color: var(--primary-color);
     --bs-btn-disabled-border-color: var(--primary-color);
 }
+.btn-link       { --bs-btn-focus-shadow-rgb: var(--primary-color-rgb); }
+/* nav-pills 的选中底色是组件级变量，:root 覆盖不到 */
+.nav-pills      { --bs-nav-pills-link-active-bg: var(--primary-color); }
 .text-primary   { color: var(--primary-color) !important; }
 .bg-primary     { background-color: var(--primary-color) !important; }
 .border-primary { border-color: var(--primary-color) !important; }
@@ -204,7 +219,9 @@ select {
 
 input:focus,
 textarea:focus,
-select:focus {
+select:focus,
+.form-control:focus,
+.form-select:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.2);
@@ -1372,6 +1389,7 @@ body > footer.footer { margin-top: auto; }
         --primary-color: #c04851;
         --primary-color-rgb: 192, 72, 81;
         --primary-hover: #c67373;
+        --primary-hover-rgb: 198, 115, 115;
         --brand-accent: #e3b4b8;
         --brand-accent-rgb: 227, 180, 184;
         --brand-wordmark: #e3b4b8;
