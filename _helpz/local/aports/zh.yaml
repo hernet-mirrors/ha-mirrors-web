@@ -1,0 +1,4 @@
+_: aports Git 仓库
+block:
+- aports
+git: true
