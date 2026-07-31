@@ -12,6 +12,7 @@ var mirrorDescriptions       = window.mirrorDescriptions       || {};
 var newMirrors               = window.newMirrors               || [];
 var unlistedMirrors          = window.unlistedMirrors          || [];
 var forceRedirectHelpMirrors = window.forceRedirectHelpMirrors || [];
+var gitMirrors               = window.gitMirrors               || [];
 var labelMap                 = window.labelMap                 || {};
 
 var tunasyncDataPromise = window.tunasyncDataPromise || null;
@@ -221,7 +222,7 @@ function getTunasyncData() {
 
 /**
  * Loads mirror descriptions, new mirrors, unlisted mirrors,
- * force redirect help mirrors and label map from options.json
+ * force redirect help mirrors, Git mirrors and label map from options.json
  * (tuna/mirror-web layout: top-level { options, helps }).
  */
 async function loadMirrorDescriptions() {
@@ -246,6 +247,7 @@ async function loadMirrorDescriptions() {
     if (Array.isArray(opts.new_mirrors))               newMirrors               = opts.new_mirrors;
     if (Array.isArray(opts.unlisted_mirrors))          unlistedMirrors          = opts.unlisted_mirrors;
     if (Array.isArray(opts.force_redirect_help_mirrors)) forceRedirectHelpMirrors = opts.force_redirect_help_mirrors;
+    if (Array.isArray(opts.git_mirrors))                gitMirrors               = opts.git_mirrors;
     if (opts.label_map && typeof opts.label_map === "object") labelMap = opts.label_map;
   } catch (error) {
     console.error("Failed to load options.json:", error);
@@ -253,6 +255,7 @@ async function loadMirrorDescriptions() {
     newMirrors = [];
     unlistedMirrors = [];
     forceRedirectHelpMirrors = [];
+    gitMirrors = [];
     labelMap = {};
   }
 }
@@ -444,11 +447,16 @@ function renderMirrorTable(mirrors) {
     const row = document.createElement("tr");
     row.className = "mirror-row";
 
-    const shouldRedirectToHelp = forceRedirectHelpMirrors.includes(mirror.name);
+    const helpUrl = helpPages[mirror.name];
+    const isGitMirror = gitMirrors.includes(mirror.name);
+    const shouldRedirectToHelp =
+      forceRedirectHelpMirrors.includes(mirror.name) && helpUrl;
 
     let mirrorUrl;
-    if (shouldRedirectToHelp) {
-      mirrorUrl = getMirrorHelpUrl(mirror.name);
+    if (isGitMirror) {
+      mirrorUrl = helpUrl || `/git/${mirror.name}/`;
+    } else if (shouldRedirectToHelp) {
+      mirrorUrl = helpUrl;
     } else if (mirror.url) {
       mirrorUrl = mirror.url;
     } else {
@@ -622,15 +630,6 @@ function enableMirrorSearch() {
       searchInput.focus();
     }
   });
-}
-
-/**
- * Gets the help page URL for a mirror.
- * @param {string} name - The name of the mirror.
- * @returns {string} The help page URL.
- */
-function getMirrorHelpUrl(name) {
-  return "/help/" + name + "/";
 }
 
 // Fancyindex support functions

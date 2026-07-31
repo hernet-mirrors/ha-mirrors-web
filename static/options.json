@@ -6,6 +6,7 @@
     "new_mirrors": {{ site.data.options.new_mirrors | jsonify }},
     "unlisted_mirrors": {{ site.data.options.unlisted_mirrors | jsonify }},
     "force_redirect_help_mirrors": {{ site.data.options.force_redirect_help_mirrors | jsonify }},
+    "git_mirrors": {{ site.helpz.git_mirrors | jsonify }},
     "label_map": {{ site.data.options.label_map | jsonify }}
   },
   "helps": [
