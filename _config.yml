@@ -48,6 +48,20 @@ helpz:
   dir: _helpz
   generator: generate.mjs
   enabled_pages_file: enabled.yaml
+  git_mirrors:
+    - AOSP
+    - aports
+    - CocoaPods
+    - crates.io-index.git
+    - flutter-sdk.git
+    - gcc.git
+    - gentoo-portage.git
+    - gentoo-zh.git
+    - git-repo
+    - homebrew
+    - ipxe
+    - pciids
+    - pipxe
   collection:
     label: help
 

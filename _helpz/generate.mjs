@@ -145,7 +145,11 @@ function renderTemplate(tmpl, globalVars, zconf, inputVars, lang) {
 }
 
 function genGlobalVars(site, zconf) {
-  const p = zconf.git || zconf.name.endsWith(".git") ? `git/${zconf.name}` : zconf.name;
+  const gitMirrors = site.helpz?.git_mirrors;
+  if (!Array.isArray(gitMirrors)) {
+    exit("helpz.git_mirrors should be a YAML list in _config.yml");
+  }
+  const p = gitMirrors.includes(zconf.name) ? `git/${zconf.name}` : zconf.name;
   return {
     scheme: { _: "是否使用 HTTPS", true: "https", false: "http", default: true },
     sudo:   { _: "是否使用 sudo",  true: "sudo ", false: "" },

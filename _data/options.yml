@@ -517,27 +517,19 @@ unlisted_mirrors:
     url: '/github-release/rust-analyzer/rust-analyzer/'
 
 force_redirect_help_mirrors:
-  - AOSP
   - lineageOS
-  - homebrew
   - linux.git
   - linux-next.git
   - linux-stable.git
-  - git-repo
-  - gentoo-portage.git
   - chromiumos
   - weave
-  - CocoaPods
   - llvm
   - llvm-project.git
   - openthos-src
   - qemu.git
   - linux-firmware.git
-  - gcc.git
-  - crates.io-index.git
   - binutils-gdb.git
   - glibc.git
-  - flutter-sdk.git
   - julia-general.git
   - pkgsrc.git
   - nixpkgs.git
