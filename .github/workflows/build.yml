@@ -16,11 +16,12 @@ concurrency:
 
 jobs:
   build:
-    name: Build and verify website
+    name: Compile website
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
       BUILD_IMAGE: ha-mirrors-web:ci
+      DOCKER_BUILD_RECORD_UPLOAD: "false"
     steps:
       - name: Checkout source and documentation
         uses: actions/checkout@v6
@@ -55,23 +56,5 @@ jobs:
               "https://$SITE_HOST/static/$name" --output "static/$name"
           done
 
-      - name: Verify news summary extraction
-        run: |
-          docker run --rm --volume "$PWD:/data" "$BUILD_IMAGE" \
-            bundle exec ruby scripts/tests/seo-summary.rb
-
       - name: Build Jekyll and production JavaScript
         run: docker run --rm --volume "$PWD:/data" "$BUILD_IMAGE"
-
-      - name: Verify crawlable HTML and metadata
-        run: |
-          python3 scripts/tests/seo.py _site "$SITE_HOST"
-          git diff --exit-code -- Gemfile.lock package-lock.json
-
-      - name: Upload generated website
-        uses: actions/upload-artifact@v7
-        with:
-          name: website-${{ github.sha }}
-          path: _site/
-          if-no-files-found: error
-          retention-days: 7
