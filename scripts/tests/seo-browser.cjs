@@ -34,7 +34,7 @@ const {chromium} = require('playwright');
   const firstPage = await js.locator('#news-list').innerHTML();
   await js.locator('#news-search').fill('不存在的新闻xxxyyyzzz');
   assert(await js.locator('#news-empty').isVisible());
-  await js.locator('#news-search').fill('教育网联合');
+  await js.locator('#news-search').fill('教育网联合镜像站正式发布');
   assert.equal(await js.locator('#news-list article').count(),1);
   assert((await js.locator('#news-list .card-text').textContent()).includes('2026'));
   await js.locator('#news-search').fill('');
@@ -46,7 +46,7 @@ const {chromium} = require('playwright');
     await js.locator('#news-pagination a').nth(1).click();
     await js.waitForLoadState('domcontentloaded');
     assert(js.url().endsWith('/news/page2/'));
-    await js.locator('#news-search').fill('教育网联合');
+    await js.locator('#news-search').fill('教育网联合镜像站正式发布');
     assert.equal(await js.locator('#news-list article').count(),1); // Searches across pages.
   }
   await js.goto(base+'/help/ubuntu/');
