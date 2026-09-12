@@ -3,31 +3,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-{% capture page_desc %}{% if include.metaDesc %}{{ include.metaDesc }} | {% if include.cattitle %}{{ include.cattitle }} | {% endif %}{% endif %}{{ site.title }}，{{ site.desc }}{% endcapture %}
-{% capture page_title %}{% if page.mirrorid %} {{ page.mirrorid }} |{% elsif page.title %} {{ page.title }} |{% endif %}{% if include.cattitle %} {{ include.cattitle }} |{% endif %}{% if (page.title or include.cattitle) %}{{" "}}{% endif %}{{ site.title }}{% if site.brand %} | {{ site.brand }}{% endif %}{% endcapture %}
-
-<meta name="description" content="{{ page_desc }}">
-<meta name="keywords" content="镜像站,镜像源,Linux,软件源,开源,{{ site.school }},{{ site.brand }}">
-<meta name="author" content="{{ site.author }}">
+{% include seo.html metaDesc=include.metaDesc %}
 <link rel="shortcut icon" href="{{ '/static/img/favicon.ico' | relative_url }}">
-<link rel="alternate" type="application/rss+xml" title="镜像站新闻" href="{{ '/feed.xml' | relative_url }}">
-
-<meta property="og:title" content="{{ page_title }}" />
-<meta property="og:description" content="{{ page_desc }}" />
-<meta property="og:image" content="{{ site.url }}{{ site.baseurl }}/static/img/logo-share.png" />
-<meta property="og:url" content="{{ site.url }}{{ site.baseurl }}{{ page.url }}" />
-<meta property="og:locale" content="zh_CN" />
-{% if include.notArticle %}
-<meta property="og:type" content="website" />
-{% else %}
-<meta property="og:type" content="article" />
-{% if page.date %}
-<meta property="article:published_time" content="{{page.date | date_to_xmlschema}}"/>
-{% endif %}
-<meta property="article:author" content="{{ site.author }}"/>
-{% endif %}
-
-<title>{{ page_title }}</title>
 
 <link href="{{ '/static/css/bootstrap.min.css' | relative_url }}" rel="stylesheet">
 <link href="{{ '/static/css/all.min.css' | relative_url }}" rel="stylesheet">

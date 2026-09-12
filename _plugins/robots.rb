@@ -46,12 +46,17 @@ Jekyll::Hooks.register :site, :post_write do |site|
   #    listed as tunasync jobs. Matches the tuna reference script.
   %w[lede raspberry-pi-os ctan cygwin pub git linuxbrew-bottles].each { |n| names << n }
 
-  names.delete('tuna')
+  %w[tuna news help static assets status robots.txt sitemap.xml feed.xml index.html].each { |name| names.delete(name) }
 
   body = +"# robots.txt for https://#{host}\n"
   body << "User-agent: *\n\n"
-  body << "Disallow: /logs\n"
-  names.to_a.sort.each { |n| body << "Disallow: /#{n}\n" }
+  body << "Allow: /$\nAllow: /news/\nAllow: /help/\nAllow: /static/\n"
+  body << "Disallow: /logs\nDisallow: /testpow/\nDisallow: /verify\nDisallow: /api/\n"
+  names.to_a.sort.each do |n|
+    next unless n.match?(%r{\A[A-Za-z0-9._+-]+\z})
+    body << "Disallow: /#{n}$\nDisallow: /#{n}/\n"
+  end
+  body << "\nSitemap: #{site.config['url']}#{site.config['baseurl']}/sitemap.xml\n"
 
   FileUtils.mkdir_p(site.dest)
   File.write(File.join(site.dest, 'robots.txt'), body)

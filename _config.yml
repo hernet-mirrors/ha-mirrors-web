@@ -30,12 +30,9 @@ kramdown:
 plugins:
   - jekyll-feed
   - jekyll-sitemap
-  - jekyll-paginate
   - jekyll-relative-links
   - jekyll-titles-from-headings
 
-paginate: 10
-paginate_path: "/news/page:num/"
 
 collections:
   posts:

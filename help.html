@@ -8,14 +8,15 @@ title: 使用帮助
 
 {% assign help_list = site.help | sort: 'zconf.name' %}
 {% if help_list and help_list.size > 0 %}
-  {% assign first_help = help_list | first %}
-  <meta http-equiv="refresh" content="0; url={{ first_help.url | relative_url }}">
-  <script>
-    window.location.replace("{{ first_help.url | relative_url }}");
-  </script>
-  <p class="text-center py-5">
-    正在跳转到 <a href="{{ first_help.url | relative_url }}">{{ first_help.zconf.name }} 使用帮助</a>…
-  </p>
+  <div class="help-container card shadow-sm p-4">
+    <h1 class="h3">镜像源使用帮助</h1>
+    <p>选择镜像，查看软件源配置方法和使用示例。</p>
+    <ul class="row list-unstyled">
+      {% for h in help_list %}
+      <li class="col-sm-6 col-lg-4 py-2"><a href="{{ h.url | relative_url }}">{{ h.zconf.name | escape }} 使用帮助</a></li>
+      {% endfor %}
+    </ul>
+  </div>
 {% else %}
   <div class="help-container">
     <div class="card shadow-sm p-4 text-center help-card">

@@ -13,7 +13,7 @@
 					<div class="card shadow-sm index-card">
 						<div class="card-body">
 							<article class="news-article">
-								<div class="news-title h1 mb-3">{{ page.title }}</div>
+								<h1 class="news-title h1 mb-3">{{ page.title | escape }}</h1>
 								<div class="news-meta mb-3">
 									<small class="text-muted">
 										<i class="fas fa-calendar"></i> {{ page.date | date: "%Y年%m月%d日 %H:%M" }}

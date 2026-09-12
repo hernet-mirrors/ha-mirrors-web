@@ -54,15 +54,20 @@ permalink: /news/
 
                 <!-- 新闻列表 -->
                 <div class="news-container">
-                    <div id="news-loading" class="text-center py-5">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">加载中...</span>
-                        </div>
-                        <p class="mt-3 text-muted">正在加载新闻列表...</p>
-                    </div>
-
-                    <div id="news-list">
-                        <!-- 新闻列表将在这里动态生成 -->
+                    <div id="news-list" data-page="{{ page.news_page }}">
+                        {% for news in page.news_posts %}
+                        <article class="card news-item mb-4{% if news.important %} border-primary{% endif %}">
+                            <div class="card-body">
+                                <h2 class="h5 card-title"><a href="{{ news.url | relative_url }}">{{ news.title | escape }}</a></h2>
+                                <div class="mb-2 text-muted"><small><time datetime="{{ news.date | date_to_xmlschema }}">{{ news.date | date: "%Y-%m-%d" }}</time> · {{ news.author | default: "管理员" | escape }}</small>
+                                  {% if news.important %}<span class="badge bg-warning text-dark">重要</span>{% endif %}
+                                  <span class="badge bg-primary">{% case news.category %}{% when 'maintenance' %}维护{% when 'feature' %}新功能{% else %}公告{% endcase %}</span>
+                                </div>
+                                <p class="card-text">{{ news.seo_description | escape }}</p>
+                                <a href="{{ news.url | relative_url }}" class="btn btn-sm btn-outline-primary">阅读全文</a>
+                            </div>
+                        </article>
+                        {% endfor %}
                     </div>
 
                     <div id="news-empty" class="text-center py-5" style="display: none;">
@@ -73,9 +78,11 @@ permalink: /news/
                 </div>
 
                 <!-- 分页 -->
-                <nav aria-label="新闻分页" id="news-pagination" style="display: none;">
+                <nav aria-label="新闻分页" id="news-pagination"{% if page.news_pages.size < 2 %} style="display: none;"{% endif %}>
                     <ul class="pagination justify-content-center">
-                        <!-- 分页将在这里动态生成 -->
+                        {% for link in page.news_pages %}
+                        <li class="page-item{% if link.number == page.news_page %} active{% endif %}"><a class="page-link" href="{{ link.url | relative_url }}"{% if link.number == page.news_page %} aria-current="page"{% endif %}>{{ link.number }}</a></li>
+                        {% endfor %}
                     </ul>
                 </nav>
 
@@ -84,14 +91,14 @@ permalink: /news/
                   {% assign news_list = site.categories.news | sort: 'date' | reverse %}
                   {% for news in news_list %}
                   {
-                    "title": {{ news.title | jsonify }},
-                    "excerpt": {{ news.excerpt | strip_html | truncate: 80 | jsonify }},
-                    "date": {{ news.date | date: "%Y-%m-%d" | jsonify }},
-                    "author": {{ news.author | default: "管理员" | jsonify }},
-                    "category": {{ news.category | default: "news" | jsonify }},
-                    "tags": [{% for tag in news.tags %}{{ tag | jsonify }}{% unless forloop.last %}, {% endunless %}{% endfor %}],
-                    "url": {{ news.url | jsonify }},
-                    "important": {{ news.important | default: false | jsonify }}
+                    "title": {{ news.title | script_json }},
+                    "excerpt": {{ news.seo_description | script_json }},
+                    "date": {{ news.date | date: "%Y-%m-%d" | script_json }},
+                    "author": {{ news.author | default: "管理员" | script_json }},
+                    "category": {{ news.category | default: "news" | script_json }},
+                    "tags": [{% for tag in news.tags %}{{ tag | script_json }}{% unless forloop.last %}, {% endunless %}{% endfor %}],
+                    "url": {{ news.url | relative_url | script_json }},
+                    "important": {{ news.important | default: false | script_json }}
                   }{% unless forloop.last %},{% endunless %}
                   {% endfor %}
                 ]

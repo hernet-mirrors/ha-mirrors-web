@@ -1,0 +1,26 @@
+{%- assign page_name = page.title -%}
+{%- if page.zconf.name -%}{%- capture page_name -%}{{ page.zconf.name }} 使用帮助{%- endcapture -%}{%- endif -%}
+{%- capture page_title -%}{% if page.url != '/' and page_name %}{{ page_name }} | {% endif %}{{ site.title }}{% if site.brand %} | {{ site.brand }}{% endif %}{%- endcapture -%}
+{%- assign page_desc = page.description | default: page.seo_description | default: include.metaDesc | default: site.desc -%}
+{%- assign canonical_path = page.canonical_path | default: page.url | replace: '/index.html', '/' -%}
+<title>{{ page_title | strip | escape }}</title>
+<meta name="description" content="{{ page_desc | strip_html | normalize_whitespace | escape }}">
+<meta name="author" content="{{ page.author | default: site.author | escape }}">
+{% if page.robots %}<meta name="robots" content="{{ page.robots | escape }}">{% endif %}
+<link rel="canonical" href="{{ canonical_path | absolute_url }}">
+<link rel="alternate" type="application/rss+xml" title="镜像站新闻" href="{{ '/feed.xml' | relative_url }}">
+<meta property="og:title" content="{{ page_title | strip | escape }}">
+<meta property="og:description" content="{{ page_desc | strip_html | normalize_whitespace | escape }}">
+<meta property="og:url" content="{{ canonical_path | absolute_url }}">
+<meta property="og:site_name" content="{{ site.title | escape }}">
+<meta property="og:image" content="{{ '/static/img/logo-share.png' | absolute_url }}">
+<meta property="og:locale" content="zh_CN">
+{% if page.layout == 'news' %}
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
+<meta property="article:author" content="{{ page.author | default: site.author | escape }}">
+{% else %}<meta property="og:type" content="website">{% endif %}
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{{ page_title | strip | escape }}">
+<meta name="twitter:description" content="{{ page_desc | strip_html | normalize_whitespace | escape }}">
+<meta name="twitter:image" content="{{ '/static/img/logo-share.png' | absolute_url }}">

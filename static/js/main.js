@@ -582,6 +582,7 @@ async function loadMirrorData() {
 
     mirrorsData.sort(sortMirrorsByName);
 
+    if (!mirrorsData.length) throw new Error("No mirror status records available");
     renderMirrorTable(mirrorsData);
 
     if (loadingDiv) loadingDiv.classList.add("d-none");
@@ -593,6 +594,7 @@ async function loadMirrorData() {
 
     if (loadingDiv) loadingDiv.classList.add("d-none");
     if (errorDiv) errorDiv.classList.remove("d-none");
+    enableMirrorSearch();
   }
 }
 
