@@ -28,18 +28,12 @@ article h1,
     scroll-margin-top: 100px;
 }
 
-/* Hide elements by default */
-#news-list {
-    display: none;
-}
+/* Static articles and pagination must remain visible without JavaScript. */
 
 #news-empty {
     display: none;
 }
 
-#news-pagination {
-    display: none;
-}
 
 /* Style for individual news items */
 .news-item.border-primary {
