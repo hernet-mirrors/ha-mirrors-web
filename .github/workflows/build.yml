@@ -1,0 +1,77 @@
+name: Docker build
+
+on:
+  push:
+    branches: [main, nyist-web]
+  pull_request:
+    branches: [main, nyist-web]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docker-build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and verify website
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      BUILD_IMAGE: ha-mirrors-web:ci
+    steps:
+      - name: Checkout source and documentation
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build the existing Dockerfile
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: Dockerfile.build
+          tags: ${{ env.BUILD_IMAGE }}
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Read the branch's site hostname
+        run: |
+          docker run --rm --volume "$PWD:/data:ro" "$BUILD_IMAGE" \
+            ruby -ryaml -e 'puts "SITE_HOST=#{YAML.load_file("_config.yml").fetch("hostname")}"' >> "$GITHUB_ENV"
+
+      - name: Fetch runtime data for the build
+        run: |
+          mkdir -p static
+          for name in disk.json tunasync.json isoinfo.json; do
+            curl --fail --silent --show-error --location \
+              --retry 3 --retry-all-errors --connect-timeout 15 --max-time 120 \
+              "https://$SITE_HOST/static/$name" --output "static/$name"
+          done
+
+      - name: Verify news summary extraction
+        run: |
+          docker run --rm --volume "$PWD:/data" "$BUILD_IMAGE" \
+            bundle exec ruby scripts/tests/seo-summary.rb
+
+      - name: Build Jekyll and production JavaScript
+        run: docker run --rm --volume "$PWD:/data" "$BUILD_IMAGE"
+
+      - name: Verify crawlable HTML and metadata
+        run: |
+          python3 scripts/tests/seo.py _site "$SITE_HOST"
+          git diff --exit-code -- Gemfile.lock package-lock.json
+
+      - name: Upload generated website
+        uses: actions/upload-artifact@v7
+        with:
+          name: website-${{ github.sha }}
+          path: _site/
+          if-no-files-found: error
+          retention-days: 7
