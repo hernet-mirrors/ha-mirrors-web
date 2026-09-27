@@ -1,4 +1,4 @@
-source 'https://mirror.nyist.edu.cn/rubygems/'
+source 'https://rubygems.org/'
 
 gem 'jekyll', '~> 4.3', '>= 4.3.3'
 
