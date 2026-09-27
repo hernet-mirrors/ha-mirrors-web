@@ -60,5 +60,8 @@ Jekyll::Hooks.register :site, :post_write do |site|
 
   FileUtils.mkdir_p(site.dest)
   File.write(File.join(site.dest, 'robots.txt'), body)
+  # Redirect pages are generated as HTML; the JSON index is only needed while
+  # generating robots.txt and must not be published with the site.
+  File.delete(redirects_json) if File.exist?(redirects_json)
   Jekyll.logger.info 'Robots:', "wrote robots.txt with #{names.size + 1} Disallow entries"
 end
