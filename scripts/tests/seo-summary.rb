@@ -17,6 +17,10 @@ class SummaryTest
     assert_equal '中' * 200 + '…', MirrorSEO.summary('中' * 201, @converter)
     assert_equal 'Body', MirrorSEO.summary("<script>alert('bad')</script>\n\nBody", @converter)
   end
+  def test_nested_script_tags_do_not_reappear_after_sanitizing
+    input = '<scr<script>hidden</script>ipt>alert(1)</script>Safe text'
+    assert_equal 'Safe text', MirrorSEO.summary(input, @converter)
+  end
   def test_short_article_is_not_padded
     assert_equal 'Brief announcement.', MirrorSEO.summary('Brief announcement.', @converter)
   end
@@ -26,5 +30,6 @@ test = SummaryTest.new
 test.setup
 test.test_heading_is_not_the_preview
 test.test_unicode_length_and_scripts
+test.test_nested_script_tags_do_not_reappear_after_sanitizing
 test.test_short_article_is_not_padded
 puts "PASS summary extraction, Unicode truncation, script removal and short articles"

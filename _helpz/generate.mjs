@@ -12,14 +12,18 @@
 //   highlight.js
 
 import { parseArgs } from "node:util";
+import { createRequire } from "node:module";
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { parse as yamlParse } from "yaml";
 import MarkdownIt from "markdown-it";
 import mystPlugin from "markdown-it-myst";
-import { tokensToMyst } from "myst-parser";
+// The package entry point eagerly loads optional math plugins that import
+// markdown-it 13 internals. We only need this tokenizer conversion module.
+const mystParserEntry = pathToFileURL(createRequire(import.meta.url).resolve("myst-parser"));
+const { tokensToMyst } = await import(new URL("./tokensToMyst.js", mystParserEntry));
 import { toMarkdown } from "mdast-util-to-markdown";
 import * as visitor from "unist-util-visit";
 import { VFile } from "vfile";
