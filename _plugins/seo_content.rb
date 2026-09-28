@@ -3,11 +3,17 @@ require 'json'
 
 module MirrorSEO
   def self.summary(markdown, converter, limit = 200)
-    html = converter.convert(markdown.to_s)
-    html = html.gsub(/<(script|style)\b[^>]*>.*?<\/\1>/mi, '')
-               .gsub(/<h[1-6]\b[^>]*>.*?<\/h[1-6]>/mi, '')
-               .gsub(/<[^>]+>/, ' ')
-    text = CGI.unescapeHTML(html).gsub(/[[:space:]]+/, ' ').strip
+    html = CGI.unescapeHTML(converter.convert(markdown.to_s))
+    # Removing an inner tag can expose an outer tag (for example,
+    # <scr<script>...</script>ipt>). Repeat until no block remains.
+    loop do
+      stripped = html.gsub(/<(script|style)\b[^>]*>.*?<\/\1>/mi, '')
+                     .gsub(/<h[1-6]\b[^>]*>.*?<\/h[1-6]>/mi, '')
+      break if stripped == html
+      html = stripped
+    end
+    html = html.gsub(/<[^>]+>/, ' ')
+    text = html.gsub(/[[:space:]]+/, ' ').strip
     text.length > limit ? text[0, limit] + '…' : text
   end
 

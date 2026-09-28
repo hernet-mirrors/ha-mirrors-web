@@ -819,22 +819,35 @@ function generateBreadcrumb() {
 
   const path = pathElement.textContent;
   const pathParts = path.split("/").filter((part) => part.length > 0);
-  let breadcrumbHTML =
-    '<li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i> 镜像站</a></li>';
+  breadcrumbNav.replaceChildren();
+  const homeItem = document.createElement("li");
+  homeItem.className = "breadcrumb-item";
+  const homeLink = document.createElement("a");
+  homeLink.href = "/";
+  const homeIcon = document.createElement("i");
+  homeIcon.className = "fas fa-home";
+  homeLink.append(homeIcon, document.createTextNode(" 镜像站"));
+  homeItem.appendChild(homeLink);
+  breadcrumbNav.appendChild(homeItem);
 
   let currentPath = "";
   pathParts.forEach((part, index) => {
     currentPath += "/" + part;
     const isLast = index === pathParts.length - 1;
 
+    const item = document.createElement("li");
+    item.className = isLast ? "breadcrumb-item active" : "breadcrumb-item";
     if (isLast) {
-      breadcrumbHTML += `<li class="breadcrumb-item active" aria-current="page">${part}</li>`;
+      item.setAttribute("aria-current", "page");
+      item.textContent = part;
     } else {
-      breadcrumbHTML += `<li class="breadcrumb-item"><a href="${currentPath}/">${part}</a></li>`;
+      const link = document.createElement("a");
+      link.href = currentPath + "/";
+      link.textContent = part;
+      item.appendChild(link);
     }
+    breadcrumbNav.appendChild(item);
   });
-
-  breadcrumbNav.innerHTML = breadcrumbHTML;
 }
 
 function generateMirrorCard() {
@@ -849,16 +862,22 @@ function generateMirrorCard() {
 
   const mirrorName = pathParts[0];
 
-  mirrorCardContainer.innerHTML = `
-    <div class="card border-secondary" style="max-width: 320px;">
-      <div class="card-body p-2">
-        <h6 class="card-title mb-1">
-          <i class="fas fa-cube"></i> ${mirrorName}
-        </h6>
-        <p class="card-text small text-muted mb-0">文件浏览</p>
-      </div>
-    </div>
-  `;
+  const card = document.createElement("div");
+  card.className = "card border-secondary";
+  card.style.maxWidth = "320px";
+  const body = document.createElement("div");
+  body.className = "card-body p-2";
+  const title = document.createElement("h6");
+  title.className = "card-title mb-1";
+  const icon = document.createElement("i");
+  icon.className = "fas fa-cube";
+  title.append(icon, document.createTextNode(" " + mirrorName));
+  const description = document.createElement("p");
+  description.className = "card-text small text-muted mb-0";
+  description.textContent = "文件浏览";
+  body.append(title, description);
+  card.appendChild(body);
+  mirrorCardContainer.replaceChildren(card);
 }
 
 function formatTimestamps() {

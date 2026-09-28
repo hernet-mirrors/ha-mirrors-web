@@ -52,7 +52,15 @@
     sel.addEventListener("change", function () {
       var opt = sel.options[sel.selectedIndex];
       var url = opt && opt.getAttribute("data-help-url");
-      if (url) window.location.assign(url);
+      if (!url) return;
+      try {
+        var target = new URL(url, window.location.href);
+        if ((target.protocol === "https:" || target.protocol === "http:") &&
+            target.origin === window.location.origin &&
+            target.pathname.indexOf("/help/") === 0) {
+          window.location.assign(target.href);
+        }
+      } catch (e) { /* Ignore malformed help links. */ }
     });
   }
 

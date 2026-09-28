@@ -17,5 +17,9 @@
     "unist-util-visit": "^5.1.0",
     "vfile": "^6.0.3",
     "yaml": "^2.4.1"
+  },
+  "overrides": {
+    "markdown-it": "$markdown-it",
+    "csv-parse": "^7.0.2"
   }
 }
