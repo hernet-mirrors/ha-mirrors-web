@@ -1,6 +1,7 @@
 source 'https://rubygems.org/'
 
 gem 'jekyll', '~> 4.3', '>= 4.3.3'
+gem 'nokogiri', '~> 1.19'
 
 group :jekyll_deps do
     gem 'bigdecimal', '~> 3.1'
