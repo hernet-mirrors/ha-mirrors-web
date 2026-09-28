@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: read
+  packages: write
 
 concurrency:
   group: docker-build-${{ github.workflow }}-${{ github.ref }}
@@ -38,6 +39,7 @@ jobs:
           context: .
           file: Dockerfile.build
           tags: ${{ env.BUILD_IMAGE }}
+          labels: org.opencontainers.image.source=https://github.com/${{ github.repository }}
           load: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -58,3 +60,24 @@ jobs:
 
       - name: Build Jekyll and production JavaScript
         run: docker run --rm --volume "$PWD:/data" "$BUILD_IMAGE"
+
+      - name: Sign in to GitHub Container Registry
+        if: github.event_name != 'pull_request'
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: printf '%s' "$GHCR_TOKEN" | docker login ghcr.io --username "$GITHUB_ACTOR" --password-stdin
+
+      - name: Publish the verified build image
+        if: github.event_name != 'pull_request'
+        run: |
+          image="ghcr.io/${GITHUB_REPOSITORY,,}"
+          branch_tag="$image:$GITHUB_REF_NAME"
+          commit_tag="$image:sha-${GITHUB_SHA:0:12}"
+          docker tag "$BUILD_IMAGE" "$branch_tag"
+          docker tag "$BUILD_IMAGE" "$commit_tag"
+          docker push "$branch_tag"
+          docker push "$commit_tag"
+          if [[ "$GITHUB_REF_NAME" == main ]]; then
+            docker tag "$BUILD_IMAGE" "$image:latest"
+            docker push "$image:latest"
+          fi
