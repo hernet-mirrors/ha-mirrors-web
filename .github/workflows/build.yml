@@ -64,8 +64,8 @@ jobs:
               fi
               rm -f "$snapshot"
               if [[ "$attempt" == 5 ]]; then
-                echo "Invalid or unavailable runtime JSON: $name" >&2
-                exit 1
+                echo "::warning::Runtime JSON is invalid or unavailable: $name; using the site's built-in catalog fallback"
+                break
               fi
               sleep 2
             done
