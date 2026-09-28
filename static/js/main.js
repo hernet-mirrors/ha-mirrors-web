@@ -832,7 +832,9 @@ function generateBreadcrumb() {
 
   let currentPath = "";
   pathParts.forEach((part, index) => {
-    currentPath += "/" + part;
+    let segment = part;
+    try { segment = decodeURIComponent(part); } catch (_) { /* Keep malformed escapes literal. */ }
+    currentPath += "/" + encodeURIComponent(segment);
     const isLast = index === pathParts.length - 1;
 
     const item = document.createElement("li");

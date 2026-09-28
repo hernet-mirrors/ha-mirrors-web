@@ -1,19 +1,19 @@
-require 'cgi'
 require 'json'
+require 'nokogiri'
 
 module MirrorSEO
   def self.summary(markdown, converter, limit = 200)
-    html = CGI.unescapeHTML(converter.convert(markdown.to_s))
-    # Removing an inner tag can expose an outer tag (for example,
-    # <scr<script>...</script>ipt>). Repeat until no block remains.
+    text = converter.convert(markdown.to_s)
+    # HTML entity decoding can reveal a tag that was hidden in text. Parse
+    # again until the plain-text preview stops changing.
     loop do
-      stripped = html.gsub(/<(script|style)\b[^>]*>.*?<\/\1>/mi, '')
-                     .gsub(/<h[1-6]\b[^>]*>.*?<\/h[1-6]>/mi, '')
-      break if stripped == html
-      html = stripped
+      fragment = Nokogiri::HTML5.fragment(text)
+      fragment.css('script, style, h1, h2, h3, h4, h5, h6').remove
+      plain = fragment.text
+      break if plain == text
+      text = plain
     end
-    html = html.gsub(/<[^>]+>/, ' ')
-    text = html.gsub(/[[:space:]]+/, ' ').strip
+    text = text.gsub(/[[:space:]]+/, ' ').strip
     text.length > limit ? text[0, limit] + '…' : text
   end
 

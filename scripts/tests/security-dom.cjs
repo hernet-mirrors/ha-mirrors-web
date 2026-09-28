@@ -13,7 +13,7 @@ const help = pathToFileURL(join(root, 'static/js/help-runtime.js')).href;
 
 try {
   writeFileSync(file, `<!doctype html><html><body>
-    <span id="path">/ubuntu/&lt;img src=x onerror="document.body.dataset.pathXss='1'"&gt;/</span>
+    <span id="path">/bad?x/&lt;img src=x onerror="document.body.dataset.pathXss='1'"&gt;/</span>
     <ol id="breadcrumb-nav"></ol>
     <div id="now-browsing-mirror"></div>
     <select id="help-select"><option selected data-help-url="javascript:document.body.dataset.helpXss='1'">help</option></select>
@@ -33,7 +33,7 @@ try {
                       document.body.dataset.helpXss;
           const crumb = document.querySelector('#breadcrumb-nav li.active');
           const card = document.querySelector('#now-browsing-mirror .card-title');
-          const link = document.querySelector('#breadcrumb-nav a[href="/ubuntu/"]');
+          const link = document.querySelector('#breadcrumb-nav a[href="/bad%3Fx/"]');
           document.getElementById('security-result').textContent =
             !bad && crumb && crumb.textContent.includes('<img') &&
             card && card.textContent.includes('<img') && link ? 'PASS' : 'FAIL';
