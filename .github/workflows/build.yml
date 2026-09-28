@@ -53,9 +53,22 @@ jobs:
         run: |
           mkdir -p static
           for name in disk.json tunasync.json isoinfo.json; do
-            curl --fail --silent --show-error --location \
-              --retry 3 --retry-all-errors --connect-timeout 15 --max-time 120 \
-              "https://$SITE_HOST/static/$name" --output "static/$name"
+            for attempt in 1 2 3 4 5; do
+              snapshot="$(mktemp)"
+              if curl --fail --silent --show-error --location \
+                --retry 3 --retry-all-errors --connect-timeout 15 --max-time 120 \
+                "https://$SITE_HOST/static/$name" --output "$snapshot" && \
+                python3 -m json.tool "$snapshot" > /dev/null 2>&1; then
+                mv "$snapshot" "static/$name"
+                break
+              fi
+              rm -f "$snapshot"
+              if [[ "$attempt" == 5 ]]; then
+                echo "Invalid or unavailable runtime JSON: $name" >&2
+                exit 1
+              fi
+              sleep 2
+            done
           done
 
       - name: Build Jekyll and production JavaScript
