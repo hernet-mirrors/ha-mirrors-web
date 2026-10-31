@@ -1,5 +1,10 @@
 name: 'Sync mirrorz-docs'
 on:
+  push:
+    branches: [main]
+    paths:
+      - '_helpz/global'
+      - '.github/workflows/sync-helpz.yml'
   workflow_dispatch:
     inputs:
       new_commit:
@@ -11,7 +16,11 @@ on:
     - cron: '33 22 * * *'  # 06:33 AM in Asia/Shanghai (UTC+8)
 jobs:
   sync:
+    if: github.event_name != 'push'
     runs-on: ubuntu-latest
+    concurrency:
+      group: helpz-upstream-pr
+      cancel-in-progress: false
     permissions:
       contents: write
       pull-requests: write
@@ -19,6 +28,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
+        ref: main
         submodules: true
     - name: Sync submodule
       env:
@@ -40,9 +50,68 @@ jobs:
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v6
       with:
+        base: main
+        add-paths: _helpz/global
         title: 'helpz: sync mirrorz-org/mirrorz-docs@${{ env.NEW_COMMIT_SHORT }}'
         commit-message: 'helpz: sync mirrorz-org/mirrorz-docs@${{ env.NEW_COMMIT_SHORT }}'
         author: 'GitHub Actions <41898282+github-actions[bot]@users.noreply.github.com>'
         branch: helpz
         delete-branch: true
         body-path: /tmp/pr_msg
+
+  sync-nyist:
+    name: Sync approved help to nyist-web
+    runs-on: ubuntu-latest
+    concurrency:
+      group: helpz-nyist-web
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      actions: write
+    steps:
+    - name: Checkout nyist-web
+      uses: actions/checkout@v4
+      with:
+        ref: nyist-web
+        submodules: false
+    - name: Copy the approved submodule revision
+      id: sync
+      shell: bash
+      run: |
+        git config user.name 'github-actions[bot]'
+        git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+        zdoc_dir='_helpz/global'
+        for attempt in 1 2 3; do
+          # Read current main, so a delayed run cannot restore an older revision.
+          git fetch --no-tags --no-recurse-submodules origin \
+            '+refs/heads/main:refs/remotes/origin/main' \
+            '+refs/heads/nyist-web:refs/remotes/origin/nyist-web'
+          git checkout --force -B nyist-web origin/nyist-web
+          read -r mode type commit path < <(git ls-tree origin/main -- "$zdoc_dir")
+          if [[ "$mode" != 160000 || "$type" != commit || "$path" != "$zdoc_dir" ]]; then
+            echo '::error::main does not contain the expected help submodule'
+            exit 1
+          fi
+          git update-index --cacheinfo 160000 "$commit" "$zdoc_dir"
+          if git diff --cached --quiet -- "$zdoc_dir"; then
+            echo 'Approved help is already synchronized'
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "helpz: sync approved content@${commit:0:8}"
+          if git push origin HEAD:refs/heads/nyist-web; then
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # Preserve site changes if another writer updated nyist-web meanwhile.
+          sleep 2
+        done
+        echo '::error::Could not synchronize nyist-web after three attempts'
+        exit 1
+    - name: Build the updated site
+      if: steps.sync.outputs.changed == 'true'
+      env:
+        GH_TOKEN: ${{ github.token }}
+        GH_REPO: ${{ github.repository }}
+      # A GITHUB_TOKEN push does not trigger another push workflow.
+      run: gh workflow run build.yml --ref nyist-web
